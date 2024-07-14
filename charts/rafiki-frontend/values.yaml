@@ -1,0 +1,54 @@
+nodeEnv: production
+logLevel: debug
+
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 3010
+        targetPort: 3010
+        protocol: TCP
+        name: http
+
+configmap:
+  - files/config.yaml
+
+containers:
+  - name: server
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 0.5m
+      limits:
+        memory: 512Mi
+        cpu: 1m
+    ports:
+      - name: http
+        containerPort: 3010
+        protocol: TCP
+
+serviceUrls:
+  GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
+port: 3010
+rollingUpdate:
+  maxSurge: 100%
+  maxUnavailable: 50%
