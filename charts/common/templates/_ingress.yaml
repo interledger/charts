@@ -9,7 +9,7 @@ annotations:
 {{- define "common.ingress.tpl" -}}
 {{- $top := first . }}
 {{- $ingress := index . 1 }}
-{{- $service := index . 2 }}
+{{- $service := $ingress.service }}
 {{- $fullName := include "common.fullname" $top }}
 {{- $svcPort := $service.port }}
 apiVersion: networking.k8s.io/v1
