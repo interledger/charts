@@ -1,0 +1,93 @@
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+# service:
+#   - name: service
+#     type: ClusterIP
+#     ports:
+#       - port: 3000
+#         targetPort: 3000
+#         protocol: TCP
+#         name: open-payments
+#       - port: 3001
+#         targetPort: 3001
+#         protocol: TCP
+#         name: admin
+#       - port: 3002
+#         targetPort: 3002
+#         protocol: TCP
+#         name: connector
+
+configmap:
+  - files/config.yaml
+
+secrets:
+  - files/secret.yaml
+
+containers:
+  - name: server
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+    ports:
+      - name: idp
+        containerPort: 3003
+        protocol: TCP
+      - name: jopacc-gw
+        containerPort: 3004
+        protocol: TCP
+
+nodeEnv: development
+
+logLevel: payment
+
+paymentPointer: https://jopacc-rafiki-backend/JORDJOA0/SAEED
+serviceUrls: 
+  OPEN_PAYMENTS_HOST: http://jopacc-rafiki-backend
+  GRAPHQL_ENDPOINT: http://jopacc-rafiki-backend:3001/graphql
+  AUTH_DOMAIN: http://jopacc-rafiki-auth:3009
+  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-auth:3008/graphql
+  AUTH_IDENTITY_SERVER_SECRET: -a92c97c4-67b0-4f02-97cf-6221f9cbf8d7
+  IDP_HOST: ''
+
+redis:
+  auth:
+    enabled: false
+  host: ':0ePCOYJtRF@redis-replicas.rafiki/0'
+  port: 6379
+  tlsCaFile: ''
+  tlsCertFile: ''
+  tlsKeyFile: ''
+postgresql:
+  host: "postgresql"
+  port: "5432"
+  username: "backend"
+  database: "jopacc_backend"
+  password: "backend"
+port:
+  idp: 3003
+  jopacc-gw: 3004
+
+

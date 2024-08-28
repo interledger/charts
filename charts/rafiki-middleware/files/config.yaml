@@ -1,0 +1,12 @@
+NODE_ENV: "{{ .Values.nodeEnv }}"
+PORT: "{{.Values.port.admin}}"
+REDIS_URL: redis://{{ .Values.redis.host }}:{{ .Values.redis.port }}
+# DATABASE_URL: postgresql://{{ .Values.postgresql.username }}:{{ .Values.postgresql.password }}@{{ .Values.postgresql.host }}:{{ .Values.postgresql.port }}/{{ .Values.postgresql.database }}
+OPEN_PAYMENTS_HOST: "{{ .Values.serviceUrls.OPEN_PAYMENTS_HOST }}"
+GRAPHQL_ENDPOINT: "{{ .Values.serviceUrls.GRAPHQL_ENDPOINT }}"
+AUTH_GRAPHQL_ENDPOINT: "{{ .Values.serviceUrls.AUTH_GRAPHQL_ENDPOINT }}"
+AUTH_DOMAIN: "{{ .Values.serviceUrls.AUTH_DOMAIN }}"
+IDP_HOST: "{{ .Values.serviceUrls.IDP_HOST }}"
+
+
+
