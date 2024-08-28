@@ -7,6 +7,16 @@ serviceAccount:
   annotations: {}
   name: ""
 
+ingress:
+  enabled: true
+  hosts:
+    - host: foo.bar.com
+      paths:
+        - path: /bar
+          pathType: Prefix
+  service:
+    port: 3004
+
 autoscaling:
   enabled: false
   minReplicas: 2
