@@ -5,8 +5,10 @@
 {{- $image := $container.image | default (dict) }}
 {{- $imageDigest := $image.digest }}
 - name: {{ $container.name | default $top.Chart.Name }}
+  {{- with $top.Values.securityContext }}
   securityContext:
-    {{- toYaml $top.Values.securityContext | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if $imageDigest}}
   image: "ghcr.io/interledger/{{ $top.Chart.Name }}@sha256:{{ $imageDigest }}"
   {{- else }}

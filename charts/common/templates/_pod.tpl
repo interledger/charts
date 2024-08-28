@@ -18,8 +18,10 @@ spec:
   {{- else }}
   automountServiceAccountToken: true
   {{- end }}
+  {{- with $top.Values.podSecurityContext }}
   securityContext:
-    {{- toYaml $top.Values.podSecurityContext | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if $pod.initContainers }}
   initContainers:
     {{- range $initContainer := $pod.initContainers }}
