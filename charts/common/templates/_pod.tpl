@@ -22,6 +22,10 @@ spec:
   securityContext:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with $pod.imagePullSecret }}
+  imagePullSecrets: 
+  - name: {{ . }}
+  {{- end }}
   {{- if $pod.initContainers }}
   initContainers:
     {{- range $initContainer := $pod.initContainers }}

@@ -1,5 +1,4 @@
 {{- include "common.configMap" (list . "rafiki-backend.configMap") }}
-
 {{- define "rafiki-backend.configMap" -}}
 {{- $top := first . }}
 data:

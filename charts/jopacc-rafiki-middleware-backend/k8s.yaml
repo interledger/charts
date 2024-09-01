@@ -1,0 +1,126 @@
+---
+# Source: jopacc-rafiki-middleware-backend/templates/dockersecret.yaml
+apiVersion: v1
+data:
+  .dockerconfigjson: ewogICAgImF1dGhzIjoKICAgIHsKICAgICAgICAiZ2hjci5pbyI6CiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJhdXRoIjoiWW1WdWFXRnRhVzV0ZFc1MFpXRnVkVHBuYUhCZlowOVRaRGsxTkRCTWF6QmtjRFJ2WlRGRVUzbzJjMVExUWpaQmVsUTVNbEY2TUdZeCIKICAgICAgICAgICAgfQogICAgfQp9Cg==
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/version: v0.0.1
+    helm.sh/chart: jopacc-rafiki-middleware-backend-0.0.1
+  name: veryseriousdockersecret
+type: kubernetes.io/dockerconfigjson
+---
+# Source: jopacc-rafiki-middleware-backend/templates/secret.yaml
+apiVersion: v1
+data:
+  AUTH_IDENTITY_SERVER_SECRET: ""
+  DATABASE_URL: cG9zdGdyZXNxbDovL2JhY2tlbmQ6YmFja2VuZEBwb3N0Z3Jlc3FsOjU0MzIvam9wYWNjX2JhY2tlbmQ=
+  JOPACC_BASIC_AUTH: ""
+  REDIS_URL: cmVkaXM6Ly86MGVQQ09ZSnRSRkByZWRpcy1yZXBsaWNhcy5yYWZpa2kvMDolIXMoZmxvYXQ2ND02Mzc5KQ==
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/version: v0.0.1
+    helm.sh/chart: jopacc-rafiki-middleware-backend-0.0.1
+  name: release-name-jopacc-rafiki-middleware-backend
+type: Opaque
+---
+# Source: jopacc-rafiki-middleware-backend/templates/configmap.yaml
+apiVersion: v1
+data:
+  AUTH_DOMAIN: http://jopacc-rafiki-auth:3009
+  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-auth:3008/graphql
+  GRAPHQL_ENDPOINT: http://jopacc-rafiki-backend:3001/graphql
+  IDP_HOST: ""
+  NODE_ENV: development
+  OPEN_PAYMENTS_HOST: http://jopacc-rafiki-backend
+  PORT: ""
+  REDIS_URL: redis://:0ePCOYJtRF@redis-replicas.rafiki/0:6379
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/version: v0.0.1
+    helm.sh/chart: jopacc-rafiki-middleware-backend-0.0.1
+  name: release-name-jopacc-rafiki-middleware-backend
+---
+# Source: jopacc-rafiki-middleware-backend/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/version: v0.0.1
+    helm.sh/chart: jopacc-rafiki-middleware-backend-0.0.1
+  name: release-name-jopacc-rafiki-middleware-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+      app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+        app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: release-name
+        - secretRef:
+            name: release-name
+        image: ghcr.io/interledger/jopacc-rafiki-middleware-backend:v0.0.1
+        imagePullPolicy: Always
+        name: server
+        ports:
+        - containerPort: 3003
+          name: idp
+          protocol: TCP
+        - containerPort: 3004
+          name: jopacc-gw
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 400m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 128Mi
+---
+# Source: jopacc-rafiki-middleware-backend/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: release-name-jopacc-rafiki-middleware-backend
+  labels:
+    app.kubernetes.io/instance: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-jopacc-rafiki-middleware-backend
+    app.kubernetes.io/version: v0.0.1
+    helm.sh/chart: jopacc-rafiki-middleware-backend-0.0.1
+spec:
+  rules:
+  - host: "foo.bar.com"
+    http:
+      paths:
+      - path: /bar
+        pathType: Prefix
+        backend:
+          service:
+            name: release-name-jopacc-rafiki-middleware-backend
+            port:
+              number: 3004

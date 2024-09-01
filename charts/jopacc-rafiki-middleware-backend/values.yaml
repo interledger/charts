@@ -74,6 +74,8 @@ containers:
         containerPort: 3004
         protocol: TCP
 
+imagePullSecret: ghrc-image-pull-secret
+
 nodeEnv: development
 
 logLevel: payment
