@@ -68,17 +68,17 @@ serviceUrls:
   PUBLIC_HOST: http://rafiki-backend
   OPEN_PAYMENTS_URL: http://rafiki-backend
   PAYMENT_POINTER_URL: http://rafiki-backend/.well-known/pay
-  WEBHOOK_URL: http://cloud-nine-wallet/webhooks
-  EXCHANGE_RATES_URL: http://cloud-nine-wallet/prices
-  QUOTE_URL: http://cloud-nine-wallet/quotes
+  WEBHOOK_URL: http://rafiki-backend/webhooks
+  EXCHANGE_RATES_URL: http://rafiki-backend/prices
+  QUOTE_URL: http://rafiki-backend/quotes
   AUTH_SERVER_GRANT_URL: http://rafiki-auth.rafiki-auth:3006
   AUTH_SERVER_INTROSPECTION_URL: http://rafiki-auth.rafiki-auth:3007
 
 redis:
   auth:
     enabled: false
-  host: ':rafiki-redis-master'
-  port: 6379
+  host: 'rafiki-backend-redis-master'
+  port: "6379"
   tlsCaFile: ''
   tlsCertFile: ''
   tlsKeyFile: ''
@@ -99,17 +99,17 @@ postgresql:
       enabled: true   
   host: "rafiki-backend-postgresql"
   port: "5432"
-
-  username: "rafiki-backend"
-  database: "rafiki-backend"
-  password: "rafiki-backend"
+  auth:
+    username: "rafiki-backend"
+    database: "rafiki-backend"
+    password: "rafiki-backend"
 
 port:
   admin: 3001
   connector: 3002
   openPayments: 3000
 ilp:
-  address: rafiki-backend  # override this value
+  address: test.rafiki-backend  # override this value
   streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
   slippage: 0.01
 key:
