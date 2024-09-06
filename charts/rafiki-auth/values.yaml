@@ -61,17 +61,43 @@ containers:
       - name: introspection
         containerPort: 3007
         protocol: TCP
+        
+redis:
+  auth:
+    enabled: false
+  host: 'rafiki-auth-redis-master'
+  port: "6379"
+  tlsCaFile: ''
+  tlsCertFile: ''
+  tlsKeyFile: ''
+  architecture: standalone
+  
+postgresql:
+  replication: 
+    enabled: false
+  metrics:
+    enabled: false
+  primary:
+    initdb:
+      scripts:
+        initialize_auth.sql: |
+          CREATE USER rafiki-auth WITH PASSWORD 'rafiki-auth';
+          CREATE DATABASE rafiki-auth OWNER rafiki-auth;
+    persistence:
+      enabled: true   
+  host: "rafiki-auth-postgresql"
+  port: "5432"
+  auth:
+    username: "rafiki-auth"
+    database: "rafiki-auth"
+    password: "rafiki-auth"
+
 
 nodeEnv: development
 logLevel: debug
-postgresql:
-  host: "postgresql.rafiki"
-  port: "5432"
-  username: "auth"
-  database: "auth"
-  password: "auth"  # override this value
+
 identityServer:
-  domain: "http://cloud-nine-wallet/idp"
+  domain: "http://rafiki-backend/idp"
   secret: "changeme"
 interaction:
   incomingPayment: "false"
