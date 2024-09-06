@@ -96,6 +96,8 @@ postgresql:
 nodeEnv: development
 logLevel: debug
 
+authServerUrl: "http://rafiki-auth:3006"
+
 identityServer:
   domain: "http://rafiki-backend/idp"
   secret: "changeme"
@@ -111,6 +113,6 @@ grant:
 accessToken:
   deletionDays: 30
   expirySeconds: 600
-cookieKey: ''
+cookieKey: 'changeme'
 workers:
   cleanup: 1
