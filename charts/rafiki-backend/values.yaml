@@ -64,6 +64,8 @@ containers:
 
 nodeEnv: development
 logLevel: debug
+
+instanceName: Jopacc
 serviceUrls:
   PUBLIC_HOST: http://rafiki-backend
   OPEN_PAYMENTS_URL: http://rafiki-backend
@@ -110,6 +112,7 @@ port:
   openPayments: 3000
 ilp:
   address: test.rafiki-backend  # override this value
+  connectorUrl: 'http://rafiki-backend:3002'
   streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
   slippage: 0.01
 key:
