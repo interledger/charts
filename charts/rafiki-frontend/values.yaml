@@ -48,6 +48,8 @@ containers:
 
 serviceUrls:
   GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
+  OPEN_PAYMENTS_URL: https://rafiki-backend-service/
+
 port: 3010
 rollingUpdate:
   maxSurge: 100%
