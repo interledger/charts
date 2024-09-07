@@ -15,7 +15,7 @@ ingress:
         - path: /bar
           pathType: Prefix
   service:
-    port: 3004
+    port: 3003
 
 autoscaling:
   enabled: false
@@ -28,29 +28,23 @@ securityContext:
 
 podSecurityContext:
 
+# TODO: separate idp and jopacc ports  -> everything is currently on 3003
 
-# service:
-#   - name: service
-#     type: ClusterIP
-#     ports:
-#       - port: 3000
-#         targetPort: 3000
-#         protocol: TCP
-#         name: open-payments
-#       - port: 3001
-#         targetPort: 3001
-#         protocol: TCP
-#         name: admin
-#       - port: 3002
-#         targetPort: 3002
-#         protocol: TCP
-#         name: connector
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 3003
+        targetPort: 3003
+        protocol: TCP
+        name: api
 
 configmap:
   - files/config.yaml
 
 secrets:
   - files/secret.yaml
+
 
 containers:
   - name: server
@@ -73,6 +67,8 @@ containers:
       - name: jopacc-gw
         containerPort: 3004
         protocol: TCP
+        
+
 
 imagePullSecret: ghrc-image-pull-secret
 
