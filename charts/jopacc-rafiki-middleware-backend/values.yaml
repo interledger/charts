@@ -80,29 +80,45 @@ nodeEnv: development
 
 logLevel: payment
 
-paymentPointer: https://jopacc-rafiki-backend/JORDJOA0/SAEED
+paymentPointer: https://jopacc-rafiki-middleware-backend/JORDJOA0/SAEED
 serviceUrls: 
-  OPEN_PAYMENTS_HOST: http://jopacc-rafiki-backend
-  GRAPHQL_ENDPOINT: http://jopacc-rafiki-backend:3001/graphql
-  AUTH_DOMAIN: http://jopacc-rafiki-auth:3009
-  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-auth:3008/graphql
+  OPEN_PAYMENTS_HOST: http://jopacc-rafiki-middleware-backend
+  GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware-backend:3001/graphql
+  AUTH_DOMAIN: http://jopacc-rafiki-middleware-auth:3009
+  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware-auth:3008/graphql
   AUTH_IDENTITY_SERVER_SECRET: -a92c97c4-67b0-4f02-97cf-6221f9cbf8d7
   IDP_HOST: ''
 
 redis:
   auth:
     enabled: false
-  host: ':0ePCOYJtRF@redis-replicas.rafiki/0'
-  port: 6379
+  host: 'jopacc-rafiki-middleware-backend-redis-master'
+  port: "6379"
   tlsCaFile: ''
   tlsCertFile: ''
   tlsKeyFile: ''
+  architecture: standalone
+
 postgresql:
-  host: "postgresql"
+  replication: 
+    enabled: false
+  metrics:
+    enabled: false
+  primary:
+    initdb:
+      scripts:
+        initialize_backend.sql: |
+          CREATE USER jopacc-rafiki-middleware-backend WITH PASSWORD 'jopacc-rafiki-middleware-backend';
+          CREATE DATABASE jopacc-rafiki-middleware-backend OWNER jopacc-rafiki-middleware-backend;
+    persistence:
+      enabled: true   
+  host: "jopacc-rafiki-middleware-backend-postgresql"
   port: "5432"
-  username: "backend"
-  database: "jopacc_backend"
-  password: "backend"
+  auth:
+    username: "jopacc-rafiki-middleware-backend"
+    database: "jopacc-rafiki-middleware-backend"
+    password: "jopacc-rafiki-middleware-backend"
+
 port:
   idp: 3003
   jopacc-gw: 3004
