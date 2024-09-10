@@ -10,10 +10,11 @@ serviceAccount:
 ingress:
   enabled: true
   hosts:
-    - host: foo.bar.com
+    - host: jopacc-rafiki-middleware-backend
       paths:
-        - path: /bar
+        - path: /
           pathType: Prefix
+          backend:
   service:
     port: 3003
 
