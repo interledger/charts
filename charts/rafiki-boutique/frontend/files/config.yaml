@@ -1,0 +1,2 @@
+BOUTIQUE_FRONTEND_API_BASE_URL: "{{ .Values.apiBaseUrl }}"
+BOUTIQUE_FRONTEND_PORT: "{{ .Values.port }}"

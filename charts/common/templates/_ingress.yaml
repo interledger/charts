@@ -9,15 +9,15 @@ annotations:
 {{- define "common.ingress.tpl" -}}
 {{- $top := first . }}
 {{- $ingress := index . 1 }}
-{{- $service := index . 2 }}
-{{- $fullName := include "common.fullname" $top }}
-{{- $svcPort := $service.port }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "common.fullname" $top }}
   {{- include "common.metadata" (append . "common.ingress.metadata") | nindent 2 }}
 spec:
+{{- if $ingress.className }}
+  ingressClassName: {{ $ingress.className }}
+{{- end }}
 {{- if $ingress.tls }}
   tls:
   {{- range $ingress.tls }}
@@ -41,12 +41,12 @@ spec:
         backend:
           {{- if semverCompare ">=1.19-0" $top.Capabilities.KubeVersion.GitVersion }}
           service:
-            name: {{ $fullName }}
+            name: {{ .service.name }}
             port:
-              number: {{ $svcPort }}
+              number: {{ .service.port }}
           {{- else }}
-          serviceName: {{ $fullName }}
-          servicePort: {{ $svcPort }}
+          serviceName: {{ .service.name }}
+          servicePort: {{ .service.port }}
           {{- end }}
       {{- end }}
   {{- end }}
