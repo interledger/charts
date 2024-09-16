@@ -37,6 +37,17 @@ configmap:
 secrets:
   - files/secret.yaml
 
+ingress:
+  enabled: true
+  hosts:
+    - host: api.jopacc.openpayments.directory
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-backend-service
+            port: 3000
+
 containers:
   - name: server
     envFrom:
