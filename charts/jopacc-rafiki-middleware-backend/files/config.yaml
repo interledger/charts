@@ -1,5 +1,5 @@
 NODE_ENV: "{{ .Values.nodeEnv }}"
-PORT: "{{.Values.port.admin}}"
+PORT: "{{.Values.port.idp}}"
 REDIS_URL: redis://{{ .Values.redis.host }}:{{ .Values.redis.port }}
 OPEN_PAYMENTS_HOST: "{{ .Values.serviceUrls.OPEN_PAYMENTS_HOST }}"
 GRAPHQL_ENDPOINT: "{{ .Values.serviceUrls.GRAPHQL_ENDPOINT }}"
