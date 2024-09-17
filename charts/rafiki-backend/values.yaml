@@ -39,8 +39,12 @@ secrets:
 
 ingress:
   enabled: true
+  tls:
+  - secretName: jopacc-openpayments-directory-tls
+    hosts:
+      - op.jopacc.openpayments.directory
   hosts:
-    - host: api.jopacc.openpayments.directory
+    - host: op.jopacc.openpayments.directory
       paths:
         - path: /
           pathType: Prefix
