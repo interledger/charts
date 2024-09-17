@@ -1,0 +1,74 @@
+nodeEnv: production
+logLevel: debug
+
+replicaCount: 1
+
+nodeSelector: {}
+
+port: 3000
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+
+configmap:
+  - files/config.yaml
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 80
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+ingress:
+  enabled: true
+  tls:
+  - secretName: jopacc-openpayments-directory-tls
+    hosts:
+      - idp.jopacc.openpayments.directory
+  hosts:
+    - host: idp.jopacc.openpayments.directory
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: jopacc-idp-service
+            port: 80
+
+containers:
+  - name: server
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 0.5m
+      limits:
+        memory: 512Mi
+        cpu: 1m
+    ports:
+      - name: http
+        containerPort: 3000
+        protocol: TCP
+
+imagePullSecret: ghrc-image-pull-secret
+
+serviceUrls:
+  BACKEND_URL: https://middleware.jopacc.openpayments.directory
+  AUTH_URL:  https://auth.jopacc.openpayments.directory
+
+resendTimeout: 45
+resendCount: 4

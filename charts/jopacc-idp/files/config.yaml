@@ -1,0 +1,4 @@
+BACKEND_URL: "{{ .Values.serviceUrls.backendUrl }}"
+AUTH_URL: "{{ .Values.serviceUrls.authUrl }}"
+RESEND_TIMEOUT: "{{ .Values.resendTimeout }}"
+RESEND_COUNT: "{{ .Values.resendCount }}"
