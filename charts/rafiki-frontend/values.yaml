@@ -19,7 +19,7 @@ autoscaling:
 
 service:
   - name: service
-    type: LoadBalancer
+    type: ClusterIP
     ports:
       - port: 3010
         targetPort: 3010
