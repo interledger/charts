@@ -91,32 +91,19 @@ serviceUrls:
 redis:
   auth:
     enabled: false
-  host: 'jopacc-rafiki-middleware-backend-redis-master'
+  host: 'redis-master'
   port: "6379"
   tlsCaFile: ''
   tlsCertFile: ''
   tlsKeyFile: ''
-  architecture: standalone
 
 postgresql:
-  replication: 
-    enabled: false
-  metrics:
-    enabled: false
-  primary:
-    initdb:
-      scripts:
-        initialize_backend.sql: |
-          CREATE USER jopacc-rafiki-middleware-backend WITH PASSWORD 'jopacc-rafiki-middleware-backend';
-          CREATE DATABASE jopacc-rafiki-middleware-backend OWNER jopacc-rafiki-middleware-backend;
-    persistence:
-      enabled: true   
-  host: "jopacc-rafiki-middleware-backend-postgresql"
+  host: "postgres-postgresql"
   port: "5432"
   auth:
-    username: "jopacc-rafiki-middleware-backend"
-    database: "jopacc-rafiki-middleware-backend"
-    password: "jopacc-rafiki-middleware-backend"
+    username: "rafiki-middleware"
+    database: "rafiki-middleware"
+    password: "rafiki-middleware"
 
 port:
   idp: 3003
