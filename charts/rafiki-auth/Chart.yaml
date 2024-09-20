@@ -11,18 +11,6 @@ dependencies:
   - name: common
     version: 0.1.0
     repository: file://../common
-  - name: postgresql
-    version: '15.5.27'
-    repository: https://charts.bitnami.com/bitnami
-  - name: redis
-    version: '19.0.1'
-    repository: https://charts.bitnami.com/bitnami
-
-    # import-values:
-    #   - child: securityContext
-    #     parent: securityContext
-    #   - child: podSecurityContext
-    #     parent: podSecurityContext
 
 maintainers:
   - name: golobitch
