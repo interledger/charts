@@ -54,3 +54,6 @@ port: 3010
 rollingUpdate:
   maxSurge: 100%
   maxUnavailable: 50%
+
+kratos:
+  enabled: false
