@@ -6,9 +6,10 @@ replicaCount: 1
 nodeSelector: {}
 
 port: 3004
-frontendUrl: https://rafiki.boutique
-keyId: 2f789ecd-8845-4ff0-a1c4-16b7a1ef06c2
-paymentPointer: https://ilp.rafiki.money/boutique
+frontendUrl: https://boutique.jopacc.openpayments.directory
+keyId: 2bca5867-c149-402b-96d2-1b61fd5ed937
+
+paymentPointer: https://op.jopacc.openpayments.directory/JORDJOA0/SAEED
 
 databaseUrl: "postgres://boutique_backend:boutique_backend@postgres/boutique_backend"
 privateKey: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1DNENBUUF3QlFZREsyVndCQ0lFSUkyNmxkZVNaeVQzMlA4QWhNNHFPaXhqdjNhODU1QjFCMUdhVWtDNmU2SisKLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQ=="
