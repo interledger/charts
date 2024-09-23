@@ -8,6 +8,8 @@ nodeSelector: {}
 apiBaseUrl: "rafiki-boutique-backend"
 port: 4004
 
+currency: JOD
+
 serviceAccount:
   create: false
   annotations: {}
