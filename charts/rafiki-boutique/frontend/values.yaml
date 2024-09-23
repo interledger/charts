@@ -41,11 +41,11 @@ containers:
           name: "{{ .Release.Name }}"
     resources:
       requests:
-        memory: 128Mi
-        cpu: 0.5m
+        memory: 64Mi
+        cpu: 200m
       limits:
         memory: 512Mi
-        cpu: 1m
+        cpu: 1
     ports:
       - name: http
         containerPort: 4004
