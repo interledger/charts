@@ -1,0 +1,73 @@
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+securityContext:
+
+podSecurityContext:
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: server
+
+secrets:
+  - files/secret.yaml
+
+ingress:
+  enabled: true
+  tls:
+  - secretName: interledger-cards-tls
+    hosts:
+      - interledger.cards
+  hosts:
+    - host: interledger.cards
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: interledger-cards-service
+            port: 3000
+
+containers:
+  - name: server
+    envFrom:
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 400m
+    ports:
+      - name: server
+        containerPort: 3000
+        protocol: TCP
+
+postgresql:
+  host: "postgres-cards-postgresql.cards"
+  port: "5432"
+  auth:
+    username: "interledger-cards"
+    database: "interledger-cards"
+    password: "interledger-cards"
+
+cookiSecret: 4b830249e41dd89c9d91ca6b974753ef
