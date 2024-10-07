@@ -38,7 +38,7 @@ containers:
   - name: server
     envFrom:
       - configMapRef:
-          name: "{{ .Release.Name }}"
+          name: "{{ .Release.Name }}-jopacc"
     resources:
       requests:
         memory: 64Mi
