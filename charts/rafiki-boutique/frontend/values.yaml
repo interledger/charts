@@ -24,7 +24,7 @@ service:
   - name: service
     type: ClusterIP
     ports:
-      - port: 80
+      - port: 4004
         targetPort: 4004
         protocol: TCP
         name: http
@@ -51,7 +51,7 @@ containers:
 
 ingress:
   enabled: true
-  className: nginx-external
+  className: nginx
   hosts:
     - host: boutique.jopacc.golobit.ch
       paths:
@@ -59,4 +59,4 @@ ingress:
           pathType: Prefix
           service:
             name: rafiki-boutique-frontend-service
-            port: 80
+            port: 4004
