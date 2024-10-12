@@ -1,0 +1,17 @@
+apiVersion: v2
+name: rafiki-money-frontend
+description: Rafiki Money Frontend Helm chart for Kubernetes
+home: https://github.com/interledger/testnet
+
+type: application
+version: 0.0.1
+appVersion: "v0.1.4"
+
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: file://../../common
+
+maintainers:
+  - name: golobitch
+    email: tadej.golobic@gatehub.net
