@@ -29,7 +29,7 @@ service:
   - name: service
     type: ClusterIP
     ports:
-      - port: 80
+      - port: 3004
         targetPort: 3004
         protocol: TCP
         name: http
@@ -44,6 +44,8 @@ containers:
   - name: server
     envFrom:
       - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
           name: "{{ .Release.Name }}"
     resources:
       requests:
@@ -66,4 +68,4 @@ ingress:
           pathType: Prefix
           service:
             name: rafiki-boutique-backend-service
-            port: 80
+            port: 3004
