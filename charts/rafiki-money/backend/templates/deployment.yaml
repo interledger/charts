@@ -1,0 +1,4 @@
+{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "rafiki-money-backend.deployment") }}
+
+{{- define "rafiki-money-backend.deployment" -}}
+{{- end }}

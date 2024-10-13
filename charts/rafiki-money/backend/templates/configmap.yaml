@@ -1,0 +1,9 @@
+{{- include "common.configMap" (list . "rafiki-money-backend.configMap") }}
+
+{{- define "rafiki-money-backend.configMap" -}}
+{{- $top := first . }}
+data:
+  {{- range $top.Values.configmap }}
+    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
+  {{- end }}
+{{- end }}
