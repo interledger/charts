@@ -34,6 +34,8 @@ configmap:
 
 containers:
   - name: server
+    image:
+      name: test-boutique-frontend
     envFrom:
       - configMapRef:
           name: "{{ .Release.Name }}"
