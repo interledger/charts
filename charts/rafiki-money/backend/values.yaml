@@ -28,6 +28,8 @@ service:
 
 containers:
   - name: server
+    image:
+      name: test-wallet-backend
     envFrom:
       - configMapRef:
           name: "{{ .Release.Name }}"
