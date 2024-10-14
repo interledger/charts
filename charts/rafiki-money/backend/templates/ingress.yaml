@@ -3,5 +3,8 @@
  {{- define "rafiki-money-backend.ingress" -}}
  metadata:
      annotations:
-         nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+        nginx.ingress.kubernetes.io/websocket-services: "rafiki-money-backend-test-service"
  {{- end }}
