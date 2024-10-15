@@ -106,6 +106,7 @@ postgresql:
     database: "rafiki-backend"
     password: "rafiki-backend"
 
+trustProxy: true
 port:
   admin: 3001
   connector: 3002
