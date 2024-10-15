@@ -71,7 +71,8 @@ redis:
   tlsCertFile: ''
   tlsKeyFile: ''
   architecture: standalone
-  
+
+trustProxy: true
 postgresql:
   replication: 
     enabled: false
