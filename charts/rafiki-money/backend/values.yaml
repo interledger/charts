@@ -107,6 +107,7 @@ interaction:
 hosts:
   openPayments: https://ilp.interledger-test.dev
   graphqlEndpoint: http://rafiki-backend-test.interledger-test:3001/graphql
+  authGraphqlEndpoint: http://rafiki-auth-test-service.interledger-test.dev:3003/graphql
   frontend: https://wallet.interledger-test.dev
   auth: https://auth.interledger-test.dev
 rate:
