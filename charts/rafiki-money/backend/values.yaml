@@ -109,6 +109,6 @@ hosts:
   graphqlEndpoint: http://rafiki-backend-test.interledger-test:3001/graphql
   authGraphqlEndpoint: http://rafiki-auth-test-service.interledger-test:3003/graphql
   frontend: https://wallet.interledger-test.dev
-  auth: https://auth.interledger-test.dev
+  auth: http://rafiki-auth-test-service.interledger-test:3009
 rate:
   apiKey: fca_live_Q4pfUGScjJed6zPS7JNGHipXg1jjAZZrKVIPcx3J

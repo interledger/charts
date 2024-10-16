@@ -30,6 +30,10 @@ service:
         targetPort: 3007
         protocol: TCP
         name: introspection
+      - port: 3009
+        targetPort: 3009
+        protocol: TCP
+        name: interaction
 
 configmap:
   - files/config.yaml
