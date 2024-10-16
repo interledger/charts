@@ -65,7 +65,11 @@ containers:
       - name: introspection
         containerPort: 3007
         protocol: TCP
-        
+      - name: interaction
+        containerPort: 3009
+        protocol: TCP
+  
+      
 redis:
   auth:
     enabled: false
