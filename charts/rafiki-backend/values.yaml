@@ -50,7 +50,7 @@ containers:
         cpu: 200m
       limits:
         memory: 512Mi
-        cpu: 400m
+        cpu: 1
     ports:
       - name: open-payments
         containerPort: 3000
