@@ -113,6 +113,7 @@ identityServer:
 interaction:
   incomingPayment: "false"
   quote: "false"
+  cookieSameSite: lax
 port:
   admin: 3003
   auth: 3006
