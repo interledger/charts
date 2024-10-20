@@ -46,11 +46,11 @@ containers:
           name: "{{ .Release.Name }}"
     resources:
       requests:
-        memory: 128Mi
-        cpu: 200m
-      limits:
-        memory: 512Mi
+        memory: 256Mi
         cpu: 1
+      limits:
+        memory: 2048Mi
+        cpu: 4
     ports:
       - name: open-payments
         containerPort: 3000
