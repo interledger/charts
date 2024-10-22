@@ -29,7 +29,7 @@ service:
 containers:
   - name: server
     image: 
-      name: test-wallet-frontend
+      name: test-wallet-frontend-cards
     env:
       - name: PORT
         value: "4003"

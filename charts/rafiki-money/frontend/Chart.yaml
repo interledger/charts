@@ -1,10 +1,10 @@
 apiVersion: v2
-name: rafiki-money-frontend
+name: wallet-frontend
 description: Rafiki Money Frontend Helm chart for Kubernetes
 home: https://github.com/interledger/testnet
 
 type: application
-version: 0.0.16
+version: 0.0.17
 appVersion: "v0.1.21"
 
 dependencies:
