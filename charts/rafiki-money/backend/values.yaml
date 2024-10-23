@@ -112,3 +112,6 @@ hosts:
   auth: http://rafiki-auth-test-service.interledger-test:3009
 rate:
   apiKey: fca_live_Q4pfUGScjJed6zPS7JNGHipXg1jjAZZrKVIPcx3J
+card:
+  pinUrl: https://lab.dinitcs.com/uat/Stargate.Paywiser.Server/api/v3/ClientDevice/pin
+  dataUrl: https://lab.dinitcs.com/uat/Stargate.Paywiser.Server/api/v3/ClientDevice/cardData
