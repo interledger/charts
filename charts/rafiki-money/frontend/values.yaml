@@ -33,8 +33,6 @@ containers:
     env:
       - name: PORT
         value: "4003"
-      - name: COOKIE_NAME
-        value: testnet.cookie
       - name: NEXT_PUBLIC_USE_TEST_KYC_DATA
         value: "true"
       - name: NEXT_PUBLIC_BACKEND_URL
