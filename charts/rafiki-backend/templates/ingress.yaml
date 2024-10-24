@@ -3,5 +3,6 @@
 {{- define "rafiki-backend.ingress" -}}
 metadata:
     annotations:
+        nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /
 {{- end }}
