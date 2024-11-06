@@ -28,6 +28,10 @@ service:
         targetPort: 3003
         protocol: TCP
         name: api
+      - port: 3004
+        targetPort: 3004
+        protocol: TCP
+        name: jopacc-gw
 
 configmap:
   - files/config.yaml
