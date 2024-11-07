@@ -1,0 +1,7 @@
+{{- include "common.ingress" (list . .Values.ingress "jopacc-rafiki-middleware.ingress") }}
+
+{{- define "jopacc-rafiki-middleware.ingress" -}}
+metadata:
+    annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+{{- end }}

@@ -1,0 +1,4 @@
+{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "jopacc-rafiki-middleware.deployment") }}
+
+{{- define "jopacc-rafiki-middleware.deployment" -}}
+{{- end }}
