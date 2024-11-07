@@ -1,9 +1,0 @@
-{{- include "common.configMap" (list . "jopacc-rafiki-middleware.configMap") }}
-
-{{- define "jopacc-rafiki-middleware.configMap" -}}
-{{- $top := first . }}
-data:
-  {{- range $top.Values.configmap }}
-    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
-  {{- end }}
-{{- end }}
