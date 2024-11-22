@@ -5,14 +5,12 @@
 {{- $image := $container.image | default (dict) }}
 {{- $imageDigest := $image.digest }}
 - name: {{ $container.name | default $top.Chart.Name }}
-  {{- with $top.Values.securityContext }}
   securityContext:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- toYaml $top.Values.securityContext | nindent 4 }}
   {{- if $imageDigest}}
-  image: "ghcr.io/interledger/{{ $top.Chart.Name }}@sha256:{{ $imageDigest }}"
+  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}@sha256:{{ $imageDigest }}"
   {{- else }}
-  image: "ghcr.io/interledger/{{ $top.Chart.Name }}:{{ $top.Chart.AppVersion }}"
+  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}:{{ $top.Chart.AppVersion }}"
   {{- end }}
   imagePullPolicy: {{ $container.imagePullPolicy | quote | default "Always" }}
   resources:
