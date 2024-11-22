@@ -37,7 +37,7 @@ configmap:
 containers:
   - name: server
     image:
-        name: test-boutique-frontend-jopacc
+      name: test-boutique-frontend-jopacc
     envFrom:
       - configMapRef:
           name: "{{ .Release.Name }}" 
