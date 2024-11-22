@@ -43,6 +43,8 @@ secrets:
 
 containers:
   - name: server
+    image:
+        name: test-boutique-backend
     envFrom:
       - configMapRef:
           name: "{{ .Release.Name }}"
