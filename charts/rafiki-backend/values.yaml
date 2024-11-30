@@ -37,21 +37,6 @@ configmap:
 secrets:
   - files/secret.yaml
 
-ingress:
-  enabled: true
-  tls:
-  - secretName: jopacc-openpayments-directory-tls
-    hosts:
-      - op.jopacc.openpayments.directory
-  hosts:
-    - host: op.jopacc.openpayments.directory
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: rafiki-backend-service
-            port: 3000
-
 containers:
   - name: server
     envFrom:
@@ -61,11 +46,11 @@ containers:
           name: "{{ .Release.Name }}"
     resources:
       requests:
-        memory: 128Mi
-        cpu: 200m
+        memory: 256Mi
+        cpu: 1
       limits:
-        memory: 512Mi
-        cpu: 400m
+        memory: 2048Mi
+        cpu: 4
     ports:
       - name: open-payments
         containerPort: 3000
@@ -81,6 +66,13 @@ nodeEnv: development
 logLevel: debug
 
 instanceName: Jopacc
+trustProxy: true
+
+telemetry: true
+livenet: true
+useTigerBeetle: false
+
+
 serviceUrls:
   PUBLIC_HOST: http://rafiki-backend
   OPEN_PAYMENTS_URL: http://rafiki-backend
@@ -101,7 +93,19 @@ redis:
   tlsKeyFile: ''
 
 postgresql:
-  host: "postgres-postgresql"
+  replication:
+    enabled: false
+  metrics:
+    enabled: false
+  primary:
+    initdb:
+      scripts:
+        initialize_backend.sql: |
+          CREATE USER rafiki-backend WITH PASSWORD 'rafiki-backend';
+          CREATE DATABASE rafiki-backend OWNER rafiki-backend;
+    persistence:
+      enabled: true
+  host: "rafiki-backend-postgresql"
   port: "5432"
   auth:
     username: "rafiki-backend"
@@ -135,3 +139,18 @@ workerIdle: 200
 idempotency:
   keyTTL: 86400000
   keyLock: 2000
+
+ingress:
+  enabled: true
+  tls:
+  - secretName: jopacc-openpayments-directory-tls
+    hosts:
+      - op.jopacc.openpayments.directory
+  hosts:
+    - host: op.jopacc.openpayments.directory
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-backend-service
+            port: 3000
