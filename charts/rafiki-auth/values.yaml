@@ -30,22 +30,10 @@ service:
         targetPort: 3007
         protocol: TCP
         name: introspection
-
-
-ingress:
-  enabled: true
-  tls:
-  - secretName: jopacc-openpayments-directory-tls
-    hosts:
-      - auth.jopacc.openpayments.directory
-  hosts:
-    - host: auth.jopacc.openpayments.directory
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: rafiki-auth-service
-            port: 3006
+      - port: 3009
+        targetPort: 3009
+        protocol: TCP
+        name: interaction
 
 configmap:
   - files/config.yaml
@@ -77,18 +65,36 @@ containers:
       - name: introspection
         containerPort: 3007
         protocol: TCP
-        
+      - name: interaction
+        containerPort: 3009
+        protocol: TCP
+
 redis:
   auth:
     enabled: false
-  host: 'redis-master'
+  host: 'rafiki-auth-redis-master'
   port: "6379"
   tlsCaFile: ''
   tlsCertFile: ''
   tlsKeyFile: ''
+  architecture: standalone
+
+trustProxy: true
 
 postgresql:
-  host: "postgres-postgresql"
+  replication:
+    enabled: false
+  metrics:
+    enabled: false
+  primary:
+    initdb:
+      scripts:
+        initialize_auth.sql: |
+          CREATE USER rafiki-auth WITH PASSWORD 'rafiki-auth';
+          CREATE DATABASE rafiki-auth OWNER rafiki-auth;
+    persistence:
+      enabled: true
+  host: "rafiki-auth-postgresql"
   port: "5432"
   auth:
     username: "rafiki-auth"
@@ -107,6 +113,7 @@ identityServer:
 interaction:
   incomingPayment: "false"
   quote: "false"
+  cookieSameSite: lax
 port:
   admin: 3003
   auth: 3006
@@ -119,3 +126,18 @@ accessToken:
 cookieKey: 'changeme'
 workers:
   cleanup: 1
+
+ingress:
+  enabled: true
+  tls:
+  - secretName: jopacc-openpayments-directory-tls
+    hosts:
+      - auth.jopacc.openpayments.directory
+  hosts:
+    - host: auth.jopacc.openpayments.directory
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-auth-service
+            port: 3006
