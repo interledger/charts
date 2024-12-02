@@ -1,3 +1,4 @@
-VITE_API_BASE_URL: "{{ .Values.apiBaseUrl }}"
+API_BASE_URL: "{{ .Values.apiBaseUrl }}"
 PORT: "{{ .Values.port }}"
-VITE_CURRENCY: "{{ .Values.currency }}"
+CURRENCY: "{{ .Values.currency }}"
+# The above might not be needed, as the environment variables are available only at build time of the vite image, and we set them in the testnet github action responsible for build and publish

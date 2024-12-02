@@ -5,9 +5,8 @@ replicaCount: 1
 
 nodeSelector: {}
 
-apiBaseUrl: "rafiki-boutique-backend"
+apiBaseUrl: https://api-boutique.jopacc.openpayments.directory
 port: 4004
-
 currency: JOD
 
 serviceAccount:
@@ -40,14 +39,14 @@ containers:
       name: test-boutique-frontend-jopacc
     envFrom:
       - configMapRef:
-          name: "{{ .Release.Name }}" 
+          name: "{{ .Release.Name }}"
     resources:
       requests:
-        memory: 64Mi
-        cpu: 200m
+        memory: 128Mi
+        cpu: 0.5m
       limits:
         memory: 512Mi
-        cpu: 1
+        cpu: 1m
     ports:
       - name: http
         containerPort: 4004
@@ -57,10 +56,10 @@ ingress:
   enabled: true
   className: nginx-external
   hosts:
-    - host: boutique.jopacc.golobit.ch
+    - host: boutique.jopacc.openpayments.directory
       paths:
         - path: /
           pathType: Prefix
           service:
-            name: rafiki-boutique-frontend-service
+            name: rafiki-boutique-frontend-jopacc-service
             port: 80
