@@ -105,7 +105,7 @@ postgresql:
   #         CREATE DATABASE rafiki-backend OWNER rafiki-backend;
   #   persistence:
   #     enabled: true
-  host: "rafiki-backend-postgresql"
+  host: "postgres-postgresql"
   port: "5432"
   auth:
     username: "rafiki-backend"

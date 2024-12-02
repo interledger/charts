@@ -94,7 +94,7 @@ postgresql:
   #         CREATE DATABASE rafiki-auth OWNER rafiki-auth;
   #   persistence:
   #     enabled: true
-  host: "rafiki-auth-postgresql"
+  host: "postgres-postgresql"
   port: "5432"
   auth:
     username: "rafiki-auth"
