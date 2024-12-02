@@ -84,22 +84,24 @@ nodeEnv: development
 logLevel: payment
 
 paymentPointer: https://jopacc-rafiki-middleware/JORDJOA0/SAEED
-serviceUrls: 
+serviceUrls:
   OPEN_PAYMENTS_HOST: http://jopacc-rafiki-middleware
   GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware:3001/graphql
   AUTH_DOMAIN: http://jopacc-rafiki-middleware-auth:3009
   AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware-auth:3008/graphql
-  AUTH_IDENTITY_SERVER_SECRET: -a92c97c4-67b0-4f02-97cf-6221f9cbf8d7
   IDP_HOST: ''
 
+authIdentityServerSecret: changeme
+jopaccBasicAuth: changeme
+
 redis:
-  auth:
-    enabled: false
+  # auth:
+  #   enabled: false
   host: 'redis-master'
   port: "6379"
-  tlsCaFile: ''
-  tlsCertFile: ''
-  tlsKeyFile: ''
+  # tlsCaFile: ''
+  # tlsCertFile: ''
+  # tlsKeyFile: ''
 
 postgresql:
   host: "postgres-postgresql"
