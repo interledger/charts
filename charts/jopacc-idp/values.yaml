@@ -67,8 +67,8 @@ containers:
 imagePullSecret: ghrc-image-pull-secret
 
 serviceUrls:
-  BACKEND_URL: https://middleware.jopacc.openpayments.directory
-  AUTH_URL:  https://auth.jopacc.openpayments.directory
+  backendUrl: https://middleware.jopacc.openpayments.directory
+  authUrl:  https://auth.jopacc.openpayments.directory
 
 resendTimeout: 45
 resendCount: 4
