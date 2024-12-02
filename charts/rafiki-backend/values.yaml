@@ -93,18 +93,18 @@ redis:
   tlsKeyFile: ''
 
 postgresql:
-  replication:
-    enabled: false
-  metrics:
-    enabled: false
-  primary:
-    initdb:
-      scripts:
-        initialize_backend.sql: |
-          CREATE USER rafiki-backend WITH PASSWORD 'rafiki-backend';
-          CREATE DATABASE rafiki-backend OWNER rafiki-backend;
-    persistence:
-      enabled: true
+  # replication:
+  #   enabled: false
+  # metrics:
+  #   enabled: false
+  # primary:
+  #   initdb:
+  #     scripts:
+  #       initialize_backend.sql: |
+  #         CREATE USER rafiki-backend WITH PASSWORD 'rafiki-backend';
+  #         CREATE DATABASE rafiki-backend OWNER rafiki-backend;
+  #   persistence:
+  #     enabled: true
   host: "rafiki-backend-postgresql"
   port: "5432"
   auth:
