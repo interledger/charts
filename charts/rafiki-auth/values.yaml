@@ -70,14 +70,14 @@ containers:
         protocol: TCP
 
 redis:
-  auth:
-    enabled: false
-  host: 'rafiki-auth-redis-master'
+  host: 'redis-master'
   port: "6379"
-  tlsCaFile: ''
-  tlsCertFile: ''
-  tlsKeyFile: ''
-  architecture: standalone
+  # auth:
+  #   enabled: false
+  # tlsCaFile: ''
+  # tlsCertFile: ''
+  # tlsKeyFile: ''
+  # architecture: standalone
 
 trustProxy: true
 

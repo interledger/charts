@@ -84,13 +84,13 @@ serviceUrls:
   AUTH_SERVER_INTROSPECTION_URL: http://rafiki-auth.rafiki-auth:3007
 
 redis:
-  auth:
-    enabled: false
+  # auth:
+  #   enabled: false
   host: 'redis-master'
   port: "6379"
-  tlsCaFile: ''
-  tlsCertFile: ''
-  tlsKeyFile: ''
+  # tlsCaFile: ''
+  # tlsCertFile: ''
+  # tlsKeyFile: ''
 
 postgresql:
   # replication:
