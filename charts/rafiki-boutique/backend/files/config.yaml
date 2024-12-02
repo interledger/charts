@@ -1,3 +1,4 @@
+NODE_ENV: "{{ .Values.nodeEnv }}"
 PORT: "{{ .Values.port }}"
 FRONTEND_URL: "{{ .Values.frontendUrl }}"
 KEY_ID: "{{ .Values.keyId }}"

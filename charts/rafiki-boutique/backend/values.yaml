@@ -7,7 +7,7 @@ nodeSelector: {}
 
 port: 3004
 frontendUrl: https://boutique.jopacc.openpayments.directory
-keyId: 2bca5867-c149-402b-96d2-1b61fd5ed937
+keyId: 2bca5867-c149-402b-96d2-1b61fd5ed937     # 2f789ecd-8845-4ff0-a1c4-16b7a1ef06c2
 
 paymentPointer: https://op.jopacc.openpayments.directory/JORDJOA0/SAEED
 
@@ -65,7 +65,7 @@ containers:
 ingress:
   enabled: true
   hosts:
-    - host: api.boutique.jopacc.golobit.ch
+    - host: api-boutique.jopacc.openpayments.directory.
       paths:
         - path: /
           pathType: Prefix
