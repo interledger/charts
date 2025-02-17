@@ -5,7 +5,7 @@ replicaCount: 1
 
 nodeSelector: {}
 
-apiBaseUrl: https://api-boutique.jopacc.openpayments.directory
+apiBaseUrl: "rafiki-boutique-backend"
 port: 4004
 currency: JOD
 
@@ -51,15 +51,3 @@ containers:
       - name: http
         containerPort: 4004
         protocol: TCP
-
-ingress:
-  enabled: true
-  className: nginx-external
-  hosts:
-    - host: boutique.jopacc.openpayments.directory
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: rafiki-boutique-frontend-jopacc-service
-            port: 80
