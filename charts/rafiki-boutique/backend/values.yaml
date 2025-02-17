@@ -6,18 +6,18 @@ replicaCount: 1
 nodeSelector: {}
 
 port: 3004
-frontendUrl: https://boutique.jopacc.openpayments.directory
-keyId: 2bca5867-c149-402b-96d2-1b61fd5ed937     # 2f789ecd-8845-4ff0-a1c4-16b7a1ef06c2
+frontendUrl: http://boutique.frontend
+keyId: changeMe
 
-paymentPointer: https://op.jopacc.openpayments.directory/JORDJOA0/SAEED
+paymentPointer: boutique-payment-pointer
 
 databaseUrl: "postgres://boutique_backend:boutique_backend@postgres/boutique_backend"
-privateKey: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1DNENBUUF3QlFZREsyVndCQ0lFSUkyNmxkZVNaeVQzMlA4QWhNNHFPaXhqdjNhODU1QjFCMUdhVWtDNmU2SisKLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQ=="
+privateKey: "changeMeBase64"
 
-serviceAccount:
-  create: false
-  annotations: {}
-  name: ""
+# serviceAccount:
+#   create: false
+#   annotations: {}
+#   name: ""
 
 autoscaling:
   enabled: false
@@ -30,7 +30,7 @@ service:
   - name: service
     type: ClusterIP
     ports:
-      - port: 80
+      - port: 80 #TBD: Maybe move this to 3004 (if middleware is moved out of 3004)
         targetPort: 3004
         protocol: TCP
         name: http
@@ -61,14 +61,3 @@ containers:
       - name: http
         containerPort: 3004
         protocol: TCP
-
-ingress:
-  enabled: true
-  hosts:
-    - host: api-boutique.jopacc.openpayments.directory.
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: rafiki-boutique-backend-service
-            port: 80
