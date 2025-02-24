@@ -1,0 +1,7 @@
+{{- include "common.ingress" (list . .Values.ingress "rafiki-frontend.ingress") }}
+
+ {{- define "rafiki-frontend.ingress" -}}
+ metadata:
+     annotations:
+         nginx.ingress.kubernetes.io/rewrite-target: /
+ {{- end }}
