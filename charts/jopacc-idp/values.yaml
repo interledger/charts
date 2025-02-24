@@ -67,8 +67,8 @@ containers:
 imagePullSecret: ghrc-image-pull-secret
 
 serviceUrls:
-  backendUrl: https://middleware.jopacc.openpayments.directory
-  authUrl:  https://auth.jopacc.openpayments.directory
+  backendUrl: http://jopacc-rafiki-middleware-backend
+  authUrl:  http://rafiki-auth:3006
 
 resendTimeout: 45
 resendCount: 4
