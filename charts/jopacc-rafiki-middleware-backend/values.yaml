@@ -83,12 +83,12 @@ nodeEnv: development
 
 logLevel: payment
 
-paymentPointer: https://jopacc-rafiki-middleware/JORDJOA0/SAEED
+paymentPointer: https://jopacc-rafiki-backend/JORDJOA0/SAEED
 serviceUrls:
   OPEN_PAYMENTS_HOST: http://jopacc-rafiki-middleware
   GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware:3001/graphql
   AUTH_DOMAIN: http://jopacc-rafiki-middleware-auth:3009
-  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware-auth:3008/graphql
+  AUTH_GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware-auth:3003/graphql
   IDP_HOST: ''
 
 authIdentityServerSecret: changeme
