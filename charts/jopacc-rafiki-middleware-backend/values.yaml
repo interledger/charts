@@ -83,7 +83,6 @@ nodeEnv: development
 
 logLevel: payment
 
-paymentPointer: https://jopacc-rafiki-backend/JORDJOA0/SAEED
 serviceUrls:
   OPEN_PAYMENTS_HOST: http://jopacc-rafiki-middleware
   GRAPHQL_ENDPOINT: http://jopacc-rafiki-middleware:3001/graphql
