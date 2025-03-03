@@ -10,38 +10,59 @@ on:
       - "**"
 
 jobs:
-    render:
-        name: Render Helm Chart
+    download_helm:
+        name: Download Helm
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                chart:
-                    - name: rafiki-auth
-                      chart: rafiki-auth
-                    - name: rafiki-backend
-                      chart: rafiki-backend
-                    - name: rafiki-frontend
-                      chart: rafiki-frontend
-                    - name: interledger-cards
-                      chart: interledger-cards
-                    - name: rafiki-boutique-backend
-                      chart: rafiki-boutique/backend
-                    - name: rafiki-boutique-frontend
-                      chart: rafiki-boutique/frontend
-                    - name: rafiki-money-backend
-                      chart: rafiki-money/backend                      
-                    - name: rafiki-money-frontend
-                      chart: rafiki-money/frontend
-                    - name: web-monetization-tools-frontend
-                      chart: web-monetization-tools/frontend
-                    - name: web-monetization-tools-backend
-                      chart: web-monetization-tools/backend
         steps:
         - name: Checkout code
           uses: actions/checkout@v4
         - name: Set up Helm
           run: |
             curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+            chmod 700 get_helm.sh
+        - name: Upload get_helm.sh as artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: get_helm_script
+            path: get_helm.sh
+
+    render:
+        name: Render Helm Chart
+        needs: download_helm
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                chart:
+                    - name: rafiki-auth
+                      chart: rafiki-auth
+                    # - name: rafiki-backend
+                    #   chart: rafiki-backend
+                    # - name: rafiki-frontend
+                    #   chart: rafiki-frontend
+                    # - name: interledger-cards
+                    #   chart: interledger-cards
+                    # - name: rafiki-boutique-backend
+                    #   chart: rafiki-boutique/backend
+                    # - name: rafiki-boutique-frontend
+                    #   chart: rafiki-boutique/frontend
+                    # - name: rafiki-money-backend
+                    #   chart: rafiki-money/backend                      
+                    # - name: rafiki-money-frontend
+                    #   chart: rafiki-money/frontend
+                    # - name: web-monetization-tools-frontend
+                    #   chart: web-monetization-tools/frontend
+                    # - name: web-monetization-tools-backend
+                    #   chart: web-monetization-tools/backend
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Download artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: get_helm_script
+            path: get_helm.sh
+        - name: Set up Helm
+          run: |
             chmod 700 get_helm.sh
             ./get_helm.sh
         - name: Render Helm Chart
