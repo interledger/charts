@@ -71,11 +71,20 @@ serviceUrls:
   PUBLIC_HOST: http://rafiki-backend
   OPEN_PAYMENTS_URL: http://rafiki-backend
   PAYMENT_POINTER_URL: http://rafiki-backend/.well-known/pay
-  WEBHOOK_URL: http://rafiki-backend/webhooks
-  EXCHANGE_RATES_URL: http://rafiki-backend/prices
-  QUOTE_URL: http://rafiki-backend/quotes
-  AUTH_SERVER_GRANT_URL: http://rafiki-auth.rafiki-auth:3006
-  AUTH_SERVER_INTROSPECTION_URL: http://rafiki-auth.rafiki-auth:3007
+
+auth:
+  grantUrl: http://rafiki-auth.rafiki-auth:3006
+  introspectionUrl: http://rafiki-auth.rafiki-auth:3007
+
+rates:
+  url: http://rafiki-backend/prices
+
+quote:
+  url: http://rafiki-backend/quotes
+
+webhook:
+  url: http://rafiki-backend/webhooks
+  timeout: 200
 
 redis:
   auth:
@@ -135,3 +144,6 @@ workerIdle: 200
 idempotency:
   keyTTL: 86400000
   keyLock: 2000
+
+telemetry:
+  enabled: false
