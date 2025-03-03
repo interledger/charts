@@ -60,7 +60,6 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: get_helm_script
-            path: get_helm.sh
         - name: Set up Helm
           run: |
             chmod 700 get_helm.sh
