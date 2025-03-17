@@ -30,7 +30,7 @@ spec:
   {{- range $container := $pod.containers }}
     {{- include "common.container" (list $top $container $pod) | nindent 4 }}
   {{- end }}
-  {{- range $container := $top.sidecards }}
+  {{- range $container := $top.sidecars }}
     {{- include "common.container" (list $top $container $pod) | nindent 4 }}
   {{- end }}
   {{- with $pod.nodeSelector }}
