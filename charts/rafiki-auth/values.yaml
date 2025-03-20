@@ -68,7 +68,17 @@ containers:
       - name: interaction
         containerPort: 3009
         protocol: TCP
-  
+
+# sidecars:
+#   - name: debugbox
+#     image:
+#       name: busybox
+#       tag: latest
+#       repository: docker.io
+
+#     args:
+#       - sleep
+#       - "3600"
       
 redis:
   auth:
