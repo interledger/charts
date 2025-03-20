@@ -30,6 +30,9 @@ spec:
   {{- range $container := $pod.containers }}
     {{- include "common.container" (list $top $container $pod) | nindent 4 }}
   {{- end }}
+  {{- range $container := $pod.sidecars }}
+    {{- include "common.container" (list $top $container $pod) | nindent 4 }}
+  {{- end }}
   {{- with $pod.nodeSelector }}
   nodeSelector:
     {{- toYaml . | nindent 4 }}
