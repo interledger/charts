@@ -1,0 +1,16 @@
+apiVersion: v1
+entries:
+  common:
+  - apiVersion: v2
+    created: "2025-04-02T10:26:11.54891278+02:00"
+    description: Rafiki common helm chart for building k8s resources
+    digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    name: common
+    type: library
+    urls:
+    - https://interledger.github.io/charts/interledger/common-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-04-02T10:26:11.548462174+02:00"
