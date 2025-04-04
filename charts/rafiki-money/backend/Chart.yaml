@@ -10,7 +10,7 @@ appVersion: "v0.1.55"
 dependencies:
   - name: common
     version: 0.1.0
-    repository: file://../../common
+    repository: https://interledger.github.io/charts/interledger
 
 maintainers:
   - name: golobitch

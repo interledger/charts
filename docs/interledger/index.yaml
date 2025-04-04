@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
-    created: "2025-04-02T10:26:11.54891278+02:00"
+    created: "2025-04-03T21:31:05.846796302+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -13,4 +13,61 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/common-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-02T10:26:11.548462174+02:00"
+  rafiki-auth:
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-03T21:31:05.848688372+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.1.0
+    description: Rafiki Auth Helm chart for Kubernetes
+    digest: 96f969574ee4f117a995df59562975d4c62f87229d7965894364baa027f6e7a9
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    name: rafiki-auth
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-auth-0.6.2.tgz
+    version: 0.6.2
+  rafiki-backend:
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-03T21:31:05.850472589+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.1.0
+    description: Rafiki Backend Helm chart for Kubernetes
+    digest: bc61c8f1138ea3bd521890e4b15a7deb11ccbfe548e04ef2dfc6793ac8c4e88b
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    name: rafiki-backend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-backend-0.5.4.tgz
+    version: 0.5.4
+  rafiki-frontend:
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-03T21:31:05.851615223+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.1.0
+    description: Rafiki Frontend Helm chart for Kubernetes
+    digest: ab91c76a617a3325a209ee71e84a67695da033c521f7213ea78a998851a12d98
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    name: rafiki-frontend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-frontend-0.5.3.tgz
+    version: 0.5.3
+generated: "2025-04-03T21:31:05.845911318+02:00"

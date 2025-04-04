@@ -67,6 +67,7 @@ jobs:
         - name: Render Helm Chart
           run: |
             cd charts
+            helm repo add interledger https://interledger.github.io/charts/interledger
             helm dep build ./${{ matrix.chart.chart }}
             helm template ${{ matrix.chart.name }} ./${{ matrix.chart.chart }}
 
