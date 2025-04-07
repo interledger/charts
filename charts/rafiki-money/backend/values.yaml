@@ -80,6 +80,9 @@ identity:
   serverSecret: 58ba1bdc-e625-42da-bc90-bcea29b4ab8b
 webhook:
   signatureSecret: A3F44B29-56B2-4C7F-ACA7-1A111C4A6B05 # TODO: replace this
+stripe:
+  webhookSecret: 'replaceMe'
+  secretKey: 'replaceMe'
 redis:
   url: redis://redis-test.interledger-test:6379
 gatehub:
