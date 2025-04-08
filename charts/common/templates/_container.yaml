@@ -12,6 +12,8 @@
   image: "{{ $container.image.repository }}/{{ $image.name | default $top.Chart.Name }}:{{ $container.image.tag | default "latest" }}"
   {{- else if $imageDigest}}
   image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}@sha256:{{ $imageDigest }}"
+  {{- else if $top.Values.versionOverride }}
+  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}:{{ $top.Values.versionOverride }}"
   {{- else }}
   image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}:{{ $top.Chart.AppVersion }}"
   {{- end }}
