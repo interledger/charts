@@ -1,0 +1,11 @@
+{{- define "temporal_ui.configMap" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ include "common.fullname" $top }}-ui
+data:
+  {{- range $top.Values.configmaps.temporal_ui }}
+    {{- tpl ($top.Files.Get .) $top | nindent 2 -}}
+  {{- end }}
+{{- end }}
+
+{{- include "common.configMap" (list . "temporal_ui.configMap") }}

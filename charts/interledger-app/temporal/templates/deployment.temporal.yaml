@@ -1,0 +1,15 @@
+{{- define "temporal.deployment" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ include "common.fullname" $top }}
+
+spec:
+  template:
+    spec:
+      volumes:
+        - name: config-template
+          configMap:
+            name: "{{ $top.Release.Name }}-config-template"
+{{- end }}
+
+{{- include "common.deployment" (list . .Values.deployments.temporal .Values.autoscaling .Values.serviceAccount "temporal.deployment") }}

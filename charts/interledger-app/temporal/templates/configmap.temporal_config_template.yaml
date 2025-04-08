@@ -1,0 +1,10 @@
+{{- define "config_template.configMap" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ include "common.fullname" $top }}-config-template
+data:
+  config.yaml: |
+{{ tpl ($top.Files.Get (index $top.Values.configmaps.config_template 0)) $top | indent 4 }}
+{{- end }}
+
+{{- include "common.configMap" (list . "config_template.configMap") }}

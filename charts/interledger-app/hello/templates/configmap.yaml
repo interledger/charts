@@ -1,0 +1,12 @@
+{{- define "hello.configmap" -}}
+{{- $top := first . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-hello
+  {{- include "common.metadata" (list $top) | nindent 2 }}
+data:
+  nginx.conf: |
+{{ $top.Files.Get "files/config.hcl" | indent 4 }}
+{{- end }}
+{{- include "hello.configmap" (list . .Values "hello.configmap") }}

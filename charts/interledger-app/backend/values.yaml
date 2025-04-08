@@ -1,0 +1,243 @@
+#
+# Chart for the Interledger App Wallet backend.
+#
+# TODO: init container should use different set of secrets and users than worker and backend
+# TODO: investigate if worker and backend server db roles should be any different then they should also use different users
+# 
+#
+database:
+  host: "postgresql-host"
+  port: "5432"
+  backend:
+    dbname: "backend"
+    username: "backend"
+    password: "backend"
+  pacioli:
+    dbname: "pacioli"
+    username: "pacioli"
+    password: "pacioli"
+
+config:
+  environment: sandbox
+  log_level: "info"
+  usd_ledger_id: "1"
+  noop_equity_account_id: "00000000-0000-0000-0000-000000000000"
+  google_oauth2_client_id: "google_oauth"
+  authorisation_port: "8082"
+  open_payments_port: "8081"
+
+  admin:
+    policy_aud: "0000000000000000000000000000000000000000000000000000000000000000"
+    team_domain: "https://fynbos.cloudflareaccess.com"
+
+  twilio:
+    account_sid: "0000000000000000000000000000000000"
+    service_sid: "VA00000000000000000000000000000000"
+    account_token: "000000000000000000000000"
+
+  zenddesk:
+    user: "support@interledger-app.dev"
+    token: "0000000000000000000000"
+
+  kratos:
+    url: "http://kratos.wallet:4433"
+    admin_url: "http://kratos.wallet:4434"
+  
+  rafiki:
+    graphql:
+      auth_url: "http://rafiki-auth:3003/graphql"
+      backend_url: "http://rafiki-backend:3001/graphql"
+
+  temporal:
+    url: "temporal:7233"
+
+  otel:
+    exporter_otlp_endpoint: "grpc://api.honeycomb.io:443"
+    exporter_otlp_headers: "x-honeycomb-team=0000000000000000000000"
+    service_name: "backend"
+
+  vault:
+    url: "http://vault:8200"
+    transit_engine_path: "transit/prod/backend"
+
+  twitter:
+    redirect_url: "https://fynbos.app/connect/twitter"
+    client_id: "Q2pzaXpDN0VPN29MU09VQ0tNYmo6MTpjaQ"
+    client_secret: "00000000000000000000000000000"
+    bearer_token: "000000000000000000000000"
+
+  discord:
+    redirect_url: "https://fynbos.app/connect/interledger-app"
+
+  astra:
+    client_id: "000000000000000000000000"
+    client_secret: "000000000000000000000000"
+    webhook_bearer_token: "000000000000000000000000"
+
+  gatehub:
+    app_id: "000000000000000000000000"
+    secret: "000000000000000000000000"
+    webhook_secret: "000000000000000000000000"
+
+  chimoney:
+    webhook_secret: "000000000000000000000000"
+    token: "000000000000000000000000"
+
+  dato:
+    api_token: "000000000000000000000000"
+
+  sendgrid:
+    api_key: "000000000000000000000000"
+
+  smarty:
+    auth_id: "000000000000000000000000"
+    auth_token: "000000000000000000000000"
+
+  pusher:
+    addr: "000000000000000000000000"
+
+  segment:
+    key: "000000000000000000000000"
+
+  slack:
+    token: "000000000000000000000000"
+
+  
+  basis_theory:
+    api_key: "000000000000000000000000"
+    token: "000000000000000000000000"
+
+  persona:
+    token: "000000000000000000000000"
+    webhook_token: "000000000000000000000000"
+
+  cdn:
+    key: "000000000000000000000000"
+  
+  xago:
+    api_secret: "000000000000000000000000"
+    api_public_key: "000000000000000000000000"
+
+  sentry:
+    dsn: "000000000000000000000000"
+
+  pti:
+    jwk: "000000000000000000000000"
+    client_id: "000000000000000000000000"
+
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 8443
+        targetPort: 8443
+        protocol: TCP
+        name: grpc
+      - port: 8448
+        targetPort: 8448
+        protocol: TCP
+        name: admin
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: http
+
+configmap:
+  - files/config.yaml
+
+secrets:
+  - files/secret.yaml
+
+# Warning: Please remember to update all tag versions to the same version, always!
+
+initContainers:
+  - name: backend-migrations
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: backend
+      tag: manual_main-
+      pullPolicy: Always
+    args:
+      - "migrate"
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+
+containers:
+  # Backend server task
+  - name: server
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: backend
+      tag: manual_main-
+      pullPolicy: Always
+    args:
+      - "start"
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+    ports:
+      - name: grpc
+        containerPort: 8443
+      - name: admin
+        containerPort: 8448
+      - name: http
+        containerPort: 8080
+  # Temporal related worker task
+  - name: worker
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: backend
+      tag: manual_main-
+      pullPolicy: Always
+    args:
+      - "worker"
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+
+
+

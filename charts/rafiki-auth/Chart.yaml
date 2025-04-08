@@ -4,13 +4,13 @@ description: Rafiki Auth Helm chart for Kubernetes
 home: https://github.com/interledger/rafiki
 
 type: application
-version: 0.6.2
+version: 0.6.3
 appVersion: "v1.0.0-alpha.20"
 
 dependencies:
   - name: common
-    version: 0.1.0
-    repository: https://interledger.github.io/charts/interledger
+    version: 0.2.0
+    repository: file://../common
 
     # import-values:
     #   - child: securityContext

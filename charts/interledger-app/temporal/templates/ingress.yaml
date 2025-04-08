@@ -1,0 +1,4 @@
+{{- define "interledger-app-temporal.ingress" -}}
+{{- end }}
+
+{{- include "common.ingress" (list . .Values.ingress "interledger-app-temporal.ingress") }}

@@ -1,0 +1,21 @@
+# See https: //hub.docker.com/r/temporalio/auto-setup
+DB: "postgresql"
+DB_PORT: "{{ .Values.postgresql.port }}"
+
+SKIP_DB_CREATE: "true"
+SKIP_SCHEMA_SETUP: "false"
+
+DBNAME: "{{ .Values.postgresql.temporal.dbname }}"
+VISIBILITY_DBNAME: "{{ .Values.postgresql.visibility.dbname }}"
+
+SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES: "true"
+TEMPORAL_CLI_ADDRESS: "localhost:7233"
+
+POSTGRES_USER: "{{ .Values.postgresql.temporal.username }}"
+VISIBILITY_POSTGRES_USER: "{{ .Values.postgresql.visibility.username }}"
+
+POSTGRES_SEEDS: "{{ .Values.postgresql.host}}"
+
+SQL_PLUGIN: postgres
+
+SERVICES: frontend,history,matching,worker

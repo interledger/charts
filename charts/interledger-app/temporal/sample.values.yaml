@@ -1,0 +1,39 @@
+postgresql:
+  host: "localhost" # Connects to sidecar
+  port: "5432"
+  temporal:
+    dbname: "temporal"
+    username: "temporal"
+    password: "E7i5O9ukLcX9SuLJy5Cy3jdZlNgijvGU"
+  visibility:
+    dbname: "temporal_visibility"
+    username: "temporal"
+    password: "E7i5O9ukLcX9SuLJy5Cy3jdZlNgijvGU"
+
+deployments:
+  temporal:
+    serviceAaccountName: temporal
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: latest
+          repository: gcr.io
+        args:
+          - "wallet-451208:europe-west4:dev-pg-ha-a51d01fd"
+          - "--structured-logs"
+        securityContext:
+          runAsNonRoot: true
+  temporal-ui:
+    serviceAaccountName: temporal  
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: latest
+          repository: gcr.io
+        args:
+          - "wallet-451208:europe-west4:dev-pg-ha-a51d01fd"
+          - "--structured-logs"
+        securityContext:
+          runAsNonRoot: true

@@ -1,0 +1,20 @@
+{{- define "temporal_ui.deployment" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ include "common.fullname" $top }}-ui
+  labels:
+    app.kubernetes.io/instance: {{ $top.Release.Name }}-ui
+    app.kubernetes.io/name: {{ $top.Release.Name }}-ui
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ $top.Release.Name }}-ui
+        app.kubernetes.io/name: {{ $top.Release.Name }}-ui
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $top.Release.Name }}-ui
+      app.kubernetes.io/instance: {{ $top.Release.Name }}-ui
+{{- end }}
+
+{{- include "common.deployment" (list . .Values.deployments.temporal_ui .Values.deployments.temporal_ui.autoscaling .Values.serviceAccount "temporal_ui.deployment") }}

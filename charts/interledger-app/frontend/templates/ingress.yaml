@@ -1,0 +1,10 @@
+{{- define "interledger-app.ingress" -}}
+{{- $top := first . -}}
+metadata:
+    annotations:
+       {{- if eq $top.Values.ingress.className "nginx" }}
+        nginx.ingress.kubernetes.io/rewrite-target: /
+       {{- end }}
+{{- end }}
+
+{{- include "common.ingress" (list . .Values.ingress "interledger-app.ingress") }}

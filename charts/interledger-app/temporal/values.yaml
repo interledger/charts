@@ -1,0 +1,158 @@
+#
+# Chart for the Interledger App Wallet Temporal service
+#
+
+postgresql:
+  host: "postgresql-host"
+  port: "5432"
+  temporal:
+    dbname: "temporal"
+    username: "temporal"
+    password: "temporal"
+  visibility:
+    dbname: "temporal_visibility"
+    username: "temporal_visibility"
+    password: "temporal_visibility"
+
+serviceAccount:
+  create: false
+  name: "temporal"
+
+configmaps:
+  temporal:
+    - files/temporal-config.yaml
+  temporal_ui:
+    - files/temporal-ui-config.yaml
+  config_template:
+    - files/config_template.yaml
+
+secrets:
+  temporal:
+    - files/temporal-secrets.yaml
+  temporal_ui:
+    - files/temporal-ui-secrets.yaml
+  # temporal_config_template:
+  #   - files/config_template.yaml
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+deployments:
+  temporal:
+    replicaCount: 1
+    nodeSelector: {}
+    serviceAccount: temporal
+    containers:
+      - name: temporal
+        image:
+          name: temporal
+          repository: "europe-west4-docker.pkg.dev/wallet-451208/interledger-app"
+          tag: manual_main-
+          pullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: "{{ .Release.Name }}"
+          - secretRef:
+              name: "{{ .Release.Name }}"
+        volumeMounts:
+          - name: config-template
+            mountPath: /etc/temporal-secrets
+            readOnly: true
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 200m
+          limits:
+            memory: 512Mi
+            cpu: 400m
+        ports:
+          - name: grpc
+            containerPort: 8443
+          - name: admin
+            containerPort: 8448
+          - name: http
+            containerPort: 8080
+
+  temporal_ui:
+    replicaCount: 1
+    nodeSelector: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 1
+      cpuUtilizationPercentage: 80
+      memoryUtilizationPercentage: 80
+    containers:
+      - name: ui
+        image:
+          name: ui
+          repository: "docker.io/temporalio"
+          tag: 2.11.2
+          pullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: "{{ .Release.Name }}-ui"
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 200m
+          limits:
+            memory: 512Mi
+            cpu: 400m
+        ports:
+          - name: grpc
+            containerPort: 8443
+          - name: admin
+            containerPort: 8448
+          - name: http
+            containerPort: 8080
+
+services:
+  - name: temporal
+    type: ClusterIP
+    ports:
+      # RPC ports
+      - port: 7233
+        targetPort: 7233
+        protocol: TCP
+        name: frontend-rpc
+      - port: 7234
+        targetPort: 7234
+        protocol: TCP
+        name: history-rpc
+      - port: 7235
+        targetPort: 7235
+        protocol: TCP
+        name: matching-rpc
+      - port: 7239
+        targetPort: 7239
+        protocol: TCP
+        name: worker-rpc
+      # Membership ports
+      - port: 6935
+        targetPort: 6935
+        protocol: TCP
+        name: frontend-membership
+      - port: 6936
+        targetPort: 6936
+        protocol: TCP
+        name: history-membership
+      - port: 6937
+        targetPort: 6937
+        protocol: TCP
+        name: matching-membership
+      - port: 6939
+        targetPort: 6939
+        protocol: TCP
+        name: worker-membership
+  # - name: ui
+  #   type: ClusterIP
+  #   ports:
+  #     - port: 8080
+  #       targetPort: 8080
+  #       protocol: TCP
+  #       name: frontend

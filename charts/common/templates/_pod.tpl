@@ -13,7 +13,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if $serviceAccount.create }}
+  {{- if $serviceAccount.name }}
   serviceAccountName: {{ include "common.serviceAccountName" (list $top $serviceAccount) }}
   {{- else }}
   automountServiceAccountToken: true

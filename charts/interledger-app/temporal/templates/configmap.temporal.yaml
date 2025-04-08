@@ -1,0 +1,11 @@
+{{- define "temporal.configMap" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ include "common.fullname" $top }}
+data:
+  {{- range $top.Values.configmaps.temporal }}
+    {{- tpl ($top.Files.Get .) $top | nindent 2 -}}
+  {{- end }}
+{{- end }}
+
+{{- include "common.configMap" (list . "temporal.configMap") }}

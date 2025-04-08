@@ -1,0 +1,62 @@
+#
+# Chart for the Interledger App Wallet admin portal called Botanist.
+#
+#
+config:
+  environment: prod
+
+  backend:
+    grpcUrl: "wallet-backend-service:8448"
+
+
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+
+configmap:
+  - files/config.yaml
+
+containers:
+  # Backend server task
+  - name: server
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: botanist
+      tag: manual_main-
+      pullPolicy: Always
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+    ports:
+      - name: http
+        containerPort: 3000
+
