@@ -84,7 +84,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: protea
-      tag: manual_main-
+      tag: manual-main
       pullPolicy: Always
     envFrom:
       - configMapRef:

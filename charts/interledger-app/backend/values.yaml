@@ -171,7 +171,7 @@ initContainers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: backend
-      tag: manual_main-
+      tag: manual-main
       pullPolicy: Always
     args:
       - "migrate"
@@ -194,7 +194,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: backend
-      tag: manual_main-
+      tag: manual-main
       pullPolicy: Always
     args:
       - "start"
@@ -222,7 +222,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: backend
-      tag: manual_main-
+      tag: manual-main
       pullPolicy: Always
     args:
       - "worker"
