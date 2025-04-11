@@ -81,6 +81,7 @@ identity:
 webhook:
   signatureSecret: A3F44B29-56B2-4C7F-ACA7-1A111C4A6B05 # TODO: replace this
 stripe:
+  enabled: false
   webhookSecret: 'replaceMe'
   secretKey: 'replaceMe'
 redis:
