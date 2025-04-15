@@ -95,9 +95,9 @@ redis:
   tlsCertFile: ''
   tlsKeyFile: ''
   architecture: standalone
-  
+
 postgresql:
-  replication: 
+  replication:
     enabled: false
   metrics:
     enabled: false
@@ -108,13 +108,15 @@ postgresql:
           CREATE USER rafiki-backend WITH PASSWORD 'rafiki-backend';
           CREATE DATABASE rafiki-backend OWNER rafiki-backend;
     persistence:
-      enabled: true   
+      enabled: true
   host: "rafiki-backend-postgresql"
   port: "5432"
   auth:
     username: "rafiki-backend"
     database: "rafiki-backend"
     password: "rafiki-backend"
+
+walletAddressRedirectHtmlPage: ''
 
 trustProxy: true
 port:
