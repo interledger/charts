@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
-    created: "2025-04-08T15:58:56.496127255+02:00"
+    created: "2025-04-10T15:35:45.505008172+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 3ed7bf11cbee0521030f653811a66944e6e5f366066227382d089b8a73e8875a
     maintainers:
@@ -16,7 +16,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
-    created: "2025-04-08T15:58:56.495826472+02:00"
+    created: "2025-04-10T15:35:45.504675908+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -30,7 +30,27 @@ entries:
   rafiki-auth:
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-08T15:58:56.497009318+02:00"
+    created: "2025-04-10T15:35:45.506789418+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Auth Helm chart for Kubernetes
+    digest: 57adb80efdcab755f84f490467c022c3ae6bc7e374a9ae9de332dced4dc9b0f8
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-auth
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-auth-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-10T15:35:45.505908269+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -49,7 +69,27 @@ entries:
   rafiki-backend:
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-08T15:58:56.497849608+02:00"
+    created: "2025-04-10T15:35:45.508537571+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Backend Helm chart for Kubernetes
+    digest: 68b740b94552187264f17800620e13649b44b1a6b505121cd650129c3b85ae2f
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-backend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-backend-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-10T15:35:45.507655863+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -68,7 +108,27 @@ entries:
   rafiki-frontend:
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-08T15:58:56.498405775+02:00"
+    created: "2025-04-10T15:35:45.50979231+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Frontend Helm chart for Kubernetes
+    digest: 3f1e30493de7137ef4d4a162048426a74ce9b6551825592a94f3a19002fb3072
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-frontend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-frontend-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: v1.0.0-alpha.20
+    created: "2025-04-10T15:35:45.509132374+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -84,4 +144,4 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/rafiki-frontend-0.5.3.tgz
     version: 0.5.3
-generated: "2025-04-08T15:58:56.495446821+02:00"
+generated: "2025-04-10T15:35:45.504243117+02:00"
