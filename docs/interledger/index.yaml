@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
-    created: "2025-04-10T15:35:45.505008172+02:00"
+    created: "2025-04-15T16:51:15.578291+03:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 3ed7bf11cbee0521030f653811a66944e6e5f366066227382d089b8a73e8875a
     maintainers:
@@ -16,7 +16,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
-    created: "2025-04-10T15:35:45.504675908+02:00"
+    created: "2025-04-15T16:51:15.577499+03:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -29,8 +29,28 @@ entries:
     version: 0.1.0
   rafiki-auth:
   - apiVersion: v2
+    appVersion: v1.1.0-beta
+    created: "2025-04-15T16:51:15.581913+03:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Auth Helm chart for Kubernetes
+    digest: eb7de3fb5655a5d710c69a1f047893f61997c665ccb5f7d40b8512f4c2c13bc2
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-auth
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-auth-0.7.1.tgz
+    version: 0.7.1
+  - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.506789418+02:00"
+    created: "2025-04-15T16:51:15.581087+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -50,7 +70,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.505908269+02:00"
+    created: "2025-04-15T16:51:15.579115+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -68,8 +88,28 @@ entries:
     version: 0.6.2
   rafiki-backend:
   - apiVersion: v2
+    appVersion: v1.1.0-beta
+    created: "2025-04-15T16:51:15.584339+03:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Backend Helm chart for Kubernetes
+    digest: b56fd89f4b5885d4007eaba9fd322a7262a2165bc70cefa990a77bb0bb151245
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-backend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-backend-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.508537571+02:00"
+    created: "2025-04-15T16:51:15.58351+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -89,7 +129,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.507655863+02:00"
+    created: "2025-04-15T16:51:15.5827+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -107,8 +147,28 @@ entries:
     version: 0.5.4
   rafiki-frontend:
   - apiVersion: v2
+    appVersion: v1.1.0-beta
+    created: "2025-04-15T16:51:15.587591+03:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.2.0
+    description: Rafiki Frontend Helm chart for Kubernetes
+    digest: 24a3f528d5ef87e574854273758878ff6f71428a37da303b3dbe3a8daf06e773
+    home: https://github.com/interledger/rafiki
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: rafiki-frontend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-frontend-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.50979231+02:00"
+    created: "2025-04-15T16:51:15.586869+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -128,7 +188,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-04-10T15:35:45.509132374+02:00"
+    created: "2025-04-15T16:51:15.585033+03:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -144,4 +204,46 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/rafiki-frontend-0.5.3.tgz
     version: 0.5.3
-generated: "2025-04-10T15:35:45.504243117+02:00"
+  rafiki-money-backend:
+  - apiVersion: v2
+    appVersion: v0.1.58
+    created: "2025-04-15T16:51:15.588374+03:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.1.0
+    description: Rafiki Money Backend Helm chart for Kubernetes
+    digest: 64af7ddb8e8cd30e05053844ea761cc728c0ee28e04c810473857b2887a8dca1
+    home: https://github.com/interledger/testnet
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: beniamin@interledger.foundation
+      name: beniaminmunteanu
+    name: rafiki-money-backend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-money-backend-0.0.43.tgz
+    version: 0.0.43
+  rafiki-money-frontend:
+  - apiVersion: v2
+    appVersion: v0.1.58
+    created: "2025-04-15T16:51:15.589032+03:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.1.0
+    description: Rafiki Money Frontend Helm chart for Kubernetes
+    digest: f6074a75a5d0e51920e904f88d89eb640ead9b20bcdfc10ed486c99fef6e4d08
+    home: https://github.com/interledger/testnet
+    maintainers:
+    - email: tadej.golobic@gatehub.net
+      name: golobitch
+    - email: beniamin@interledger.foundation
+      name: beniaminmunteanu
+    name: rafiki-money-frontend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/rafiki-money-frontend-0.0.40.tgz
+    version: 0.0.40
+generated: "2025-04-15T16:51:15.576603+03:00"
