@@ -3,14 +3,16 @@ name: rafiki-boutique-frontend
 description: A Helm chart for Kubernetes
 
 type: application
-version: 0.1.13
-appVersion: "v0.1.53"
+version: 0.1.14
+appVersion: "v0.1.58"
 
 dependencies:
   - name: common
-    version: 0.1.0
+    version: 0.2.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:
   - name: golobitch
     email: tadej.golobic@gatehub.net
+  - name: beniaminmunteanu
+    email: beniamin@interledger.foundation
