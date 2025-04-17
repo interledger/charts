@@ -1,0 +1,106 @@
+#
+# Chart for the Interledger App Wallet Frontend called Protea.
+#
+# TODO: init container should use different set of secrets and users than worker and backend
+# TODO: investigate if worker and backend server db roles should be any different then they should also use different users
+# 
+
+config:
+  backend:
+    grpc:
+      url: "http://wallet-backend-service:8443"
+
+  redis:
+    url: "redis://redis:6379"
+
+  cookie_secrets: '["somevalue"]'
+  otel:
+    endpoint: grpc://api.honeycomb.io:443
+    headers: x-honeycomb-team=xxxxxxxxxxxxx
+    service_name: protea
+
+  pusher:
+    app_key: aaaaaaaaaaaaaaaaaaaa
+    app_cluster: eu
+  
+  gate_signup: false
+  kratos_url: http://kratos-public
+  payment_pointer_base: sandbox.ilp.link
+
+  bt_token: "000000000000000000000000000000"
+
+  sentry_dsn: "https://00000000000000000000000000000000@ooooooooooooooooo.ingest.de.sentry.io/0000000000000000"
+
+  segment_api_key: "000000000000000000000000000000"
+
+  rafiki:
+    auth:
+      endpoint: http://rafiki-auth:3003/graphql
+      secret: "000000000000000000000000000000"
+
+  dato_api_token: "000000000000000000000000000000"
+
+  cf_turnstile_site_key: "0000000000000000000000000000000000000000000000"
+  cf_turnstile_secret_key: "0000000000000000000000000000000000000000000000"
+
+  environment: sandbox
+
+replicaCount: 1
+
+nodeSelector: {}
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 1
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+service:
+  - name: service
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+configmap:
+  - files/config.yaml
+
+secrets:
+  - files/secret.yaml
+
+# Warning: Please remember to update all tag versions to the same version, always!
+
+containers:
+  # Frontend
+  - name: frontend
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: protea
+      tag: manual-main
+      pullPolicy: Always
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    ports:
+      - name: http
+        containerPort: 3000
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 400m
+
+
+

@@ -1,0 +1,9 @@
+{{- define "interledger-app-backend.configMap" -}}
+{{- $top := first . }}
+data:
+  {{- range $top.Values.configmap }}
+    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
+  {{- end }}
+{{- end }}
+
+{{- include "common.configMap" (list . "interledger-app-backend.configMap") }}
