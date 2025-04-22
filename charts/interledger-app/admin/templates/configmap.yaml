@@ -1,0 +1,11 @@
+{{- define "interledger-app-botanist.configMap" -}}
+{{- $top := first . }}
+metadata:
+  name: {{ $top.Release.Name }}
+data:
+  {{- range $top.Values.configmap }}
+    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
+  {{- end }}
+{{- end }}
+
+{{- include "common.configMap" (list . "interledger-app-botanist.configMap") }}
