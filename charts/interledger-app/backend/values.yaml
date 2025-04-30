@@ -18,7 +18,7 @@ database:
     password: "pacioli"
 
 config:
-  environment: sandbox
+  environment: dev
   log_level: "info"
   usd_ledger_id: "1"
   noop_equity_account_id: "00000000-0000-0000-0000-000000000000"

@@ -43,7 +43,7 @@ config:
   cf_turnstile_site_key: "0000000000000000000000000000000000000000000000"
   cf_turnstile_secret_key: "0000000000000000000000000000000000000000000000"
 
-  environment: sandbox
+  environment: dev
 
 replicaCount: 1
 
