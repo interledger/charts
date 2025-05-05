@@ -16,6 +16,14 @@ database:
     dbname: "pacioli"
     username: "pacioli"
     password: "pacioli"
+  rafiki_backend:
+    dbname: "rafiki_backend"
+    username: "rafiki_backend"
+    password: "rafiki_backend"
+  rafiki_auth:
+    dbname: "rafiki_auth"
+    username: "rafiki_auth"
+    password: "rafiki_auth"
 
 config:
   environment: dev
@@ -141,9 +149,34 @@ autoscaling:
   maxReplicas: 2
   memoryUtilizationPercentage: 80
 
+backendConfigs:
+  - name: healthzcheck
+    spec:
+      healthCheck:
+        checkIntervalSec: 5
+        timeoutSec: 5
+        healthyThreshold: 2
+        unhealthyThreshold: 2
+        type: HTTP
+        requestPath: /healthz
+        port: 8080
+  - name: grpc-healthz
+    spec:
+      healthCheck:
+        type: HTTP2
+        port: 8443
+        requestPath: /
+        checkIntervalSec: 5
+        timeoutSec: 5
+        healthyThreshold: 2
+        unhealthyThreshold: 2
+
 service:
   - name: service
     type: ClusterIP
+    annotations:
+      cloud.google.com/neg: '{"ingress": true}'
+      cloud.google.com/backend-config: '{"ports":{"8080":"wallet-backend-healthzcheck","8443":"wallet-backend-grpc-healthz"}}'
     ports:
       - port: 8443
         targetPort: 8443

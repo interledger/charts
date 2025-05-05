@@ -56,7 +56,6 @@ volumes:
     configMap:
       name: nginx-hello
 
-
 # This container is only used as an internal reverse proxy to allow
 # tunnelled connections to access temporal and admin portal
 containers:
