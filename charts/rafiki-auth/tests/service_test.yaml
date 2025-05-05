@@ -17,7 +17,7 @@ tests:
       - isSubset:
           path: metadata.labels
           content:
-            helm.sh/chart: rafiki-auth-0.1.0
+            helm.sh/chart: rafiki-auth-0.7.2
             app.kubernetes.io/name: rafiki-auth
             app.kubernetes.io/instance: rafiki-auth
             app.kubernetes.io/managed-by: Helm
@@ -26,11 +26,11 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
-  - it: 'Should have three ports exposed'
+  - it: 'Should have four ports exposed'
     asserts:
       - lengthEqual:
           path: spec.ports
-          count: 3
+          count: 4
   - it: 'Should have correct ports exposed'
     asserts:
       - contains:

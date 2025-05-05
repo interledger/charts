@@ -26,33 +26,40 @@ jobs:
             name: get_helm_script
             path: get_helm.sh
 
+    find_charts:
+      name: Find Charts
+      needs: download_helm
+      runs-on: ubuntu-latest
+      outputs:
+          charts: ${{ steps.find_charts.outputs.charts }}
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Find charts
+        id: find_charts
+        run: |
+          sudo apt install jq --yes
+          echo "Finding all folders containing Chart.yaml files..."
+          cd charts
+          ls
+          find . -name Chart.yaml -exec dirname {} \; | sed 's|^\./||' | grep -vE '^(charts|docs|tests|common)' > charts.txt || true
+          if [ -s charts.txt ]; then
+            echo "Json list of charts found:"
+            charts=$(jq -R -s -c 'split("\n")[:-1]' charts.txt)
+            echo "Found charts: $charts"
+          else
+            echo "No charts found."
+            exit 1;
+          fi
+          echo "::set-output name=charts::$charts"
+
     render:
         name: Render Helm Chart
-        needs: download_helm
+        needs: find_charts
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                chart:
-                    - name: rafiki-auth
-                      chart: rafiki-auth
-                    - name: rafiki-backend
-                      chart: rafiki-backend
-                    - name: rafiki-frontend
-                      chart: rafiki-frontend
-                    - name: interledger-cards
-                      chart: interledger-cards
-                    - name: rafiki-boutique-backend
-                      chart: rafiki-boutique/backend
-                    - name: rafiki-boutique-frontend
-                      chart: rafiki-boutique/frontend
-                    - name: rafiki-money-backend
-                      chart: rafiki-money/backend                      
-                    - name: rafiki-money-frontend
-                      chart: rafiki-money/frontend
-                    - name: web-monetization-tools-frontend
-                      chart: web-monetization-tools/frontend
-                    - name: web-monetization-tools-backend
-                      chart: web-monetization-tools/backend
+              chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
         steps:
         - name: Checkout code
           uses: actions/checkout@v4
@@ -68,6 +75,7 @@ jobs:
           run: |
             cd charts
             helm repo add interledger https://interledger.github.io/charts/interledger
-            helm dep build ./${{ matrix.chart.chart }}
-            helm template ${{ matrix.chart.name }} ./${{ matrix.chart.chart }}
+            helm dep build ./${{ matrix.chart }}
+            release_name=$(basename ${{ matrix.chart }})
+            helm template $release_name ./${{ matrix.chart }}
 
