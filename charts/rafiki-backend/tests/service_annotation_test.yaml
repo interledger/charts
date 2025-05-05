@@ -1,0 +1,20 @@
+suite: Rafiki Backend - Service Annotation Test
+templates:
+  - service.yaml
+values:
+  - samples/service_annotation.yaml
+release:
+  name: rafiki-backend
+tests:
+  - it: 'Should have correct basic data'
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+      - equal:
+          path: metadata.annotations['cloud.google.com/backend-config']
+          value: '{"default": "healthzcheck"}'
+      - equal:
+          path: metadata.annotations['cloud.google.com/neg']
+          value: '{"ingress": true}'
+
