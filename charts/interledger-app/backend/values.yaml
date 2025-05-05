@@ -16,6 +16,14 @@ database:
     dbname: "pacioli"
     username: "pacioli"
     password: "pacioli"
+  rafiki_backend:
+    dbname: "rafiki_backend"
+    username: "rafiki_backend"
+    password: "rafiki_backend"
+  rafiki_auth:
+    dbname: "rafiki_auth"
+    username: "rafiki_auth"
+    password: "rafiki_auth"
 
 config:
   environment: dev
