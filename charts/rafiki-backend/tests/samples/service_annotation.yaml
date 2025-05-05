@@ -1,0 +1,19 @@
+service:
+  - name: service
+    type: ClusterIP
+    annotations:
+      cloud.google.com/backend-config: '{"default": "healthzcheck"}'
+      cloud.google.com/neg: '{"ingress": true}'
+    ports:
+      - port: 3006
+        targetPort: 3006
+        protocol: TCP
+        name: auth
+      - port: 3003
+        targetPort: 3003
+        protocol: TCP
+        name: admin
+      - port: 3007
+        targetPort: 3007
+        protocol: TCP
+        name: introspection
