@@ -34,6 +34,18 @@ service:
         protocol: TCP
         name: http
 
+backendConfigs:
+  - name: healthalive
+    spec:
+      healthCheck:
+        checkIntervalSec: 5
+        timeoutSec: 5
+        healthyThreshold: 2
+        unhealthyThreshold: 2
+        type: HTTP
+        requestPath: /health/alive
+        port: 80
+
 # The intention is for the consumer to override this ingress
 ingress:
   enabled: true

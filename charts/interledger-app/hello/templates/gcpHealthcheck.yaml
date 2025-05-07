@@ -1,0 +1,25 @@
+{{- define "landing.gcp-healthcheck.tpl" -}}
+{{- $top := first . }}
+{{- range $backend := $top.Values.backendConfigs }}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+    name: {{ include "common.fullname" $top }}-{{ $backend.name }}
+    namespace: {{ $top.Release.Namespace }}
+spec:
+    {{- with $backend.spec.healthCheck }}
+    healthCheck:
+        checkIntervalSec: {{ .checkIntervalSec }}
+        timeoutSec: {{ .timeoutSec }}
+        healthyThreshold: {{ .healthyThreshold }}
+        unhealthyThreshold: {{ .unhealthyThreshold }}
+        type: {{ .type }}
+        requestPath: {{ .requestPath }}
+        port: {{ .port }}
+    {{- end }}
+{{- end -}}
+{{- end -}}
+
+{{- if .Values.backendConfigs }}
+{{- include "landing.gcp-healthcheck.tpl" (list .) }}
+{{- end -}}
