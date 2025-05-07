@@ -42,8 +42,13 @@ spec:
           {{- if semverCompare ">=1.19-0" $top.Capabilities.KubeVersion.GitVersion }}
           service:
             name: {{ .service.name }}
+            {{- if (regexMatch "^[0-9]+$" (printf "%v" .service.port)) }}
             port:
               number: {{ .service.port }}
+            {{- else }}
+            port:
+              name: {{ .service.port | quote }}
+            {{- end }}
           {{- else }}
           serviceName: {{ .service.name }}
           servicePort: {{ .service.port }}
