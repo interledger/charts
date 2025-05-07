@@ -54,9 +54,11 @@ service:
         protocol: TCP
         name: connector
 
+# The template for generating the env configmap
 configmap:
   - files/config.yaml
 
+# The template for generating the env secrets
 secrets:
   - files/secret.yaml
 

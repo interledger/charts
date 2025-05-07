@@ -2,7 +2,7 @@ suite: Rafiki Backend - Sidecar Test
 templates:
   - deployment.yaml
 values:
-  - samples/gcp1.yaml
+  - samples/sidecar.yaml
 release:
   name: rafiki-backend
 tests:
