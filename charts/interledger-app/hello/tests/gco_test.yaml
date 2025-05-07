@@ -24,6 +24,6 @@ tests:
   - it: 'Should be able to create multiple paths'
     asserts:
       - equal:
-          path: spec.rules[00].http.paths[1].path
+          path: spec.rules[0].http.paths[1].path
           value: /webhooks/
 
