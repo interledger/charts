@@ -1,0 +1,18 @@
+suite: Common - Port reference by name
+templates:
+  - ingress.yaml
+values:
+  - samples/port-by-name.yaml
+release:
+  name: hello
+tests:
+  - it: 'Ingress should be generated'
+    asserts:
+      - containsDocument:
+          kind: Ingress
+          apiVersion: networking.k8s.io/v1
+  - it: 'Ingress should produce a service reference by name'
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.name
+          value: open-payments

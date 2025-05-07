@@ -1,0 +1,29 @@
+suite: Common - Port reference by name
+templates:
+  - ingress.yaml
+values:
+  - samples/gcp.yaml
+release:
+  name: hello
+tests:
+  - it: 'Ingress should be generated'
+    asserts:
+      - containsDocument:
+          kind: Ingress
+          apiVersion: networking.k8s.io/v1
+  - it: 'Should be able to reference port by number'
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 3000
+  - it: 'Should be able to reference port by name'
+    asserts:
+      - equal:
+          path: spec.rules[1].http.paths[0].backend.service.port.name
+          value: open-payments
+  - it: 'Should be able to create multiple paths'
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[1].path
+          value: /webhooks/
+

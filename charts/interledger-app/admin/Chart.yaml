@@ -4,13 +4,13 @@ description: Interledger App Wallet admin service for the Interledger App networ
 home: https://github.com/interledger/interledger-app
 
 type: application
-version: 0.1.1
+version: 0.2.0
 appVersion: "v0.1.0"
 
 dependencies:
   - name: common
     version: 0.2.0
-    repository: file://../../common
+    repository: https://interledger.github.io/charts/interledger
 
 maintainers:
   - name: Stephan Butler

@@ -1,16 +1,16 @@
 apiVersion: v2
-name: ilf-wallet-frontend
-description: Interledger App Wallet backend service for the Interledger App network
+name: common-unittests
+description: chart for unittesting the common library
 home: https://github.com/interledger/interledger-app
 
 type: application
 version: 0.1.1
-appVersion: "v0.1.1"
+appVersion: "v0.1.0"
 
 dependencies:
   - name: common
-    version: 0.2.0
-    repository: https://interledger.github.io/charts/interledger
+    version: 0.3.0
+    repository: file://../../common
 
 maintainers:
   - name: Stephan Butler
