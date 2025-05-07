@@ -4,13 +4,13 @@ description: Meta chart repository for deploying ingress and internal reverse pr
 home: https://github.com/interledger/interledger-app
 
 type: application
-version: 0.2.0
+version: 0.3.0
 appVersion: "v0.1.0"
 
 dependencies:
   - name: common
     version: 0.3.0
-    repository: file://../../common
+    repository: https://interledger.github.io/charts/interledger
 
 maintainers:
   - name: Stephan Butler

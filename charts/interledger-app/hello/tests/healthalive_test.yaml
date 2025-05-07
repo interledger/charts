@@ -1,0 +1,27 @@
+suite: "Hello - BackendConfig healthalive"
+templates:
+  - gcpHealthcheck.yaml
+values:
+  - samples/gcp.yaml
+release:
+  name: landing
+tests:
+  - it: 'BackendConfig should be generated'
+    asserts:
+      - containsDocument:
+          kind: BackendConfig
+          apiVersion: cloud.google.com/v1
+          name: landing-healthalive
+      - equal:
+          path: spec.healthCheck.requestPath
+          value: /health/alive
+      - equal:
+          path: spec.healthCheck.port
+          value: 80
+      - equal:
+          path: spec.healthCheck.checkIntervalSec
+          value: 5
+      - equal:
+          path: spec.healthCheck.timeoutSec
+          value: 5
+  
