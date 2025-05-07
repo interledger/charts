@@ -1,0 +1,37 @@
+fullnameOverride: "landing"
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "${ips.global_ips.app1.full_name}"
+    kubernetes.io/ingress.class: gce
+    networking.gke.io/managed-certificates: payment-pointer-domain,auth-payment-pointer-domain,connector-payment-pointer-domain,app-domain,grpc-app-domain
+  className: gce
+  tls: []
+  hosts:
+    - host: "${sub_domain}${app_domain_managed.domain}"
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: wallet-frontend-service
+            port: 3000
+        - path: /webhooks/
+          pathType: Prefix
+          service:
+            name: wallet-backend-service
+            port: 8080
+    - host: "${sub_domain}${payment_pointer_domain_managed.domain}"
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-backend-service
+            port: open-payments
+    - host: "auth.${sub_domain}${payment_pointer_domain_managed.domain}"
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-auth-service
+            port: 3006

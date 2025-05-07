@@ -1,0 +1,12 @@
+ingress:
+  enabled: true
+  className: gce
+  tls: []
+  hosts:
+    - host: some-domain.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-backend-service
+            port: 1234

@@ -1,0 +1,5 @@
+{{- define "interledger-app.ingress" -}}
+{{- $top := first . -}}
+{{- end }}
+
+{{- include "common.ingress" (list . .Values.ingress "interledger-app.ingress") }}
