@@ -1,0 +1,19 @@
+suite: Rafiki Backend - Good configs in values
+templates:
+  - configmap.yaml
+values:
+  - samples/good-config.yaml
+release:
+  name: rafiki-backend
+tests:
+  - it: 'Should have correct basic data'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: rafiki-backend
+  - it: 'NODE_ENV default to development'
+    asserts:
+      - equal:
+          path: data.NODE_ENV
+          value: development
