@@ -24,4 +24,3 @@ tests:
       - equal:
           path: spec.healthCheck.timeoutSec
           value: 5
-
