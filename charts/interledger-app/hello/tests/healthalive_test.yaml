@@ -17,11 +17,10 @@ tests:
           value: /health/alive
       - equal:
           path: spec.healthCheck.port
-          value: 80
+          value: 4433
       - equal:
           path: spec.healthCheck.checkIntervalSec
           value: 5
       - equal:
           path: spec.healthCheck.timeoutSec
           value: 5
-  

@@ -1,0 +1,13 @@
+suite: "Hello - multiple backendconfigs"
+templates:
+  - gcpHealthcheck.yaml
+values:
+  - samples/multiple-backendconfigs.yaml
+release:
+  name: hello
+tests:
+  - it: 'BackendConfig should be generated'
+    asserts:
+      - containsDocument:
+          kind: BackendConfig
+          apiVersion: cloud.google.com/v1

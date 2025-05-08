@@ -1,5 +1,17 @@
 fullnameOverride: "landing"
 
+backendConfigs:
+  - name: healthalive
+    spec:
+      healthCheck:
+        checkIntervalSec: 5
+        timeoutSec: 5
+        healthyThreshold: 2
+        unhealthyThreshold: 2
+        type: HTTP
+        requestPath: /health/alive
+        port: 4433
+
 ingress:
   enabled: true
   annotations:

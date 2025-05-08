@@ -1,6 +1,7 @@
 {{- define "landing.gcp-healthcheck.tpl" -}}
 {{- $top := first . }}
 {{- range $backend := $top.Values.backendConfigs }}
+---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
