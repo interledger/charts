@@ -14,29 +14,6 @@ autoscaling:
   cpuUtilizationPercentage: 80
   memoryUtilizationPercentage: 80
 
-# When using native GCE ingress, the service will not initialise because rafiki-auth does not provide a 200
-# on the root path. In these cases you can define a health check to be used by the ingress.
-#
-# Can be used to create health checks when using GCP. Your service can then be annotated with 
-# the created health check.
-#
-# For example:
-# annotations:
-#   cloud.google.com/neg: '{"ingress": true}'
-#   cloud.google.com/backend-config: "interledger-test-dev-healthcheck"
-#
-# backendConfigs:
-#   - name: healthzcheck
-#     spec:
-#       healthCheck:
-#         checkIntervalSec: 5
-#         timeoutSec: 5
-#         healthyThreshold: 2
-#         unhealthyThreshold: 2
-#         type: HTTP
-#         requestPath: /healthz
-#         port: 3006
-
 service:
   - name: service
     type: ClusterIP
