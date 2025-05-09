@@ -17,7 +17,6 @@ tests:
       - isSubset:
           path: metadata.labels
           content:
-            helm.sh/chart: rafiki-auth-0.7.2
             app.kubernetes.io/name: rafiki-auth
             app.kubernetes.io/instance: rafiki-auth
             app.kubernetes.io/managed-by: Helm
