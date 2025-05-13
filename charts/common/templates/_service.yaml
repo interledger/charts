@@ -19,6 +19,9 @@ spec:
   ports: {{- toYaml $service.ports | nindent 4 }}
   selector:
     {{- include "common.selectorLabels" $top | nindent 4 }}
+  {{- if $service.loadBalancerIP }}
+  loadBalancerIP: {{ $service.loadBalancerIP }}
+  {{- end }}
 {{- end }}
 {{- end }}
 

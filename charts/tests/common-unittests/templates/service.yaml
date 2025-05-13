@@ -1,0 +1,5 @@
+{{- define "app.service" -}}
+{{- $top := first . -}}
+{{- end }}
+
+{{- include "common.service" (list . .Values.service "app.service") }}

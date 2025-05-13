@@ -1,0 +1,13 @@
+suite: Common - Service Load BalancerIP
+templates:
+  - service.yaml
+values:
+  - samples/service_load_balancer_ip.yaml
+release:
+  name: hello
+tests:
+  - it: 'Service should translate loadBalancerIP'
+    asserts:
+      - equal:
+          path: spec.loadBalancerIP
+          value: 123.123.123.123
