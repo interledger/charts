@@ -17,8 +17,12 @@ metadata:
 spec:
   type: {{ $service.type }}
   ports: {{- toYaml $service.ports | nindent 4 }}
+  {{- if $service.selector }}
+  selector: {{- toYaml $service.selector | nindent 4 }}
+  {{ else }}
   selector:
     {{- include "common.selectorLabels" $top | nindent 4 }}
+  {{- end }}
   {{- if $service.loadBalancerIP }}
   loadBalancerIP: {{ $service.loadBalancerIP }}
   {{- end }}

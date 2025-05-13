@@ -1,0 +1,13 @@
+suite: Common - Service Selector Override
+templates:
+  - service.yaml
+values:
+  - samples/service_custom_selector.yaml
+release:
+  name: hello
+tests:
+  - it: 'Service should only have the custom selector that was specified'
+    asserts:
+      - equal:
+          path: spec.selector.custom
+          value: selector
