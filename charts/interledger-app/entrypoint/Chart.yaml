@@ -1,11 +1,11 @@
 apiVersion: v2
-name: ilf-wallet-hello
-description: Meta chart repository for deploying ingress and internal reverse proxy if needed
+name: ilf-wallet-entrypoint
+description: Meta chart repository for managing cluster entrypoints
 home: https://github.com/interledger/interledger-app
 
 type: application
-version: 0.3.3
-appVersion: "v0.1.0"
+version: 1.0.0
+appVersion: "v1.0.0"
 
 dependencies:
   - name: common
