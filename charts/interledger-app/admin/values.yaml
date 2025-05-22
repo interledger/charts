@@ -44,7 +44,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: botanist
-      tag: manual-main
+      tag: manual_main
       pullPolicy: Always
     envFrom:
       - configMapRef:
