@@ -128,9 +128,7 @@ postgresql:
     password: "rafiki-auth"
 
 # The type of node environment: development, test, or production.
-# TODO: Discrepancy between formal documentation and generated environmental variables on
-#       NODE_ENV vs NODE_ENVIRONMENT. Also, surely the default should be "production"?
-nodeEnv: development
+nodeEnv: production
 
 # See Log levels defined at https://getpino.io/#/docs/api?id=levels
 logLevel: debug
