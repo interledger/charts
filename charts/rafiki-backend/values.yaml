@@ -3,7 +3,9 @@
 # flag when installing the chart. Or by supplying a custom values file, see the
 # provided values.example.yaml for an example of how to set the values.
 
+# ==========================================================
 # Rafiki Backend configuration
+# ==========================================================
 
 nodeEnv: production
 logLevel: info
@@ -116,13 +118,50 @@ telemetry:
   # Enables the telemetry service on Rafiki.
   enabled: false
 
+# ==========================================================
 # Chart customization
-# 
+# ==========================================================
 # Everything below this point is used to configure the Rafiki Backend Helm 
 # chart framework and is not typically used by the Rafiki Backend itself. It is used to
 # customize the deployment, service, and other Kubernetes resources created by the Helm chart.
 # 
 # We recommend not changing these values unless you know what you are doing.
+
+# This chart does support the generation of init containers using the convention
+# below. In future versions migrations will be performed in a init container.
+# initContainers:
+# - name: backend-migrations
+#   image:
+#     repository: repository/org/some-image
+#     name: SomeImageContainer
+#     tag: v1.0
+#     pullPolicy: Always
+#   args:
+#     - "run"
+#   envFrom:
+#     - configMapRef:
+#         name: "{{ .Release.Name }}"
+#     - secretRef:
+#         name: "{{ .Release.Name }}"
+#   resources:
+#     requests:
+#       memory: 128Mi
+#       cpu: 200m
+#     limits:
+#       memory: 512Mi
+#       cpu: 400m
+
+# Sidecars can be used to add additional containers to the Rafiki Backend deployment. This
+# container definition will be added to the Rafiki Backend deployment as a sidecar container.
+# sidecars:
+#   - name: debugbox
+#     image:
+#       name: busybox
+#       tag: latest
+#       repository: docker.io
+#     args:
+#       - sleep
+#       - "3600"
 
 # Configures the ports on which the containers will listen. It is recommended to
 # not change these values unless you know what you are doing. Rather use the 
