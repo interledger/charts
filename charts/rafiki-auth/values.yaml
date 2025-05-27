@@ -131,7 +131,7 @@ postgresql:
 nodeEnv: production
 
 # See Log levels defined at https://getpino.io/#/docs/api?id=levels
-logLevel: debug
+logLevel: info
 
 # The public endpoint for your Rafiki instance’s public Open Payments routes.
 authServerUrl: "http://rafiki-auth:3006"
