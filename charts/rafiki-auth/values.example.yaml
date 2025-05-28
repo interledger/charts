@@ -1,0 +1,35 @@
+# This example shows the fields typically configured when setting up a
+# Rafiki Auth instance.
+
+postgresql:
+  host: "rafiki-auth-postgresql"
+  port: "5432"
+  auth:
+    username: "rafiki-auth"
+    database: "rafiki-auth"
+    password: "rafiki-auth"
+
+identityServer:
+  domain: https://walet.interledger-test.dev/grant-interactions
+  secret: "0000000000000000000000000000000000"
+
+authServerUrl: "https://auth.interledger-test.dev"
+
+ingress:
+  enabled: true
+  className: nginx
+  # tls:
+  #  - secretName: interledger-test-dev-tls
+  #    hosts:
+  #      - auth.interledger-test.dev
+  hosts:
+    - host: auth.interledger-test.dev
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: rafiki-auth-service
+            port: 3006
+
+
+cookieKey: 'SOMESECRET'

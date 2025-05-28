@@ -1,0 +1,41 @@
+suite: Rafiki Auth - Example sanity check
+templates:
+  - configmap.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml
+  - service.yaml
+  - serviceAccount.yaml
+values:
+  - ../values.example.yaml
+release:
+  name: rafiki-auth
+tests:
+  - it: 'Should contain a service with the correct basic data'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: rafiki-auth-service
+        template: service.yaml
+  - it: 'Should contain ConfigMap definition'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: rafiki-auth
+        template: configmap.yaml
+  - it: 'Should contain a secrets definition'
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: rafiki-auth
+        template: secret.yaml
+  - it: 'Should contain an ingress definition'
+    asserts:
+      - containsDocument:
+          kind: Ingress
+          name: rafiki-auth
+          apiVersion: networking.k8s.io/v1
+        template: ingress.yaml
+
