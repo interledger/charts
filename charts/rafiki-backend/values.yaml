@@ -23,7 +23,7 @@ auth:
 
 rates:
   # The endpoint your Rafiki instance uses to request exchange rates.
-  url: http://rafiki-backend/prices
+  url: http://wallet/prices
 
 quote:
   # TODO: Cannot find QUOTE_URL in documentation?
