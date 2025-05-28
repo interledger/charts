@@ -1,0 +1,24 @@
+suite: Common - ConfigMapRef Should point to fullname when overridden
+templates:
+  - deployment.yaml
+values:
+  # This file should override the fullname to be over-the-rainbow
+  - samples/configmaps-name-override.yaml
+release:
+  # Note that the release name does not contain the chart name
+  # Override from the values should cause this to be ignored
+  name: hello-there
+tests:
+  - it: 'Deployment should be generated'
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+  - it: "Deployment should point to a configmap and secret and secret of name 'over-the-rainbow'"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
+          value: over-the-rainbow
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[1].secretRef.name
+          value: over-the-rainbow
