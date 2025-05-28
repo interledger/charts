@@ -30,8 +30,8 @@ quote:
   url: http://rafiki-backend/quotes
 
 webhook:
-  # Your Rafiki instance’s internal wallet address.
-  url: http://rafiki-backend/webhooks
+  # Where Rafiki is going to send webhooks
+  url: http://wallet/webhooks/rafiki
   # The time, in milliseconds, that WALLET_ADDRESS_WORKERS wait until checking the 
   # empty wallet address request queue again.
   timeout: 200
