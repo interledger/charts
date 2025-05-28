@@ -10,7 +10,7 @@ postgresql:
     password: "rafiki-auth"
 
 identityServer:
-  domain: https://my-kratos/grant-interactions
+  domain: https://walet.interledger-test.dev/grant-interactions
   secret: "0000000000000000000000000000000000"
 
 authServerUrl: "https://my-rafiki-auth.example.com"
