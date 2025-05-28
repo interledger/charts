@@ -13,7 +13,7 @@ identityServer:
   domain: https://walet.interledger-test.dev/grant-interactions
   secret: "0000000000000000000000000000000000"
 
-authServerUrl: "https://my-rafiki-auth.example.com"
+authServerUrl: "https://auth.interledger-test.dev"
 
 ingress:
   enabled: true
