@@ -25,10 +25,6 @@ rates:
   # The endpoint your Rafiki instance uses to request exchange rates.
   url: http://wallet/prices
 
-quote:
-  # TODO: Cannot find QUOTE_URL in documentation?
-  url: http://rafiki-backend/quotes
-
 webhook:
   # Where Rafiki is going to send webhooks
   url: http://wallet/webhooks/rafiki
