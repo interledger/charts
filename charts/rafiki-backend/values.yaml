@@ -48,7 +48,7 @@ postgresql:
     database: "rafiki-backend"
     password: "rafiki-backend"
 
-# TODO: Could not find documentation for WALLET_ADDRESS_REDIRECT_HTML_PAGE
+# This feature is experimental and may change in future versions.
 walletAddressRedirectHtmlPage: ''
 
 # Must be set to true when running Rafiki behind a proxy. When true, the 
@@ -61,7 +61,6 @@ ilp:
   # The ILP connector address where ILP packets are received.
   connectorUrl: 'http://rafiki-backend:3002'
   # The seed secret to generate shared STREAM secrets.
-  # TODO: Is this a 32 byte secret? then the documentation should say so
   streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
   # The accepted ILP rate fluctuation.
   slippage: 0.01
@@ -77,7 +76,7 @@ key:
 quoteSignatureSecret: "overridethisValue"
 
 # The delay in liquidity withdrawal processing.
-# TODO: What is the unit here?
+# Unit ms
 withdrawalThrottleDelay: ''
 
 lifetime:
@@ -95,7 +94,7 @@ workers:
   # The number of workers processing incoming payment requests.
   incomingPayment: 1
   # The number of workers processing outgoing payment requests.
-  outgoingPayment: 4
+  outgoingPayment: 1
   paymentPointer: 1
   webhook: 1
 
