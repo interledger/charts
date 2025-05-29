@@ -25,8 +25,16 @@
   env: {{- toYaml . | nindent 4 }}
   {{- end }}
 
+  {{- if $container.envFrom }}
   {{- with $container.envFrom }}
   envFrom: {{- tpl (toYaml . | nindent 4) $top }}
+  {{- end }}
+  {{- else  }}
+  envFrom:
+    - configMapRef:
+        name: {{ include "common.fullname" $top }}
+    - secretRef:
+        name: {{ include "common.fullname" $top }}
   {{- end }}
 
   {{- with $container.command }}

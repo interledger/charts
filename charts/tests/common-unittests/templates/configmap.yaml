@@ -1,0 +1,8 @@
+{{- include "common.configMap" (list . "some-app.configMap") }}
+{{- define "some-app.configMap" -}}
+{{- $top := first . }}
+data:
+  {{- range $top.Values.configmap }}
+    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
+  {{- end }}
+{{- end }}

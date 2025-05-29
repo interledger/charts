@@ -1,0 +1,22 @@
+suite: Common - ConfigMapRefs should point to fullname by default
+templates:
+  - deployment.yaml
+values:
+  - samples/configmaps-defaults.yaml
+release:
+  # Note that the release name does not contain the chart name
+  name: hello-there
+tests:
+  - it: 'Deployment should be generated'
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+  - it: "Deployment should point to default configmap and secret"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
+          value: hello-there-common-unittests
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[1].secretRef.name
+          value: hello-there-common-unittests

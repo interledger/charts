@@ -1,0 +1,21 @@
+# Note that the configMapRefs here uses the legacy mechanism
+# to simply extract the release name. This is problematic for more
+# complicated scenarios where the chart name is composed.
+containers:
+  - name: server
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 1
+      limits:
+        memory: 2048Mi
+        cpu: 4
+    ports:
+      - name: http
+        containerPort: 8080
+        protocol: TCP
