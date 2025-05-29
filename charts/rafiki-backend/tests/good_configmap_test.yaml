@@ -12,8 +12,8 @@ tests:
           kind: ConfigMap
           apiVersion: v1
           name: rafiki-backend
-  - it: 'NODE_ENV default to development'
+  - it: 'NODE_ENV default to production'
     asserts:
       - equal:
           path: data.NODE_ENV
-          value: development
+          value: production
