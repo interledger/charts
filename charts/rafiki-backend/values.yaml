@@ -216,21 +216,20 @@ service:
         protocol: TCP
         name: connector
 
-# The template for generating the env configmap
+# The template for generating the default env configmap. The generated configmap
+# will have the same name as the full name of the release.
 configmap:
   - files/config.yaml
 
-# The template for generating the env secrets
+# The template for generating the env secrets. The generated secret will have
+# the same name as the full name of the release.
 secrets:
   - files/secret.yaml
 
 containers:
   - name: server
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
+    # Note that envFrom will automatically be populated by chart magic
+    # unless it is explicitly configured otherwise here.
     resources:
       requests:
         memory: 256Mi
