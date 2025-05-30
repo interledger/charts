@@ -15,7 +15,7 @@ tests:
           apiVersion: v1
           name: superduper-rafiki-auth
         template: configmap.yaml
-  - it: 'Should contain a secrets definition suing full name superduper-rafiki-auth'
+  - it: 'Should contain a secrets definition using full name superduper-rafiki-auth'
     asserts:
       - containsDocument:
           kind: Secret
