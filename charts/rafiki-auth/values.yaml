@@ -78,11 +78,6 @@ secrets:
 # this chart for your purposes.
 containers:
   - name: server
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
     resources:
       requests:
         memory: 128Mi

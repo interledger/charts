@@ -1,0 +1,44 @@
+suite: Rafiki Auth - Given a release name superduper, the Deployment should use the fullname superduper-rafiki-auth to envmap the ConfigMap and Secret
+templates:
+  - configmap.yaml
+  - deployment.yaml
+  - secret.yaml
+values:
+  - ../values.example.yaml
+release:
+  name: superduper
+tests:
+  - it: 'Should contain ConfigMap definition using full name superduper-rafiki-auth'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: superduper-rafiki-auth
+        template: configmap.yaml
+  - it: 'Should contain a secrets definition suing full name superduper-rafiki-auth'
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: superduper-rafiki-auth
+        template: secret.yaml
+  - it: 'Should contain a deployment definition using full name superduper-rafiki-auth'
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+          name: superduper-rafiki-auth
+        template: deployment.yaml
+  - it: 'Deployment should reference the ConfigMap superduper-rafiki-auth in envFrom'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
+          value: superduper-rafiki-auth
+        template: deployment.yaml
+  - it: 'Deployment should reference the Secret superduper-rafiki-auth in envFrom'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[1].secretRef.name
+          value: superduper-rafiki-auth
+        template: deployment.yaml
+  
