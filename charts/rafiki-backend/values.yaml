@@ -14,6 +14,8 @@ logLevel: info
 # telemetry. Required when auto-peering and/or telemetry is enabled
 instanceName: rafiki-backend-changeme
 
+useTigerbeetle: false
+
 auth:
   # The endpoint on your Open Payments authorization server to grant a request.
   grantUrl: http://rafiki-auth.rafiki-auth:3006
@@ -56,14 +58,17 @@ walletAddressRedirectHtmlPage: ''
 trustProxy: true
 
 ilp:
-  # The ILP address of your Rafiki instance. Override this value.
+  # Maps to OPEN_PAYMENTS_URL - The public endpoint of your Open Payments resource server.
+  host: 'http://rafiki-backend:3000'
+  # Maps to ILP_ADDRESS - The ILP address of your Rafiki instance. Override this value.
   address: test.rafiki-backend
   # The ILP connector address where ILP packets are received.
-  connectorUrl: 'http://rafiki-backend:3002'
+  connector: 'http://rafiki-backend:3002'
   # The seed secret to generate shared STREAM secrets.
   streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
   # The accepted ILP rate fluctuation.
-  slippage: 0.01
+
+slippage: 0.01
 
 key:
   # Your Rafiki instance’s client key ID.
