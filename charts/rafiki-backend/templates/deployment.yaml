@@ -1,4 +1,12 @@
 {{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "rafiki-backend.deployment") }}
-
 {{- define "rafiki-backend.deployment" -}}
+{{- $top := first . }}
+spec:
+    template:
+        spec:
+            volumes:
+                - name: keys
+                  secret:
+                    secretName: {{ include "common.fullname" $top }}-keys
+
 {{- end }}
