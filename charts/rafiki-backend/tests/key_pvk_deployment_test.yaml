@@ -18,5 +18,5 @@ tests:
           value: rafiki-backend-keys
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].name
-          value: rafiki-backend-keys
+          value: keys
       

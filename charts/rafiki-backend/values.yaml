@@ -260,3 +260,9 @@ containers:
       - name: connector
         containerPort: 3002
         protocol: TCP
+    # See deployment.yaml to see how the mount itself is created
+    volumeMounts:
+      - name: keys
+        mountPath: /mnt/keys
+        readOnly: true
+        
