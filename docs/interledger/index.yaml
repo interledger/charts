@@ -2,7 +2,11 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.682649813+02:00"
+=======
+    created: "2025-06-06T11:05:38.214501396+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: ILF common helm chart for building k8s resources
     digest: 61c0157e445ecce1fdc1a03ea49c7a272e92a2d13fc57b99379b24364d98e2e6
     maintainers:
@@ -16,7 +20,11 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.3.tgz
     version: 0.3.3
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.682168956+02:00"
+=======
+    created: "2025-06-06T11:05:38.21421014+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: ILF common helm chart for building k8s resources
     digest: 91d876b9812e4a2407bf1cf515660e6279f0b86d09f1ebfd1dbae87e86dd3d9a
     maintainers:
@@ -30,7 +38,11 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.2.tgz
     version: 0.3.2
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.681047394+02:00"
+=======
+    created: "2025-06-06T11:05:38.213871926+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: ILF common helm chart for building k8s resources
     digest: 90c6b83f691051fd25cbe3d08a42ffb5b4e0248003e237e58e58ecd7b3a550cb
     maintainers:
@@ -44,7 +56,11 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.1.tgz
     version: 0.3.1
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.679995287+02:00"
+=======
+    created: "2025-06-06T11:05:38.21341238+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: ILF common helm chart for building k8s resources
     digest: e74182da8ea7ba5d2a0ecdbe6363203ae258059eb00d9d88986d75f6ea93a659
     maintainers:
@@ -58,7 +74,11 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.679406274+02:00"
+=======
+    created: "2025-06-06T11:05:38.212349188+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: Rafiki common helm chart for building k8s resources
     digest: 3ed7bf11cbee0521030f653811a66944e6e5f366066227382d089b8a73e8875a
     maintainers:
@@ -72,7 +92,11 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.678125459+02:00"
+=======
+    created: "2025-06-06T11:05:38.21200684+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -86,7 +110,11 @@ entries:
   ilf-wallet-admin:
   - apiVersion: v2
     appVersion: v0.1.2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.687294806+02:00"
+=======
+    created: "2025-06-06T11:05:38.216280252+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -104,7 +132,11 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.685696009+02:00"
+=======
+    created: "2025-06-06T11:05:38.21568653+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -122,7 +154,11 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.684242677+02:00"
+=======
+    created: "2025-06-06T11:05:38.215140245+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: file://../../common
@@ -141,7 +177,11 @@ entries:
   ilf-wallet-backend:
   - apiVersion: v2
     appVersion: v0.1.4
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.701688859+02:00"
+=======
+    created: "2025-06-06T11:05:38.225152238+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -159,7 +199,11 @@ entries:
     version: 0.4.4
   - apiVersion: v2
     appVersion: v0.1.3
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.699925909+02:00"
+=======
+    created: "2025-06-06T11:05:38.224155627+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -177,7 +221,11 @@ entries:
     version: 0.4.3
   - apiVersion: v2
     appVersion: v0.1.2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.698654828+02:00"
+=======
+    created: "2025-06-06T11:05:38.223162623+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -195,7 +243,11 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: v0.1.1
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.697036777+02:00"
+=======
+    created: "2025-06-06T11:05:38.2221607+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -213,7 +265,11 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.695268932+02:00"
+=======
+    created: "2025-06-06T11:05:38.221127966+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -231,7 +287,11 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.69293557+02:00"
+=======
+    created: "2025-06-06T11:05:38.219426912+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -249,7 +309,11 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.691550756+02:00"
+=======
+    created: "2025-06-06T11:05:38.218418297+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: file://../../common
@@ -267,7 +331,11 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.69015124+02:00"
+=======
+    created: "2025-06-06T11:05:38.217269392+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: file://../../common
@@ -286,7 +354,11 @@ entries:
   ilf-wallet-entrypoint:
   - apiVersion: v2
     appVersion: v1.0.1
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.704334013+02:00"
+=======
+    created: "2025-06-06T11:05:38.226236884+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -304,7 +376,11 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.0.0
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.702768404+02:00"
+=======
+    created: "2025-06-06T11:05:38.225664678+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -323,7 +399,11 @@ entries:
   ilf-wallet-frontend:
   - apiVersion: v2
     appVersion: v0.1.2
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.707468197+02:00"
+=======
+    created: "2025-06-06T11:05:38.228094063+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -341,7 +421,11 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.1
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.706106504+02:00"
+=======
+    created: "2025-06-06T11:05:38.226899208+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -360,7 +444,11 @@ entries:
   rafiki-auth:
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.718607593+02:00"
+=======
+    created: "2025-06-06T11:05:38.23530363+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -380,7 +468,11 @@ entries:
     version: 0.9.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.716915044+02:00"
+=======
+    created: "2025-06-06T11:05:38.234496157+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -400,7 +492,11 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.715624203+02:00"
+=======
+    created: "2025-06-06T11:05:38.233591516+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -420,7 +516,11 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.714458522+02:00"
+=======
+    created: "2025-06-06T11:05:38.232809809+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -440,7 +540,11 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.713230044+02:00"
+=======
+    created: "2025-06-06T11:05:38.231826541+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -460,7 +564,11 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.711502451+02:00"
+=======
+    created: "2025-06-06T11:05:38.23093401+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -480,7 +588,11 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.709325033+02:00"
+=======
+    created: "2025-06-06T11:05:38.229199632+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -499,7 +611,11 @@ entries:
   rafiki-backend:
   - apiVersion: v2
     appVersion: v1.1.2-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.719540479+02:00"
+=======
+    created: "2025-06-06T11:05:38.236371907+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -519,7 +635,11 @@ entries:
     version: 0.10.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.746358851+02:00"
+=======
+    created: "2025-06-06T11:05:38.245771509+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -539,7 +659,11 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.744517825+02:00"
+=======
+    created: "2025-06-06T11:05:38.24497453+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -559,7 +683,11 @@ entries:
     version: 0.8.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.741062915+02:00"
+=======
+    created: "2025-06-06T11:05:38.244206316+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -579,7 +707,11 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.737524285+02:00"
+=======
+    created: "2025-06-06T11:05:38.243389083+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -599,7 +731,11 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.733219861+02:00"
+=======
+    created: "2025-06-06T11:05:38.242598771+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -619,7 +755,11 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.730141681+02:00"
+=======
+    created: "2025-06-06T11:05:38.241810893+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -639,7 +779,11 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.728394112+02:00"
+=======
+    created: "2025-06-06T11:05:38.24050697+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -659,7 +803,11 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.724700506+02:00"
+=======
+    created: "2025-06-06T11:05:38.23889186+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -679,7 +827,11 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.723071684+02:00"
+=======
+    created: "2025-06-06T11:05:38.237995825+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -699,7 +851,11 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.721774531+02:00"
+=======
+    created: "2025-06-06T11:05:38.237171777+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -718,7 +874,11 @@ entries:
   rafiki-boutique-backend:
   - apiVersion: v2
     appVersion: v0.1.62
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.747674581+02:00"
+=======
+    created: "2025-06-06T11:05:38.246358394+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -737,7 +897,11 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: v0.1.58
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.749421873+02:00"
+=======
+    created: "2025-06-06T11:05:38.246946381+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -757,7 +921,11 @@ entries:
   rafiki-boutique-frontend:
   - apiVersion: v2
     appVersion: v0.1.62
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.7537563+02:00"
+=======
+    created: "2025-06-06T11:05:38.248414401+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -776,7 +944,11 @@ entries:
     version: 0.1.15
   - apiVersion: v2
     appVersion: v0.1.58
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.751587354+02:00"
+=======
+    created: "2025-06-06T11:05:38.247866884+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -796,7 +968,11 @@ entries:
   rafiki-frontend:
   - apiVersion: v2
     appVersion: v1.1.1-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.760323501+02:00"
+=======
+    created: "2025-06-06T11:05:38.251272314+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -816,7 +992,11 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.758604764+02:00"
+=======
+    created: "2025-06-06T11:05:38.250657551+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -836,7 +1016,11 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.756998077+02:00"
+=======
+    created: "2025-06-06T11:05:38.250109436+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -856,7 +1040,11 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.755159695+02:00"
+=======
+    created: "2025-06-06T11:05:38.249499529+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -895,7 +1083,11 @@ entries:
     version: 0.0.49
   - apiVersion: v2
     appVersion: v0.1.63
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.770719303+02:00"
+=======
+    created: "2025-06-06T11:05:38.25566475+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -915,7 +1107,11 @@ entries:
     version: 0.0.48
   - apiVersion: v2
     appVersion: v0.1.62
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.768954464+02:00"
+=======
+    created: "2025-06-06T11:05:38.254951153+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -935,7 +1131,11 @@ entries:
     version: 0.0.47
   - apiVersion: v2
     appVersion: v0.1.61
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.76739609+02:00"
+=======
+    created: "2025-06-06T11:05:38.254229989+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -955,7 +1155,11 @@ entries:
     version: 0.0.46
   - apiVersion: v2
     appVersion: v0.1.60
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.765996723+02:00"
+=======
+    created: "2025-06-06T11:05:38.253504875+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -975,7 +1179,11 @@ entries:
     version: 0.0.45
   - apiVersion: v2
     appVersion: v0.1.59
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.764280102+02:00"
+=======
+    created: "2025-06-06T11:05:38.252787374+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -995,7 +1203,11 @@ entries:
     version: 0.0.44
   - apiVersion: v2
     appVersion: v0.1.58
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.762471901+02:00"
+=======
+    created: "2025-06-06T11:05:38.252065877+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1036,7 +1248,11 @@ entries:
     version: 0.0.43
   - apiVersion: v2
     appVersion: v0.1.62
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.776296905+02:00"
+=======
+    created: "2025-06-06T11:05:38.2580772+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1056,7 +1272,11 @@ entries:
     version: 0.0.42
   - apiVersion: v2
     appVersion: v0.1.59
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.77519674+02:00"
+=======
+    created: "2025-06-06T11:05:38.256963992+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1076,7 +1296,11 @@ entries:
     version: 0.0.41
   - apiVersion: v2
     appVersion: v0.1.58
+<<<<<<< HEAD
     created: "2025-06-10T13:30:16.773951835+02:00"
+=======
+    created: "2025-06-06T11:05:38.256350074+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1094,4 +1318,8 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/rafiki-money-frontend-0.0.40.tgz
     version: 0.0.40
+<<<<<<< HEAD
 generated: "2025-06-10T13:30:16.676280477+02:00"
+=======
+generated: "2025-06-06T11:05:38.211445038+02:00"
+>>>>>>> 5a7b948 (fix: corrected url)
