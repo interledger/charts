@@ -14,6 +14,8 @@ logLevel: info
 # telemetry. Required when auto-peering and/or telemetry is enabled
 instanceName: rafiki-backend-changeme
 
+useTigerbeetle: false
+
 auth:
   # The endpoint on your Open Payments authorization server to grant a request.
   grantUrl: http://rafiki-auth.rafiki-auth:3006
@@ -56,21 +58,35 @@ walletAddressRedirectHtmlPage: ''
 trustProxy: true
 
 ilp:
-  # The ILP address of your Rafiki instance. Override this value.
+  # Maps to OPEN_PAYMENTS_URL - The public endpoint of your Open Payments resource server.
+  host: 'http://rafiki-backend:3000'
+  # Maps to ILP_ADDRESS - The ILP address of your Rafiki instance. Override this value.
   address: test.rafiki-backend
   # The ILP connector address where ILP packets are received.
-  connectorUrl: 'http://rafiki-backend:3002'
+  connector: 'http://rafiki-backend:3002'
   # The seed secret to generate shared STREAM secrets.
   streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
   # The accepted ILP rate fluctuation.
-  slippage: 0.01
+
+slippage: 0.01
 
 key:
-  # Your Rafiki instance’s client key ID.
-  id: rafiki
-  # The path to your Rafiki instance’s client private key.
-  # You will have to mount this file into the container by customising the container section
-  file: ''
+  # Your Rafiki instance’s client key ID. Make this a unique identifier for your
+  # Rafiki instance.
+  id: rafiki-override-this-value
+  # The private key pem file used. Must be provided as base64 encoded version of
+  # the pem file. It will be stored in a secret. Chart will fail if not provided.
+  # Can be generated like this
+  #   openssl genpkey -algorithm Ed25519 -out private.pem
+  #   echo "pvk:"
+  #   echo -n "$(cat private.pem)" | base64 -w0
+  #
+  # Note that the public key can always be derived from the private key like this
+  # openssl pkey -in private.pem -pubout -out public.pem
+  #
+  # If empty string like this is provided, this chart will spawn a job to generate
+  # a new key pair and store it in a secret for you.
+  pvk: ''
 
 # The secret to generate request header signatures for webhook event requests.
 quoteSignatureSecret: "overridethisValue"
@@ -247,3 +263,9 @@ containers:
       - name: connector
         containerPort: 3002
         protocol: TCP
+    # See deployment.yaml to see how the mount itself is created
+    volumeMounts:
+      - name: keys
+        mountPath: /mnt/keys
+        readOnly: true
+        

@@ -1,0 +1,22 @@
+{{- if not .Values.postgresql.auth.username }}
+{{- fail "Validation failed: .Values.postgresql.auth.username must be set to a sensible value." }}
+{{- end }}
+{{- if not .Values.postgresql.auth.password }}
+{{- fail "Validation failed: .Values.postgresql.auth.password must be set to a sensible value." }}
+{{- end }}
+{{- if not .Values.postgresql.host }}
+{{- fail "Validation failed: .Values.postgresql.host must be set to a sensible value." }}
+{{- end }}
+{{- if not .Values.postgresql.port }}
+{{- fail "Validation failed: .Values.postgresql.port must be set to a sensible value." }}
+{{- end }}
+{{- if not .Values.postgresql.auth.database }}
+{{- fail "Validation failed: .Values.postgresql.auth.database must be set to a sensible value." }}
+{{- end }}
+
+{{- if not .Values.quoteSignatureSecret }}
+{{- fail "Validation failed: .Values.quoteSignatureSecret must be set to a non-empty string." }}
+{{- end }}
+{{- if not .Values.ilp.streamSecret }}
+{{- fail "Validation failed: .Values.ilp.streamSecret must be set to a non-empty string." }}
+{{- end }}
