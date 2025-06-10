@@ -71,8 +71,9 @@ ilp:
 slippage: 0.01
 
 key:
-  # Your Rafiki instance’s client key ID.
-  id: rafiki
+  # Your Rafiki instance’s client key ID. Make this a unique identifier for your
+  # Rafiki instance.
+  id: rafiki-override-this-value
   # The private key pem file used. Must be provided as base64 encoded version of
   # the pem file. It will be stored in a secret. Chart will fail if not provided.
   # Can be generated like this
@@ -82,8 +83,10 @@ key:
   #   echo -n "$(cat private.pem)" | base64 -w0
   #   echo "pub:"
   #   echo -n "$(cat public.pem)" | base64 -w0
-  pvk: 'LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1DNENBUUF3QlFZREsyVndCQ0lFSURCdDVzSmxWc2ZHR2FiK2FWY0RTc0FoeTFRdmdxQXhQbk5paVIyVDZuSk8KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQ=='
-  pub: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUNvd0JRWURLMlZ3QXlFQXpnSGFyaXRHS29TQmNHWVZzYS9pYmV1Ymx6MGt1U2FodUNhSkcrR1c4V1E9Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ=='
+  # If empty string like this is provided, this chart will spawn a job to generate
+  # a new key pair and store it in a secret for you.
+  pvk: ''
+  pub: ''
 
 # The secret to generate request header signatures for webhook event requests.
 quoteSignatureSecret: "overridethisValue"
