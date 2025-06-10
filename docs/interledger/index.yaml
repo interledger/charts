@@ -2,23 +2,7 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.682649813+02:00"
-=======
-    created: "2025-06-06T11:05:38.214501396+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.945102067+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.526845844+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.398731116+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.893014974+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 61c0157e445ecce1fdc1a03ea49c7a272e92a2d13fc57b99379b24364d98e2e6
     maintainers:
@@ -32,23 +16,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.3.tgz
     version: 0.3.3
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.682168956+02:00"
-=======
-    created: "2025-06-06T11:05:38.21421014+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.944670885+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.526483884+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.39840092+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.892678111+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 91d876b9812e4a2407bf1cf515660e6279f0b86d09f1ebfd1dbae87e86dd3d9a
     maintainers:
@@ -62,23 +30,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.2.tgz
     version: 0.3.2
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.681047394+02:00"
-=======
-    created: "2025-06-06T11:05:38.213871926+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.943076017+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.526146746+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.397608141+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.892414449+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 90c6b83f691051fd25cbe3d08a42ffb5b4e0248003e237e58e58ecd7b3a550cb
     maintainers:
@@ -92,23 +44,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.1.tgz
     version: 0.3.1
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.679995287+02:00"
-=======
-    created: "2025-06-06T11:05:38.21341238+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.942422956+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.525802438+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.396932927+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.892145872+02:00"
     description: ILF common helm chart for building k8s resources
     digest: e74182da8ea7ba5d2a0ecdbe6363203ae258059eb00d9d88986d75f6ea93a659
     maintainers:
@@ -122,23 +58,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.679406274+02:00"
-=======
-    created: "2025-06-06T11:05:38.212349188+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.941804305+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.524730973+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.396487395+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.891871593+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 3ed7bf11cbee0521030f653811a66944e6e5f366066227382d089b8a73e8875a
     maintainers:
@@ -152,23 +72,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.678125459+02:00"
-=======
-    created: "2025-06-06T11:05:38.21200684+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.941207397+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.524375291+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.396132829+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.891513654+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -182,23 +86,7 @@ entries:
   ilf-wallet-admin:
   - apiVersion: v2
     appVersion: v0.1.2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.687294806+02:00"
-=======
-    created: "2025-06-06T11:05:38.216280252+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.947211187+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.528643744+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.400588047+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.894898774+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -216,23 +104,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.685696009+02:00"
-=======
-    created: "2025-06-06T11:05:38.21568653+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.946451511+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.528044295+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.400025985+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.894185299+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -250,23 +122,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.684242677+02:00"
-=======
-    created: "2025-06-06T11:05:38.215140245+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.945769127+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.527433254+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.399396612+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.893598711+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -285,23 +141,7 @@ entries:
   ilf-wallet-backend:
   - apiVersion: v2
     appVersion: v0.1.4
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.701688859+02:00"
-=======
-    created: "2025-06-06T11:05:38.225152238+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.958805447+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.537880517+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.409982288+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.90449927+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -319,23 +159,7 @@ entries:
     version: 0.4.4
   - apiVersion: v2
     appVersion: v0.1.3
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.699925909+02:00"
-=======
-    created: "2025-06-06T11:05:38.224155627+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.957234109+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.536575792+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.408941779+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.903449475+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -353,23 +177,7 @@ entries:
     version: 0.4.3
   - apiVersion: v2
     appVersion: v0.1.2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.698654828+02:00"
-=======
-    created: "2025-06-06T11:05:38.223162623+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.95591409+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.535578682+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.407831987+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.902472112+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -387,23 +195,7 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: v0.1.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.697036777+02:00"
-=======
-    created: "2025-06-06T11:05:38.2221607+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.95394848+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.534532794+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.406411164+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.901258329+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -421,23 +213,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.695268932+02:00"
-=======
-    created: "2025-06-06T11:05:38.221127966+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.952387713+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.533002282+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.404658463+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.900234416+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -455,23 +231,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.69293557+02:00"
-=======
-    created: "2025-06-06T11:05:38.219426912+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.951372389+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.531989176+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.403670431+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.899181466+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -489,23 +249,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.691550756+02:00"
-=======
-    created: "2025-06-06T11:05:38.218418297+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.950300077+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.530862439+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.402686729+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.898102232+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -523,23 +267,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.69015124+02:00"
-=======
-    created: "2025-06-06T11:05:38.217269392+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.948684562+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.529651795+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.401607725+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.896153159+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -558,23 +286,7 @@ entries:
   ilf-wallet-entrypoint:
   - apiVersion: v2
     appVersion: v1.0.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.704334013+02:00"
-=======
-    created: "2025-06-06T11:05:38.226236884+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.960745407+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.539178291+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.411081917+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.905569032+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -592,23 +304,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.0.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.702768404+02:00"
-=======
-    created: "2025-06-06T11:05:38.225664678+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.959829774+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.538604789+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.410508273+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.905053055+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -627,23 +323,7 @@ entries:
   ilf-wallet-frontend:
   - apiVersion: v2
     appVersion: v0.1.2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.707468197+02:00"
-=======
-    created: "2025-06-06T11:05:38.228094063+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.962974519+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.540678313+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.412402418+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.907556038+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -661,23 +341,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.706106504+02:00"
-=======
-    created: "2025-06-06T11:05:38.226899208+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.961865424+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.539980897+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.411716926+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.906921989+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -696,23 +360,7 @@ entries:
   rafiki-auth:
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.718607593+02:00"
-=======
-    created: "2025-06-06T11:05:38.23530363+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.974187699+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.547459303+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.418953507+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.91341133+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -732,23 +380,7 @@ entries:
     version: 0.9.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.716915044+02:00"
-=======
-    created: "2025-06-06T11:05:38.234496157+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.972683286+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.546627927+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.418092423+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.912511923+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -768,23 +400,7 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.715624203+02:00"
-=======
-    created: "2025-06-06T11:05:38.233591516+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.971187452+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.545655978+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.417201492+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.911686375+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -804,23 +420,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.714458522+02:00"
-=======
-    created: "2025-06-06T11:05:38.232809809+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.969726055+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.544849596+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.416376097+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.910946066+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -840,23 +440,7 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.713230044+02:00"
-=======
-    created: "2025-06-06T11:05:38.231826541+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.968241429+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.543981619+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.415487207+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.910038777+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -876,23 +460,7 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.711502451+02:00"
-=======
-    created: "2025-06-06T11:05:38.23093401+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.965939134+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.542450813+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.414065168+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.90921146+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -912,23 +480,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.709325033+02:00"
-=======
-    created: "2025-06-06T11:05:38.229199632+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.964254819+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.541459038+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.413221042+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.908366482+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -947,41 +499,13 @@ entries:
   rafiki-backend:
   - apiVersion: v2
     appVersion: v1.1.2-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.719540479+02:00"
-=======
-    created: "2025-06-06T11:05:38.236371907+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.97537637+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.548348951+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.419840736+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.914330797+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
       version: 0.3.3
     description: Rafiki Backend Helm chart for Kubernetes
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    digest: 4dcd2872fc7227d0a8549193231e999368bd26bbc23c190cae16ddce206f9dc4
-=======
-    digest: 5e42816bc5cc917182ec874c7f21b1af9305d4e9a35c9b8ab7125dfd125e4fa0
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    digest: e0111d93a5326a7893f144b2bf3ef4c243297432f067af33f0c8d59c14dec2be
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    digest: 067e5d527592d0211c66c6ee7064d6dd59245806ed4cc8d13241207d2b8c3f7b
->>>>>>> 819f47d (fix: regenerate package and index)
+    digest: dbf0fc6dfe7d987d6c88d8b3db33a8ae702b46b40e68e49314d01a034696e1ca
     home: https://github.com/interledger/rafiki
     maintainers:
     - email: tadej.golobic@gatehub.net
@@ -995,23 +519,7 @@ entries:
     version: 0.10.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.746358851+02:00"
-=======
-    created: "2025-06-06T11:05:38.245771509+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.984814072+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.557593853+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.429137554+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.923570676+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1031,23 +539,7 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.744517825+02:00"
-=======
-    created: "2025-06-06T11:05:38.24497453+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.983978539+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.556780506+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.428320001+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.922705963+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1067,23 +559,7 @@ entries:
     version: 0.8.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.741062915+02:00"
-=======
-    created: "2025-06-06T11:05:38.244206316+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.983186236+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.555985743+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.42753621+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.921917746+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1103,23 +579,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.737524285+02:00"
-=======
-    created: "2025-06-06T11:05:38.243389083+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.98237406+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.555181948+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.426743635+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.920975887+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1139,23 +599,7 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.733219861+02:00"
-=======
-    created: "2025-06-06T11:05:38.242598771+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.981493116+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.554291839+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.425875909+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.920060723+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1175,23 +619,7 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.730141681+02:00"
-=======
-    created: "2025-06-06T11:05:38.241810893+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.98062656+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.553407505+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.42491627+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.919246967+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1211,23 +639,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.728394112+02:00"
-=======
-    created: "2025-06-06T11:05:38.24050697+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.979679779+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.551546864+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.423735338+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.918450888+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1247,23 +659,7 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.724700506+02:00"
-=======
-    created: "2025-06-06T11:05:38.23889186+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.978067427+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.550742396+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.422225886+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.917416378+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1283,23 +679,7 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.723071684+02:00"
-=======
-    created: "2025-06-06T11:05:38.237995825+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.977026783+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.549925756+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.421419106+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.916523624+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1319,23 +699,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.721774531+02:00"
-=======
-    created: "2025-06-06T11:05:38.237171777+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.976198639+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.549133329+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.420616775+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.915665109+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1354,23 +718,7 @@ entries:
   rafiki-boutique-backend:
   - apiVersion: v2
     appVersion: v0.1.62
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.747674581+02:00"
-=======
-    created: "2025-06-06T11:05:38.246358394+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.985413622+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.558313507+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.429739276+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.924399547+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1389,23 +737,7 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: v0.1.58
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.749421873+02:00"
-=======
-    created: "2025-06-06T11:05:38.246946381+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.986016357+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.558929532+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.430356713+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.925354748+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1425,23 +757,7 @@ entries:
   rafiki-boutique-frontend:
   - apiVersion: v2
     appVersion: v0.1.62
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.7537563+02:00"
-=======
-    created: "2025-06-06T11:05:38.248414401+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.987133516+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.56006337+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.43217062+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.926524716+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1460,23 +776,7 @@ entries:
     version: 0.1.15
   - apiVersion: v2
     appVersion: v0.1.58
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.751587354+02:00"
-=======
-    created: "2025-06-06T11:05:38.247866884+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.98657245+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.559492389+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.431000327+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.925977572+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1496,23 +796,7 @@ entries:
   rafiki-frontend:
   - apiVersion: v2
     appVersion: v1.1.1-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.760323501+02:00"
-=======
-    created: "2025-06-06T11:05:38.251272314+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.9901185+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.562769867+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.434432969+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.92866265+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1532,23 +816,7 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.758604764+02:00"
-=======
-    created: "2025-06-06T11:05:38.250657551+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.989494469+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.562200494+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.433861586+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.928129195+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1568,23 +836,7 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.756998077+02:00"
-=======
-    created: "2025-06-06T11:05:38.250109436+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.98892432+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.561502156+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.433295272+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.927588281+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1604,23 +856,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.755159695+02:00"
-=======
-    created: "2025-06-06T11:05:38.249499529+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.988294878+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.56062056+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.432729551+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.927054398+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1639,7 +875,7 @@ entries:
   rafiki-money-backend:
   - apiVersion: v2
     appVersion: v0.1.64
-    created: "2025-06-10T13:30:16.771905037+02:00"
+    created: "2025-06-10T13:32:37.934354057+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1659,23 +895,7 @@ entries:
     version: 0.0.49
   - apiVersion: v2
     appVersion: v0.1.63
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.770719303+02:00"
-=======
-    created: "2025-06-06T11:05:38.25566475+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.994579679+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.567231606+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.439095099+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.933136945+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1695,23 +915,7 @@ entries:
     version: 0.0.48
   - apiVersion: v2
     appVersion: v0.1.62
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.768954464+02:00"
-=======
-    created: "2025-06-06T11:05:38.254951153+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.99384041+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.566491346+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.438236655+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.932223706+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1731,23 +935,7 @@ entries:
     version: 0.0.47
   - apiVersion: v2
     appVersion: v0.1.61
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.76739609+02:00"
-=======
-    created: "2025-06-06T11:05:38.254229989+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.993096974+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.565742113+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.437477305+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.931506282+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1767,23 +955,7 @@ entries:
     version: 0.0.46
   - apiVersion: v2
     appVersion: v0.1.60
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.765996723+02:00"
-=======
-    created: "2025-06-06T11:05:38.253504875+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.992342713+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.56499695+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.436741551+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.930783858+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1803,23 +975,7 @@ entries:
     version: 0.0.45
   - apiVersion: v2
     appVersion: v0.1.59
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.764280102+02:00"
-=======
-    created: "2025-06-06T11:05:38.252787374+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.991602515+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.564249569+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.435998192+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.930077446+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1839,23 +995,7 @@ entries:
     version: 0.0.44
   - apiVersion: v2
     appVersion: v0.1.58
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.762471901+02:00"
-=======
-    created: "2025-06-06T11:05:38.252065877+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.99086881+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.56350595+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.435215422+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.929371841+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1876,7 +1016,7 @@ entries:
   rafiki-money-frontend:
   - apiVersion: v2
     appVersion: v0.1.64
-    created: "2025-06-10T13:30:16.77727211+02:00"
+    created: "2025-06-10T13:32:37.936672972+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1896,23 +1036,7 @@ entries:
     version: 0.0.43
   - apiVersion: v2
     appVersion: v0.1.62
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.776296905+02:00"
-=======
-    created: "2025-06-06T11:05:38.2580772+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.996750898+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.569012017+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.441987228+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.936099744+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1932,23 +1056,7 @@ entries:
     version: 0.0.42
   - apiVersion: v2
     appVersion: v0.1.59
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.77519674+02:00"
-=======
-    created: "2025-06-06T11:05:38.256963992+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.995766833+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.568394771+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.441134215+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.935515087+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1968,23 +1076,7 @@ entries:
     version: 0.0.41
   - apiVersion: v2
     appVersion: v0.1.58
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    created: "2025-06-10T13:30:16.773951835+02:00"
-=======
-    created: "2025-06-06T11:05:38.256350074+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-    created: "2025-06-06T11:08:01.995185884+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-    created: "2025-06-06T11:11:41.567817878+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-    created: "2025-06-06T11:13:30.439885276+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+    created: "2025-06-10T13:32:37.934942189+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -2002,20 +1094,4 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/rafiki-money-frontend-0.0.40.tgz
     version: 0.0.40
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-generated: "2025-06-10T13:30:16.676280477+02:00"
-=======
-generated: "2025-06-06T11:05:38.211445038+02:00"
->>>>>>> 5a7b948 (fix: corrected url)
-=======
-generated: "2025-06-06T11:08:01.940490382+02:00"
->>>>>>> 26f9d61 (fix: corrected secret to be called pvk.pem)
-=======
-generated: "2025-06-06T11:11:41.523937389+02:00"
->>>>>>> ff390fa (fix: regenerate package and index)
-=======
-generated: "2025-06-06T11:13:30.395650213+02:00"
->>>>>>> 819f47d (fix: regenerate package and index)
+generated: "2025-06-10T13:32:37.891144016+02:00"
