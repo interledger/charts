@@ -78,15 +78,15 @@ key:
   # the pem file. It will be stored in a secret. Chart will fail if not provided.
   # Can be generated like this
   #   openssl genpkey -algorithm Ed25519 -out private.pem
-  #   openssl pkey -in private.pem -pubout -out public.pem
   #   echo "pvk:"
   #   echo -n "$(cat private.pem)" | base64 -w0
-  #   echo "pub:"
-  #   echo -n "$(cat public.pem)" | base64 -w0
+  #
+  # Note that the public key can always be derived from the private key like this
+  # openssl pkey -in private.pem -pubout -out public.pem
+  #
   # If empty string like this is provided, this chart will spawn a job to generate
   # a new key pair and store it in a secret for you.
   pvk: ''
-  pub: ''
 
 # The secret to generate request header signatures for webhook event requests.
 quoteSignatureSecret: "overridethisValue"

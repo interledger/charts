@@ -7,7 +7,6 @@ release:
 set:
   key:
     pvk: ''
-    pub: ''   
 tests:
   - it: A job should be created to generate keys
     documentSelector:

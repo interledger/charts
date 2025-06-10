@@ -9,7 +9,6 @@ tests:
       key:
         id: rafiki
         pvk: 'SOME VALUE'
-        pub: 'SOME OTHER VALUE'
     documentSelector:
       kind: Deployment
     asserts:
