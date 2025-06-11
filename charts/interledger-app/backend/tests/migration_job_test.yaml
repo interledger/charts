@@ -1,0 +1,70 @@
+suite: Interledger App - Migration job spawn
+templates:
+  - initialisation.yaml
+set:
+  fullnameOverride: wallet-backend
+  initialisation:
+    image:
+      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+      name: backend
+      tag: manual_main
+    serviceAccountName: myServiceAccount
+    host: "cloudsql-db-admin"
+    port: "5432"
+    backend:
+      dbname: "wallet_backend"
+      username: "wallet_backend_user"
+      password: "wallet_backend_password"
+    pacioli:
+      dbname: "pacioli"
+      username: "pacioli_user"
+      password: "pacioli_password"
+    rafiki_backend:
+      dbname: "rafiki_backend"
+      username: "rafiki_backend_user"
+      password: "rafiki_backend_password"
+    rafiki_auth:
+      dbname: "rafiki_auth"
+      username: "rafiki_auth_user"
+      password: "rafiki_auth_password"
+release:
+  name: wallet-backend
+tests:
+  - it: 'Should have a migration job created with the correct image and environment variables'
+    documentSelector:
+      path: kind
+      value: Job
+    asserts:
+      - equal:
+          path: metadata.name
+          value: wallet-backend-migration
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:manual_main
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: "postgres://wallet_backend_user:wallet_backend_password@cloudsql-db-admin:5432/wallet_backend?sslmode=disable"
+      - equal:
+          path: spec.template.spec.containers[0].env[1].value
+          value: "postgres://wallet_backend_user:wallet_backend_password@cloudsql-db-admin:5432/wallet_backend?sslmode=disable"
+      - equal:
+          path: spec.template.spec.containers[0].env[2].value
+          value: "postgres://pacioli_user:pacioli_password@cloudsql-db-admin:5432/pacioli?sslmode=disable"
+      - equal:
+          path: spec.template.spec.containers[0].env[3].value
+          value: "postgres://pacioli_user:pacioli_password@cloudsql-db-admin:5432/pacioli?sslmode=disable"
+      - equal:
+          path: spec.template.spec.containers[0].env[4].value
+          value: "http://kratos.wallet:4433"
+      - equal:
+          path: spec.template.spec.containers[0].env[5].value
+          value: "stderr"
+      - equal: 
+          path: spec.template.spec.containers[0].args[0]
+          value: migrate

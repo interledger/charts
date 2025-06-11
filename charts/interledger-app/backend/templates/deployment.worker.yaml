@@ -1,0 +1,16 @@
+{{- define "interledger-app-backend.deployment.worker" -}}
+{{- $top := first . -}}
+metadata:
+    name: {{ include "common.fullname" $top }}-worker
+spec:
+    selector:
+        matchLabels:
+            app.kubernetes.io/instance: wallet-backend-worker
+            app.kubernetes.io/name: wallet-backend-worker
+    template:
+        metadata:
+            labels:
+                app.kubernetes.io/instance: wallet-backend-worker
+                app.kubernetes.io/name: wallet-backend-worker
+{{- end }}
+{{- include "common.deployment" (list . .Values.worker .Values.worker.autoscaling .Values.worker.serviceAccount "interledger-app-backend.deployment.worker") }}

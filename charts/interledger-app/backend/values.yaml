@@ -5,6 +5,37 @@
 # TODO: investigate if worker and backend server db roles should be any different then they should also use different users
 # 
 #
+
+# Configuration that will be used during the migrations.
+# Migrations will run as a separate job before the application starts using helm hooks.
+# See templates/initialisation.yaml for more details on how the job is created.
+initialisation: 
+  serviceAccountName: ""
+  host: "localhost"
+  port: "5432"
+  backend:
+    dbname: "wallet_backend"
+    username: "wallet_backend"
+    password: "MiiS4iCvb1i0GPIYKMtAdukrt8fGrj34"
+  pacioli:
+    dbname: "pacioli"
+    username: "wallet_backend"
+    password: "MiiS4iCvb1i0GPIYKMtAdukrt8fGrj34"
+  rafiki_backend:
+    dbname: "rafiki_backend"
+    username: "rafiki_backend"
+    password: "dNTqetDocQZBEUXu8WpcRq3tkjAuFB7e"
+  rafiki_auth:
+    dbname: "rafiki_auth"
+    username: "rafiki_auth"
+    password: "6NNoEeJAdcYTpcVjQrytjXcUm6gN1URU"
+
+  # What image should be used for the initialisation job.
+  image:
+    repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+    name: backend
+    tag: manual_main
+
 database:
   host: "postgresql-host"
   port: "5432"
@@ -134,20 +165,83 @@ config:
     jwk: "000000000000000000000000"
     client_id: "000000000000000000000000"
 
-replicaCount: 1
-
-nodeSelector: {}
-
-serviceAccount:
-  create: false
-  annotations: {}
-  name: ""
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 2
-  memoryUtilizationPercentage: 80
+server:
+  replicaCount: 1
+  nodeSelector: {}
+  serviceAccount:
+    create: false
+    annotations: {}
+    name: ""
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+    memoryUtilizationPercentage: 80
+  # Warning: Please remember to update all tag versions to the same version, always!
+  containers:
+    # Backend server task
+    - name: server
+      image:
+        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+        name: backend
+        tag: manual_main
+        pullPolicy: Always
+      args:
+        - "start"
+      envFrom:
+        - configMapRef:
+            name: "{{ .Release.Name }}"
+        - secretRef:
+            name: "{{ .Release.Name }}"
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 200m
+        limits:
+          memory: 512Mi
+          cpu: 400m
+      ports:
+        - name: grpc
+          containerPort: 8443
+        - name: admin
+          containerPort: 8448
+        - name: http
+          containerPort: 8080
+worker:
+  replicaCount: 1
+  nodeSelector: {}
+  serviceAccount:
+    create: false
+    annotations: {}
+    name: ""
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+    memoryUtilizationPercentage: 80
+  # Warning: Please remember to update all tag versions to the same version, always!
+  containers:
+    # Temporal related worker task
+    - name: worker
+      image:
+        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+        name: backend
+        tag: manual_main
+        pullPolicy: Always
+      args:
+        - "worker"
+      envFrom:
+        - configMapRef:
+            name: "{{ .Release.Name }}"
+        - secretRef:
+            name: "{{ .Release.Name }}"
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 200m
+        limits:
+          memory: 512Mi
+          cpu: 400m
 
 service:
   - name: service
@@ -171,78 +265,3 @@ configmap:
 
 secrets:
   - files/secret.yaml
-
-# Warning: Please remember to update all tag versions to the same version, always!
-
-initContainers:
-  - name: backend-migrations
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: backend
-      tag: manual_main
-      pullPolicy: Always
-    args:
-      - "migrate"
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 200m
-      limits:
-        memory: 512Mi
-        cpu: 400m
-
-containers:
-  # Backend server task
-  - name: server
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: backend
-      tag: manual_main
-      pullPolicy: Always
-    args:
-      - "start"
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 200m
-      limits:
-        memory: 512Mi
-        cpu: 400m
-    ports:
-      - name: grpc
-        containerPort: 8443
-      - name: admin
-        containerPort: 8448
-      - name: http
-        containerPort: 8080
-  # Temporal related worker task
-  - name: worker
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: backend
-      tag: manual_main
-      pullPolicy: Always
-    args:
-      - "worker"
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 200m
-      limits:
-        memory: 512Mi
-        cpu: 400m
