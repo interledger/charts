@@ -39,8 +39,6 @@ spec:
               value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
             - name: PACIOLI_DB_URL
               value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
-            - name: KRATOS_URL
-              value: "{{ print $top.Values.config.kratos.url }}"
             - name: LOG_OUTPUT_PATH
               value: "stderr"
           args: ["migrate"]
