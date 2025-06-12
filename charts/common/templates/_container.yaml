@@ -3,20 +3,35 @@
 {{- $container := index . 1 }}
 {{- $pod := index . 2 }}
 {{- $image := $container.image | default (dict) }}
-{{- $imageDigest := $image.digest }}
+{{- if not $image.name }}
+    {{- $_ := set $image "name" ($top.Chart.Name | default $top.Chart.Name) }}
+{{- end }}
+{{- if not $image.repository }}
+    {{- $_ := set $image "repository" "ghcr.io/interledger" }}
+{{- end }}
+{{- if and $image.digest $image.tag }}
+    {{- fail "You cannot set both image.digest and image.tag at the same time. Please use one or the other." }}
+{{- end }}
+{{- if not $image.tag }}
+    {{- $_ := set $image "tag" ($top.Chart.AppVersion | default "latest") }}
+    {{- if $top.Values.versionOverride }}
+      {{- /* If versionOverride is set, use it as the tag */ -}}
+      {{- $_ := set $image "tag" $top.Values.versionOverride }}
+    {{- end }}
+{{- end }}
+{{- if not $container.imagePullPolicy }}
+  {{ $_ := set $container "imagePullPolicy" "IfNotPresent" }}
+{{- end }}
 - name: {{ $container.name | default $top.Chart.Name }}
   securityContext:
     {{- toYaml $top.Values.securityContext | nindent 4 }}
 
-  {{- if and $container.image $container.image.repository }}
-  image: "{{ $container.image.repository }}/{{ $image.name | default $top.Chart.Name }}:{{ $container.image.tag | default "latest" }}"
-  {{- else if $imageDigest}}
-  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}@sha256:{{ $imageDigest }}"
-  {{- else if $top.Values.versionOverride }}
-  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}:{{ $top.Values.versionOverride }}"
+  {{- if $image.digest }}
+  image: {{ print $image.repository "/" $image.name "@sha256:" $image.digest }}
   {{- else }}
-  image: "ghcr.io/interledger/{{ $image.name | default $top.Chart.Name }}:{{ $top.Chart.AppVersion }}"
+  image: {{ print $image.repository "/" $image.name ":" $image.tag }}
   {{- end }}
+
   imagePullPolicy: {{ $container.imagePullPolicy | quote | default "Always" }}
   resources:
     {{- toYaml $container.resources | nindent 4 }}

@@ -1,0 +1,72 @@
+suite: Common - Different ways of specifying the image
+templates:
+  - deployment.yaml
+tests:
+  - it: 'Should generate a container with the specified image'
+    set:
+      containers:
+        - name: test-container
+          image:
+            repository: somewhere/else
+            name: tralala
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].image
+          # The v0.1.0 comes from the appVersion of the chart
+          value: somewhere/else/tralala:v0.1.0
+  - it: 'Should the tag be specified then it should be used'
+    set:
+      containers:
+        - name: test-container
+          image:
+            repository: somewhere/else
+            name: tralala
+            tag: v0.2.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: somewhere/else/tralala:v0.2.0
+  - it: 'Should the repository not be specified then it should default to ghcr.io/interledger'
+    set:
+      containers:
+        - name: test-container
+          image:
+            name: tralala
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/tralala:v0.1.0
+  - it: 'Should the repository and name not be specified then it should default to the chart name'
+    set:
+      containers:
+        - name: test-container
+          image: {}
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/common-unittests:v0.1.0
+  - it: 'Should versionOverride be configured then it should be used as the tag'
+    set:
+      versionOverride: v0.3.0
+      containers:
+        - name: test-container
+          image: {}
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/common-unittests:v0.3.0
+  - it: 'Should digest it should be used as the image'
+    set:
+      containers:
+        - name: test-container
+          image:
+            repository: somewhere/else
+            name: tralala
+            digest: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: somewhere/else/tralala@sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
