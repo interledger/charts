@@ -1,0 +1,46 @@
+{{- define "interledger-app-backend.initialisation" -}}
+{{- $top := first . }}
+{{- $initialisation := $top.Values.initialisation }}
+
+{{/*
+    This template is responsible for creating a Kubernetes Job that runs the
+    initialisation script for the interledger-app backend. It is used to set up
+    the necessary secrets and configurations required for the application to run.
+*/}}
+# templates/initialisation.yaml
+# Job responsible for initialising the interledger-app backend
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "common.fullname" $top }}-migration
+  namespace: {{ $top.Release.Namespace }}
+  {{- include "common.metadata" (list $top) | nindent 2 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      {{- if $initialisation.serviceAccountName }}
+      serviceAccountName: {{ $initialisation.serviceAccountName | quote }}
+      {{- end }}
+      restartPolicy: OnFailure
+      containers:
+        - name: migration
+          image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisation.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: DB_URL_WITH_CERTS
+              value: "{{ print "postgres://" $initialisation.backend.username ":" $initialisation.backend.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.backend.dbname "?sslmode=disable" }}"
+            - name: DB_URL
+              value: "{{ print "postgres://" $initialisation.backend.username ":" $initialisation.backend.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.backend.dbname "?sslmode=disable" }}"    
+            - name: PACIOLI_DB_URL_WITH_CERTS
+              value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
+            - name: PACIOLI_DB_URL
+              value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
+            - name: LOG_OUTPUT_PATH
+              value: "stderr"
+          args: ["migrate"]
+{{- end }}
+{{- include "interledger-app-backend.initialisation" (list . ) | indent 2 }}

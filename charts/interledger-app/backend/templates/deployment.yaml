@@ -1,4 +1,0 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "interledger-app-backend.deployment") }}
-
-{{- define "interledger-app-backend.deployment" -}}
-{{- end }}
