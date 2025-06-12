@@ -225,18 +225,22 @@ service:
   - name: service
     type: ClusterIP
     ports:
-      - port: 8443
-        targetPort: 8443
-        protocol: TCP
-        name: grpc
+      # Private gRPC Server (Used by the Admin Portal)
       - port: 8448
         targetPort: 8448
         protocol: TCP
         name: admin
+      # Handling of webhooks
       - port: 8080
         targetPort: 8080
         protocol: TCP
         name: http
+      # Public gRPC Server (Used by Mobile & External applications)
+      - port: 8443
+        targetPort: 8443
+        protocol: TCP
+        name: grpc
+        appProtocol: HTTP2
 
 configmap:
   - files/config.yaml

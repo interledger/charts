@@ -1,6 +1,8 @@
 {{- define "interledger-app-backend.initialisation" -}}
 {{- $top := first . }}
 {{- $initialisation := $top.Values.initialisation }}
+{{- $globalSelectedTag := $top.Values.versionOverride | default $top.Chart.AppVersion}}
+{{- $initialisationSelectedTag := $initialisation.image.tag | default $globalSelectedTag }}
 
 {{/*
     This template is responsible for creating a Kubernetes Job that runs the
@@ -28,7 +30,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migration
-          image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisation.image.tag }}
+          image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisationSelectedTag }}
           imagePullPolicy: Always
           env:
             - name: DB_URL_WITH_CERTS
