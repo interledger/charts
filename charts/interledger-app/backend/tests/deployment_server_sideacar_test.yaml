@@ -1,0 +1,32 @@
+suite: Interledger App - Setting a sidecar for server
+templates:
+  - deployment.server.yaml
+set:
+  fullnameOverride: wallet-backend
+  server:
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: latest
+          repository: gcr.io
+        args:
+          - "${cloudsql_connection_name}"
+          - "--structured-logs"
+        securityContext:
+          runAsNonRoot: true
+
+release:
+  name: wallet-backend
+
+tests:
+  - it: 'Given a sidecar configured for the server, the rendered deployment should include the sidecar'
+    documentSelector:
+      template: deployment.server.yaml
+      path: metadata.name
+      value: wallet-backend-server
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: cloud-sql-proxy
+

@@ -1,0 +1,32 @@
+suite: Interledger App - Setting a sidecar for worker
+templates:
+  - deployment.worker.yaml
+set:
+  fullnameOverride: wallet-backend
+  worker:
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: latest
+          repository: gcr.io
+        args:
+          - "${cloudsql_connection_name}"
+          - "--structured-logs"
+        securityContext:
+          runAsNonRoot: true
+
+release:
+  name: wallet-backend
+
+tests:
+  - it: 'Given a sidecar configured for the worker, the rendered deployment should include the sidecar'
+    documentSelector:
+      template: deployment.worker.yaml
+      path: metadata.name
+      value: wallet-backend-worker
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: cloud-sql-proxy
+

@@ -172,7 +172,6 @@ server:
     create: false
     annotations: {}
     name: ""
-  # Warning: Please remember to update all tag versions to the same version, always!
   containers:
     # Backend server task
     - name: server
@@ -196,6 +195,18 @@ server:
           containerPort: 8448
         - name: http
           containerPort: 8080
+    # sidecars:
+    #   - name: cloud-sql-proxy
+    #     image:
+    #       name: cloud-sql-connectors/cloud-sql-proxy
+    #       tag: latest
+    #       repository: gcr.io
+    #     args:
+    #       - "${cloudsql_connection_name}"
+    #       - "--structured-logs"
+    #     securityContext:
+    #       runAsNonRoot: true
+
 worker:
   replicaCount: 3
   nodeSelector: {}
@@ -203,7 +214,6 @@ worker:
     create: false
     annotations: {}
     name: ""
-  # Warning: Please remember to update all tag versions to the same version, always!
   containers:
     # Temporal related worker task
     - name: worker
@@ -220,6 +230,17 @@ worker:
         limits:
           memory: 512Mi
           cpu: 400m
+    # sidecars:
+    #   - name: cloud-sql-proxy
+    #     image:
+    #       name: cloud-sql-connectors/cloud-sql-proxy
+    #       tag: latest
+    #       repository: gcr.io
+    #     args:
+    #       - "${cloudsql_connection_name}"
+    #       - "--structured-logs"
+    #     securityContext:
+    #       runAsNonRoot: true
 
 service:
   - name: service
