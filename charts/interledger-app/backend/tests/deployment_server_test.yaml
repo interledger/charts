@@ -17,15 +17,10 @@ set:
         image:
           repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
           name: backend
-          tag: manual_main
+          tag: v3.3.3
           pullPolicy: Always
         args:
           - "start"
-        envFrom:
-          - configMapRef:
-              name: "{{ .Release.Name }}"
-          - secretRef:
-              name: "{{ .Release.Name }}"
         resources:
           requests:
             memory: 128Mi
@@ -88,7 +83,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:manual_main
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v3.3.3
       - equal:
           path: spec.template.spec.containers[0].args[0]
           value: start

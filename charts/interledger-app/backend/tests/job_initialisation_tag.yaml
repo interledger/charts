@@ -1,0 +1,30 @@
+suite: Interledger App - Initialisation job version tag override
+templates:
+  - deployment.worker.yaml
+set:
+  fullnameOverride: wallet-backend
+Chart:
+  appVersion: v9.9.9
+
+tests:
+  - it: 'Given no override used the job should use the appVersion as the tag'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v9.9.9
+  - it: 'Given an override used the job should use the override as the tag'
+    set:
+      versionOverride: v0.2.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v0.2.0
+  - it: 'Given an initialisation tag override used the job should use the override as the tag'
+    set:
+      initialisation:
+        image:
+          tag: v0.3.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v0.3.0

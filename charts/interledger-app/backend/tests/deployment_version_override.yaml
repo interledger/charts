@@ -1,0 +1,21 @@
+suite: Interledger App - Overriding version in values file
+templates:
+  - deployment.worker.yaml
+set:
+  versionOverride: "v10.11.12"
+  fullnameOverride: wallet-backend
+
+release:
+  name: wallet-backend
+
+tests:
+  - it: 'Should create a deployment called wallet-backend-worker'
+    documentSelector:
+      template: deployment.worker.yaml
+      path: metadata.name
+      value: wallet-backend-worker
+    asserts:
+      - equal:
+          path: metadata.name
+          value: wallet-backend-worker
+

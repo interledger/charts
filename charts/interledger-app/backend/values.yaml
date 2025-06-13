@@ -1,14 +1,14 @@
 #
 # Chart for the Interledger App Wallet backend.
 #
-# TODO: init container should use different set of secrets and users than worker and backend
-# TODO: investigate if worker and backend server db roles should be any different then they should also use different users
-# 
-#
 
 # Configuration that will be used during the migrations.
 # Migrations will run as a separate job before the application starts using helm hooks.
 # See templates/initialisation.yaml for more details on how the job is created.
+
+# You can override the version of the image used used across the chart here.
+# versionOverride: "v0.2.0"
+
 initialisation: 
   serviceAccountName: ""
   host: "localhost"
@@ -179,7 +179,6 @@ server:
       image:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
-        tag: manual_main
         pullPolicy: Always
       args:
         - "start"
@@ -211,7 +210,6 @@ worker:
       image:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
-        tag: manual_main
         pullPolicy: Always
       args:
         - "worker"
@@ -227,18 +225,22 @@ service:
   - name: service
     type: ClusterIP
     ports:
-      - port: 8443
-        targetPort: 8443
-        protocol: TCP
-        name: grpc
+      # Private gRPC Server (Used by the Admin Portal)
       - port: 8448
         targetPort: 8448
         protocol: TCP
         name: admin
+      # Handling of webhooks
       - port: 8080
         targetPort: 8080
         protocol: TCP
         name: http
+      # Public gRPC Server (Used by Mobile & External applications)
+      - port: 8443
+        targetPort: 8443
+        protocol: TCP
+        name: grpc
+        appProtocol: HTTP2
 
 configmap:
   - files/config.yaml
