@@ -78,6 +78,14 @@ secrets:
 # this chart for your purposes.
 containers:
   - name: server
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 3007
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3007
     resources:
       requests:
         memory: 128Mi
