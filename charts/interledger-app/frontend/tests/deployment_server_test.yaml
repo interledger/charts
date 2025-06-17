@@ -1,0 +1,26 @@
+suite: Wallet Frontend Deployment - Default values file
+templates:
+  - deployment.yaml
+
+release:
+  name: myrelease
+tests:
+  - it: 'Given fullnameOverride then rename the deployment accordingly'
+    set:
+      fullnameOverride: wallet-frontend
+    documentSelector:
+      path: kind
+      value: Deployment
+    asserts:
+      - equal:
+          path: metadata.name
+          value: wallet-frontend
+  - it: 'Should provide readinessProbe and livenessProbe in the deployment'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /healthz
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /healthz
+

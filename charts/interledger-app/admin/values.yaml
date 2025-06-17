@@ -44,7 +44,6 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: botanist
-      tag: manual_main
       pullPolicy: Always
     envFrom:
       - configMapRef:
@@ -56,6 +55,14 @@ containers:
       limits:
         memory: 512Mi
         cpu: 400m
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3000
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 3000
     ports:
       - name: http
         containerPort: 3000
