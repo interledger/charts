@@ -1,9 +1,6 @@
 #
 # Chart for the Interledger App Wallet Frontend called Protea.
 #
-# TODO: init container should use different set of secrets and users than worker and backend
-# TODO: investigate if worker and backend server db roles should be any different then they should also use different users
-# 
 
 config:
   backend:
@@ -45,21 +42,8 @@ config:
 
   environment: dev
 
-replicaCount: 1
-
+replicaCount: 3
 nodeSelector: {}
-
-serviceAccount:
-  create: false
-  annotations: {}
-  name: ""
-
-autoscaling:
-  enabled: false
-  minReplicas: 2
-  maxReplicas: 1
-  cpuUtilizationPercentage: 80
-  memoryUtilizationPercentage: 80
 
 service:
   - name: service
@@ -76,21 +60,21 @@ configmap:
 secrets:
   - files/secret.yaml
 
-# Warning: Please remember to update all tag versions to the same version, always!
-
 containers:
   # Frontend
   - name: frontend
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: protea
-      tag: manual_main
-      imagePullPolicy: Always
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: "{{ .Release.Name }}"
+      pullPolicy: Always
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3000
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 3000
     ports:
       - name: http
         containerPort: 3000
