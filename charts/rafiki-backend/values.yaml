@@ -253,6 +253,14 @@ containers:
       limits:
         memory: 2048Mi
         cpu: 4
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 3001
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3001
     ports:
       - name: open-payments
         containerPort: 3000
