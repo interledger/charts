@@ -413,79 +413,79 @@ worker:
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "twilioAccountToken"
+                key: "{{ .Values.config.twilio.account_token_ref }}"
         - secretRef:
             name: ZENDESK_TOKEN
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "zendeskToken"
+                key: "{{ .Values.config.zenddesk.token_ref }}"
         - secretRef:
             name: SENDGRID_API_KEY
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "sendgridApiKey"
+                key: "{{ .Values.config.sendgrid.api_key_ref }}"
         - secretRef:
             name: PUSHER_ADDR
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "pusherAddr"
+                key: "{{ .Values.config.pusher.addr_ref }}"
         - secretRef:
             name: SEGMENT_KEY
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "segmentKey"
+                key: "{{ .Values.config.segment.key_ref }}"
         - secretRef:
             name: PERSONA_TOKEN
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "personaToken"
+                key: "{{ .Values.config.persona.token_ref }}"
         - secretRef:
             name: PERSONA_WEBHOOK_TOKEN
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "personaWebhookToken"
+                key: "{{ .Values.config.persona.webhook_token_ref }}"
         - secretRef:
             name: BASIS_THEORY_API_KEY
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "basisTheoryApiKey"
+                key: "{{ .Values.config.basis_theory.api_key_ref }}"
         - secretRef:
             name: BT_TOKEN
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "basisTheoryToken"
+                key: "{{ .Values.config.basis_theory.token_ref }}"
         - secretRef:
             name: CDN_KEY
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "cdnKey"
+                key: "{{ .Values.config.cdn.key_ref }}"
         - secretRef:
             name: SENTRY_DSN
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "sentryDSN"
+                key: "{{ .Values.config.sentry.dsn_ref }}"
         - secretRef:
             name: XAGO_API_SECRET
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "xagoApiSecret"
+                key: "{{ .Values.config.xago.api_secret_ref }}"
         - secretRef:
             name: XAGO_API_PUBLIC_KEY
             valueFrom:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "xagoApiPublicKey"
+                key: "{{ .Values.config.xago.api_public_key_ref }}"
         - secretRef:
             name: ASTRA_WEBHOOK_BEARER_TOKEN
             valueFrom:
@@ -564,6 +564,12 @@ worker:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.pti.client_id_ref }}"
+        - secretRef:
+            name: OTEL_EXPORTER_OTLP_HEADERS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.otel.exporter_otlp_headers_ref }}"
       resources:
         requests:
           memory: 128Mi
