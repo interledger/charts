@@ -76,7 +76,7 @@ config:
 
   otel:
     exporter_otlp_endpoint: "grpc://api.honeycomb.io:443"
-    exporter_otlp_headers: "x-honeycomb-team=0000000000000000000000"
+    exporter_otlp_headers_ref: "otelExporterHeaders" # Value will be something like "x-honeycomb-team=0000000000000000000000"
     service_name: "backend"
 
   vault:
@@ -340,6 +340,12 @@ server:
               secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.pti.client_id_ref }}"
+        - secretRef:
+            name: OTEL_EXPORTER_OTLP_HEADERS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.otel.exporter_otlp_headers_ref }}"
 
       resources:
         requests:
