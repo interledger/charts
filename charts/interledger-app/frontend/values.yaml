@@ -68,7 +68,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: protea
-      imagePullPolicy: Always
+    imagePullPolicy: Always
     livenessProbe:
       httpGet:
         path: /healthz

@@ -26,7 +26,7 @@ initialisation:
   image:
     repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
     name: backend
-    imagePullPolicy: Always
+  imagePullPolicy: Always
 
 database:
   host: "postgresql-host"
@@ -149,7 +149,7 @@ server:
       image:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
-        imageimagePullPolicy: Always
+      imagePullPolicy: Always
 
       livenessProbe:
         httpGet:
@@ -368,7 +368,7 @@ worker:
       image:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
-        imagePullPolicy: Always
+      imagePullPolicy: Always
       args:
         - "worker"
       livenessProbe:
