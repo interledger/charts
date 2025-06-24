@@ -44,7 +44,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: botanist
-      pullPolicy: Always
+      imagePullPolicy: Always
     envFrom:
       - configMapRef:
           name: "{{ .Release.Name }}"

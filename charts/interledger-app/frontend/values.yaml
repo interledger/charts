@@ -66,7 +66,7 @@ containers:
     image:
       repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
       name: protea
-      pullPolicy: Always
+      imagePullPolicy: Always
     livenessProbe:
       httpGet:
         path: /healthz
@@ -75,6 +75,11 @@ containers:
       httpGet:
         path: /healthz
         port: 3000
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
     ports:
       - name: http
         containerPort: 3000

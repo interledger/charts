@@ -14,46 +14,31 @@ initialisation:
   host: "localhost"
   port: "5432"
   backend:
-    dbname: "wallet_backend"
-    username: "wallet_backend"
-    password: "MiiS4iCvb1i0GPIYKMtAdukrt8fGrj34"
+    urlSecretRef: "db-backend-url"
   pacioli:
-    dbname: "pacioli"
-    username: "wallet_backend"
-    password: "MiiS4iCvb1i0GPIYKMtAdukrt8fGrj34"
+    urlSecretRef: "db-pacioli-url"
   rafiki_backend:
-    dbname: "rafiki_backend"
-    username: "rafiki_backend"
-    password: "dNTqetDocQZBEUXu8WpcRq3tkjAuFB7e"
+    urlSecretRef: "db-rafiki-backend-url"
   rafiki_auth:
-    dbname: "rafiki_auth"
-    username: "rafiki_auth"
-    password: "6NNoEeJAdcYTpcVjQrytjXcUm6gN1URU"
+    urlSecretRef: "db-rafiki-auth-url"
 
   # What image should be used for the initialisation job.
   image:
     repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
     name: backend
+    imagePullPolicy: Always
 
 database:
   host: "postgresql-host"
   port: "5432"
   backend:
-    dbname: "backend"
-    username: "backend"
-    password: "backend"
+    urlSecretRef: "db-backend-url"
   pacioli:
-    dbname: "pacioli"
-    username: "pacioli"
-    password: "pacioli"
+    urlSecretRef: "db-pacioli-url"
   rafiki_backend:
-    dbname: "rafiki_backend"
-    username: "rafiki_backend"
-    password: "rafiki_backend"
+    urlSecretRef: "db-rafiki-backend-url"
   rafiki_auth:
-    dbname: "rafiki_auth"
-    username: "rafiki_auth"
-    password: "rafiki_auth"
+    urlSecretRef: "db-rafiki-auth-url"
 
 config:
   environment: dev
@@ -71,11 +56,11 @@ config:
   twilio:
     account_sid: "0000000000000000000000000000000000"
     service_sid: "VA00000000000000000000000000000000"
-    account_token: "000000000000000000000000"
+    account_token_ref: "twilio-account-token"
 
   zenddesk:
     user: "support@interledger-app.dev"
-    token: "0000000000000000000000"
+    token_ref: "zendesk-token"
 
   kratos:
     url: "http://kratos.wallet:4433"
@@ -98,71 +83,57 @@ config:
     url: "http://vault:8200"
     transit_engine_path: "transit/prod/backend"
 
-  twitter:
-    redirect_url: "https://fynbos.app/connect/twitter"
-    client_id: "Q2pzaXpDN0VPN29MU09VQ0tNYmo6MTpjaQ"
-    client_secret: "00000000000000000000000000000"
-    bearer_token: "000000000000000000000000"
-
-  discord:
-    redirect_url: "https://fynbos.app/connect/interledger-app"
-    client_secret: "000000000000000000000000"
-
   astra:
-    client_id: "000000000000000000000000"
-    client_secret: "000000000000000000000000"
-    webhook_bearer_token: "000000000000000000000000"
+    client_id_ref: "astra-client-id"
+    client_secret_ref: "astra-client-secret"
+    webhook_bearer_token_ref: "astra-webhook-bearer-token"
 
   gatehub:
-    app_id: "000000000000000000000000"
-    secret: "000000000000000000000000"
-    webhook_secret: "000000000000000000000000"
+    app_id_ref: "gatehub-app"
+    secret_ref: "gatehub-secret"
+    webhook_secret_ref: "gatehub-webhook-secret"
 
   chimoney:
-    webhook_secret: "000000000000000000000000"
-    token: "000000000000000000000000"
-
-  dato:
-    api_token: "000000000000000000000000"
+    webhook_secret_ref: "chimoney-webhook-secret"
+    token_ref: "chimoney-token"
 
   sendgrid:
-    api_key: "000000000000000000000000"
+    api_key_ref: "sendgrid-api-key"
 
-  smarty:
-    auth_id: "000000000000000000000000"
-    auth_token: "000000000000000000000000"
 
   pusher:
-    addr: "000000000000000000000000"
+    addr_ref: "pusher-addr"
 
   segment:
-    key: "000000000000000000000000"
+    key_ref: "segment-key"
 
   slack:
-    token: "000000000000000000000000"
-
+    client_id_ref: "slack-client-id"
+    client_secret_ref: "slack-client-secret"
+    signing_secret_ref: "slack-signing-secret"
   
   basis_theory:
-    api_key: "000000000000000000000000"
-    token: "000000000000000000000000"
+    api_key_ref: "basis-theory-api-key"
+    token_ref: "basis-theory-token"
 
   persona:
-    token: "000000000000000000000000"
-    webhook_token: "000000000000000000000000"
+    token_ref: "persona-token"
+    webhook_token_ref: "persona-webhook-token"
 
   cdn:
-    key: "000000000000000000000000"
+    key_ref: "cdn-key"
   
   xago:
-    api_secret: "000000000000000000000000"
-    api_public_key: "000000000000000000000000"
+    api_secret_ref: "xago-api-secret"
+    api_public_key_ref: "xago-api-public-key"
 
   sentry:
-    dsn: "000000000000000000000000"
+    dsn_ref: "sentry-dsn"
 
-  pti:
-    jwk: "000000000000000000000000"
-    client_id: "000000000000000000000000"
+  
+  pti: # FIANT configuration
+    jwk_ref: "pti-jwk"
+    client_id_ref: "pti-client-id"
 
 server:
   replicaCount: 3
@@ -171,15 +142,14 @@ server:
     create: false
     annotations: {}
     name: ""
+
   containers:
     # Backend server task
     - name: server
       image:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
-        imagePullPolicy: Always
-      args:
-        - "start"
+        imageimagePullPolicy: Always
       livenessProbe:
         httpGet:
           path: /healthz
@@ -188,6 +158,187 @@ server:
         httpGet:
           path: /healthz
           port: 8448
+      args:
+        - "start"
+      envFrom:
+        - configmapRef:
+            # Ensures that the configMap reference name is the one generated by the common chart
+            name: '{{ include "common.fullname" . }}'
+        - secretRef:
+            name: DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.backend.urlSecretRef }}"
+        - secretRef:
+            name: PACIOLI_DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.pacioli.urlSecretRef }}"
+        - secretRef:
+            name: RAFIKI_DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+        - secretRef:
+            name: TWILIO_ACCOUNT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "twilio-account-token"
+        - secretRef:
+            name: ZENDESK_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "zendesk-token"
+        - secretRef:
+            name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "sendgrid-api-key"
+        - secretRef:
+            name: PUSHER_ADDR
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "pusher-addr"
+        - secretRef:
+            name: SEGMENT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "segment-key"
+        - secretRef:
+            name: PERSONA_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "persona-token"
+        - secretRef:
+            name: PERSONA_WEBHOOK_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "persona-webhook-token"
+        - secretRef:
+            name: BASIS_THEORY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "basis-theory-api-key"
+        - secretRef:
+            name: BT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "basis-theory-token"
+        - secretRef:
+            name: CDN_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "cdn-key"
+        - secretRef:
+            name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "sentry-dsn"
+        - secretRef:
+            name: XAGO_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "xago-api-secret"
+        - secretRef:
+            name: XAGO_API_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "xago-api-public-key"
+        - secretRef:
+            name: ASTRA_WEBHOOK_BEARER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.webhook_bearer_token_ref }}"
+        - secretRef:
+            name: ASTRA_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.client_id_ref }}"
+        - secretRef:
+            name: ASTRA_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.client_secret_ref }}"
+        - secretRef:
+            name: SLACK_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.client_id_ref }}"
+        - secretRef:
+            name: SLACK_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.client_secret_ref }}"
+        - secretRef:
+            name: SLACK_SIGNING_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.signing_secret_ref }}"
+        - secretRef:
+            name: GATEHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.app_id_ref }}"
+        - secretRef:
+            name: GATEHUB_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.secret_ref }}"
+        - secretRef:
+            name: GATEHUB_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.webhook_secret_ref }}"
+        - secretRef:
+            name: CHIMONEY_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.chimoney.webhook_secret_ref }}"
+        - secretRef:
+            name: CHIMONEY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.chimoney.token_ref }}"
+        - secretRef:
+            name: PTI_JWK
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.pti.jwk_ref }}"
+        - secretRef:
+            name: PTI_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.pti.client_id_ref }}"
+
       resources:
         requests:
           memory: 128Mi
@@ -209,6 +360,7 @@ worker:
     create: false
     annotations: {}
     name: ""
+
   containers:
     # Temporal related worker task
     - name: worker
@@ -218,6 +370,192 @@ worker:
         imagePullPolicy: Always
       args:
         - "worker"
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+      readinessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+      envFrom:
+        - configmapRef:
+            # Ensures that the configMap reference name is the one generated by the common chart
+            name: '{{ include "common.fullname" . }}'
+        - secretRef:
+            name: DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.backend.urlSecretRef }}"
+        - secretRef:
+            name: PACIOLI_DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.pacioli.urlSecretRef }}"
+        - secretRef:
+            name: RAFIKI_DB_URL_WITH_CERTS
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+        - secretRef:
+            name: TWILIO_ACCOUNT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "twilio-account-token"
+        - secretRef:
+            name: ZENDESK_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "zendesk-token"
+        - secretRef:
+            name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "sendgrid-api-key"
+        - secretRef:
+            name: PUSHER_ADDR
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "pusher-addr"
+        - secretRef:
+            name: SEGMENT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "segment-key"
+        - secretRef:
+            name: PERSONA_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "persona-token"
+        - secretRef:
+            name: PERSONA_WEBHOOK_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "persona-webhook-token"
+        - secretRef:
+            name: BASIS_THEORY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "basis-theory-api-key"
+        - secretRef:
+            name: BT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "basis-theory-token"
+        - secretRef:
+            name: CDN_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "cdn-key"
+        - secretRef:
+            name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "sentry-dsn"
+        - secretRef:
+            name: XAGO_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "xago-api-secret"
+        - secretRef:
+            name: XAGO_API_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "xago-api-public-key"
+        - secretRef:
+            name: ASTRA_WEBHOOK_BEARER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.webhook_bearer_token_ref }}"
+        - secretRef:
+            name: ASTRA_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.client_id_ref }}"
+        - secretRef:
+            name: ASTRA_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.astra.client_secret_ref }}"
+        - secretRef:
+            name: SLACK_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.client_id_ref }}"
+        - secretRef:
+            name: SLACK_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.client_secret_ref }}"
+        - secretRef:
+            name: SLACK_SIGNING_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.signing_secret_ref }}"
+        - secretRef:
+            name: GATEHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.app_id_ref }}"
+        - secretRef:
+            name: GATEHUB_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.secret_ref }}"
+        - secretRef:
+            name: GATEHUB_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.gatehub.webhook_secret_ref }}"
+        - secretRef:
+            name: CHIMONEY_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.chimoney.webhook_secret_ref }}"
+        - secretRef:
+            name: CHIMONEY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.chimoney.token_ref }}"
+        - secretRef:
+            name: PTI_JWK
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.pti.jwk_ref }}"
+        - secretRef:
+            name: PTI_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.pti.client_id_ref }}"
       resources:
         requests:
           memory: 128Mi
@@ -250,5 +588,3 @@ service:
 configmap:
   - files/config.yaml
 
-secrets:
-  - files/secret.yaml
