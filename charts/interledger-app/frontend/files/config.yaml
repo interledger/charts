@@ -2,8 +2,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT: "{{ required "needs config.otel.endpoint" .Values.c
 OTEL_EXPORTER_OTLP_HEADERS: "{{ required "needs config.otel.headers" .Values.config.otel.headers }}"
 OTEL_SERVICE_NAME: "{{ required "needs config.otel.service_name" .Values.config.otel.service_name }}"
 GATE_SIGNUP: "{{ required "needs config.gate_signup" .Values.config.gate_signup }}"
-PUSHER_APP_KEY: "{{ required "needs config.pusher.app_key" .Values.config.pusher.app_key }}"
-PUSHER_APP_CLUSTER: "{{ required "needs config.pusher.app_cluster" .Values.config.pusher.app_cluster }}"
+
 KRATOS_URL: "{{ required "needs config.kratos_url" .Values.config.kratos_url }}"
 PAYMENT_POINTER_BASE: "{{ required "needs config.payment_pointer_base" .Values.config.payment_pointer_base }}"
 RAFIKI_AUTH_ENDPOINT: "{{ required "needs config.rafiki.auth.endpoint" .Values.config.rafiki.auth.endpoint }}"

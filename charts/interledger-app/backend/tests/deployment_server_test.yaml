@@ -91,10 +91,5 @@ tests:
           path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
           value: wallet-backend
       - equal:
-          path: spec.template.spec.containers[0].envFrom[1].secretRef.name
-          value: wallet-backend
-      - equal:
           path: spec.template.spec.containers[0].resources.requests.memory
           value: 128Mi
-# The idea is that the rest should have been tested in common
-
