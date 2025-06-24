@@ -8,37 +8,39 @@ config:
       url: "http://wallet-backend-service:8443"
 
   redis:
-    url: "redis://redis:6379"
+    url_ref: redis-url
 
-  cookie_secrets: '["somevalue"]'
+  # Note that in the secret this should be a string. The string itself should
+  # be a json array of strings.
+  cookie_secrets_ref: cookie-secrets
+
   otel:
     endpoint: grpc://api.honeycomb.io:443
     headers: x-honeycomb-team=xxxxxxxxxxxxx
     service_name: protea
 
   pusher:
-    app_key: aaaaaaaaaaaaaaaaaaaa
-    app_cluster: eu
+    app_key_ref: pusher-app-key
+    app_cluster_ref: pusher-app-cluster
   
   gate_signup: false
   kratos_url: http://kratos-public
   payment_pointer_base: sandbox.ilp.link
 
-  bt_token: "000000000000000000000000000000"
+  bt_token_ref: bt-token
 
-  sentry_dsn: "https://00000000000000000000000000000000@ooooooooooooooooo.ingest.de.sentry.io/0000000000000000"
+  sentry_dsn_ref: sentry-dsn
 
-  segment_api_key: "000000000000000000000000000000"
+  segment_api_key_ref: segment-api-key
 
   rafiki:
     auth:
       endpoint: http://rafiki-auth:3003/graphql
-      secret: "000000000000000000000000000000"
+      secret_ref: rafiki-auth-secret
 
-  dato_api_token: "000000000000000000000000000000"
-
-  cf_turnstile_site_key: "0000000000000000000000000000000000000000000000"
-  cf_turnstile_secret_key: "0000000000000000000000000000000000000000000000"
+  
+  cf_turnstile_site_key_ref: "turnstile-site-key"
+  cf_turnstile_secret_key_ref: "turnstile-secret"
 
   environment: dev
 
@@ -79,7 +81,65 @@ containers:
       - configMapRef:
           name: "{{ .Release.Name }}"
       - secretRef:
-          name: "{{ .Release.Name }}"
+          name: COOKIE_SECRETS
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.cookie_secrets_ref }}'
+      - secretRef:
+          name: PUSHER_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.pusher.app_key_ref }}'
+      - secretRef:
+          name: PUSHER_APP_CLUSTER
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.pusher.app_cluster_ref }}'
+      - secretRef:
+          name: BT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.bt_token_ref }}'
+      - secretRef:
+          name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.sentry_dsn }}'
+      - secretRef:
+          name: SEGMENT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.segment_api_key_ref }}'
+      - secretRef:
+          name: RAFIKI_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.rafiki.auth.secret_ref }}'
+      - secretRef:
+          name: CF_TURNSTILE_SITE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.cf_turnstile_site_key_ref }}'
+      - secretRef:
+          name: CF_TURNSTILE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.cf_turnstile_secret_key_ref }}'
+      - secretRef:
+          name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: '{{ .Values.config.redis.url_ref }}'
     ports:
       - name: http
         containerPort: 3000

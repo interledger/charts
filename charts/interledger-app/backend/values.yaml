@@ -150,6 +150,7 @@ server:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
         name: backend
         imageimagePullPolicy: Always
+
       livenessProbe:
         httpGet:
           path: /healthz
