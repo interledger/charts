@@ -8,39 +8,39 @@ config:
       url: "http://wallet-backend-service:8443"
 
   redis:
-    url_ref: redis-url
+    url_ref: redisURL
 
   # Note that in the secret this should be a string. The string itself should
   # be a json array of strings.
-  cookie_secrets_ref: cookie-secrets
+  cookie_secrets_ref: cookieSecretsArrStr
 
   otel:
     endpoint: grpc://api.honeycomb.io:443
-    headers: x-honeycomb-team=xxxxxxxxxxxxx
+    headers_ref: otelExporterHeaders
     service_name: protea
 
   pusher:
-    app_key_ref: pusher-app-key
-    app_cluster_ref: pusher-app-cluster
+    app_key_ref: pusherAppKey
+    app_cluster_ref: pusherAppCluster
   
   gate_signup: false
   kratos_url: http://kratos-public
   payment_pointer_base: sandbox.ilp.link
 
-  bt_token_ref: bt-token
+  bt_token_ref: basisTheoryToken
 
-  sentry_dsn_ref: sentry-dsn
+  sentry_dsn_ref: sentryDSN
 
-  segment_api_key_ref: segment-api-key
+  segment_api_key_ref: segmentAPIKey
 
   rafiki:
     auth:
       endpoint: http://rafiki-auth:3003/graphql
-      secret_ref: rafiki-auth-secret
+      secret_ref: rafikiAuthSecret
 
   
-  cf_turnstile_site_key_ref: "turnstile-site-key"
-  cf_turnstile_secret_key_ref: "turnstile-secret"
+  cf_turnstile_site_key_ref: "turnstileSiteKey"
+  cf_turnstile_secret_key_ref: "turnstileSecret"
 
   environment: dev
 
@@ -59,8 +59,6 @@ service:
 configmap:
   - files/config.yaml
 
-secrets:
-  - files/secret.yaml
 
 containers:
   # Frontend

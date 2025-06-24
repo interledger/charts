@@ -1,5 +1,4 @@
 OTEL_EXPORTER_OTLP_ENDPOINT: "{{ required "needs config.otel.endpoint" .Values.config.otel.endpoint }}"
-OTEL_EXPORTER_OTLP_HEADERS: "{{ required "needs config.otel.headers" .Values.config.otel.headers }}"
 OTEL_SERVICE_NAME: "{{ required "needs config.otel.service_name" .Values.config.otel.service_name }}"
 GATE_SIGNUP: "{{ required "needs config.gate_signup" .Values.config.gate_signup }}"
 
