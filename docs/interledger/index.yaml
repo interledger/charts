@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   common:
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.827691094+02:00"
+    created: "2025-06-24T16:32:43.394631+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 11b7c6e37a50e1218d8377d77d1398690030baade774397d1f7feedfea97c821
     maintainers:
@@ -16,7 +16,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.4.tgz
     version: 0.3.4
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.827392801+02:00"
+    created: "2025-06-24T16:32:43.394177+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 61c0157e445ecce1fdc1a03ea49c7a272e92a2d13fc57b99379b24364d98e2e6
     maintainers:
@@ -30,7 +30,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.3.tgz
     version: 0.3.3
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.827099849+02:00"
+    created: "2025-06-24T16:32:43.393768+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 91d876b9812e4a2407bf1cf515660e6279f0b86d09f1ebfd1dbae87e86dd3d9a
     maintainers:
@@ -44,7 +44,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.2.tgz
     version: 0.3.2
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.826806565+02:00"
+    created: "2025-06-24T16:32:43.392841+02:00"
     description: ILF common helm chart for building k8s resources
     digest: 90c6b83f691051fd25cbe3d08a42ffb5b4e0248003e237e58e58ecd7b3a550cb
     maintainers:
@@ -58,7 +58,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.1.tgz
     version: 0.3.1
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.826502983+02:00"
+    created: "2025-06-24T16:32:43.392343+02:00"
     description: ILF common helm chart for building k8s resources
     digest: e74182da8ea7ba5d2a0ecdbe6363203ae258059eb00d9d88986d75f6ea93a659
     maintainers:
@@ -72,7 +72,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.826203294+02:00"
+    created: "2025-06-24T16:32:43.391831+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 3ed7bf11cbee0521030f653811a66944e6e5f366066227382d089b8a73e8875a
     maintainers:
@@ -86,7 +86,7 @@ entries:
     - https://interledger.github.io/charts/interledger/common-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
-    created: "2025-06-24T14:44:39.825879043+02:00"
+    created: "2025-06-24T16:32:43.391378+02:00"
     description: Rafiki common helm chart for building k8s resources
     digest: 2c028ba581c9006004d58319adb63f472947153cdabe2fca4420189fdd645cd4
     maintainers:
@@ -99,14 +99,32 @@ entries:
     version: 0.1.0
   ilf-wallet-admin:
   - apiVersion: v2
-    appVersion: v0.2.1
-    created: "2025-06-24T14:44:39.831545715+02:00"
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.397767+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
       version: 0.3.4
     description: Interledger App Wallet admin service for the Interledger App network
-    digest: 8c98ffd94daa41aa0ae5dc274361205d6f9ebb7149e310b45d3e664dfb11b801
+    digest: 08c567b6a034839dcdea026afd182b69b02e58ec275ad290674f7ab06ab2f4ca
+    home: https://github.com/interledger/interledger-app
+    maintainers:
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    name: ilf-wallet-admin
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/ilf-wallet-admin-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.397396+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.3.4
+    description: Interledger App Wallet admin service for the Interledger App network
+    digest: dfeb28a0f8f59a94619b755ad2dc8b405591f6da2c7de655ed48880e874d2639
     home: https://github.com/interledger/interledger-app
     maintainers:
     - email: stephan@interledger.foundation
@@ -118,7 +136,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.830895609+02:00"
+    created: "2025-06-24T16:32:43.396819+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -136,7 +154,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.830291763+02:00"
+    created: "2025-06-24T16:32:43.396308+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -154,7 +172,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.829677459+02:00"
+    created: "2025-06-24T16:32:43.395818+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -172,7 +190,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.828480558+02:00"
+    created: "2025-06-24T16:32:43.395259+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -190,14 +208,34 @@ entries:
     version: 0.1.1
   ilf-wallet-backend:
   - apiVersion: v2
-    appVersion: v0.2.1
-    created: "2025-06-24T14:44:39.846154212+02:00"
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.409469+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
       version: 0.3.4
     description: Interledger App Wallet backend service for the Interledger App network
-    digest: 53095b9893bc3767c22889260ad2bb42e709fe642349e9dfeee10dcf12f6bd94
+    digest: 41ae13c72391507808ed83e2a850acdefb129ac94178ff465c16ff42bcfdbe2b
+    home: https://github.com/interledger/interledger-app
+    maintainers:
+    - email: stephan@interledger.foundation
+      name: Stephan Butler
+    - email: radu@interledger.foundation
+      name: Radu Popa
+    name: ilf-wallet-backend
+    type: application
+    urls:
+    - https://interledger.github.io/charts/interledger/ilf-wallet-backend-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.408368+02:00"
+    dependencies:
+    - name: common
+      repository: https://interledger.github.io/charts/interledger
+      version: 0.3.4
+    description: Interledger App Wallet backend service for the Interledger App network
+    digest: eadf056cc0ccd68552cd0ea72f085a505278a943dfd49a70b11156c3b139f620
     home: https://github.com/interledger/interledger-app
     maintainers:
     - email: stephan@interledger.foundation
@@ -211,7 +249,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: manual_main
-    created: "2025-06-24T14:44:39.843783374+02:00"
+    created: "2025-06-24T16:32:43.407076+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -229,7 +267,7 @@ entries:
     version: 0.5.2
   - apiVersion: v2
     appVersion: manual_main
-    created: "2025-06-24T14:44:39.842778581+02:00"
+    created: "2025-06-24T16:32:43.406179+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -247,7 +285,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: manual_main
-    created: "2025-06-24T14:44:39.841767176+02:00"
+    created: "2025-06-24T16:32:43.405231+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -265,7 +303,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v0.1.4
-    created: "2025-06-24T14:44:39.840752839+02:00"
+    created: "2025-06-24T16:32:43.404343+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -283,7 +321,7 @@ entries:
     version: 0.4.4
   - apiVersion: v2
     appVersion: v0.1.3
-    created: "2025-06-24T14:44:39.83940718+02:00"
+    created: "2025-06-24T16:32:43.403599+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -301,7 +339,7 @@ entries:
     version: 0.4.3
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.838360559+02:00"
+    created: "2025-06-24T16:32:43.402889+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -319,7 +357,7 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: v0.1.1
-    created: "2025-06-24T14:44:39.837335699+02:00"
+    created: "2025-06-24T16:32:43.402146+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -337,7 +375,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.835682254+02:00"
+    created: "2025-06-24T16:32:43.401397+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -355,7 +393,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.834618624+02:00"
+    created: "2025-06-24T16:32:43.400556+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -373,7 +411,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.83361567+02:00"
+    created: "2025-06-24T16:32:43.399419+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -391,7 +429,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2025-06-24T14:44:39.83254579+02:00"
+    created: "2025-06-24T16:32:43.398544+02:00"
     dependencies:
     - name: common
       repository: file://../../common
@@ -410,7 +448,7 @@ entries:
   ilf-wallet-entrypoint:
   - apiVersion: v2
     appVersion: v1.0.1
-    created: "2025-06-24T14:44:39.847314135+02:00"
+    created: "2025-06-24T16:32:43.410403+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -428,7 +466,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-06-24T14:44:39.846733326+02:00"
+    created: "2025-06-24T16:32:43.409937+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -446,14 +484,14 @@ entries:
     version: 1.0.0
   ilf-wallet-frontend:
   - apiVersion: v2
-    appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.850956053+02:00"
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.413384+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
       version: 0.3.4
     description: Interledger App Wallet backend service for the Interledger App network
-    digest: 5b4ab6a3b7a96ef36197e1e98deee236f582d29797092c798cd1ba96db9a90e3
+    digest: f1943e3391968c89d292fb8c2dfa31ac047b5a6ee85faeac107959e176f7980c
     home: https://github.com/interledger/interledger-app
     maintainers:
     - email: stephan@interledger.foundation
@@ -464,14 +502,14 @@ entries:
     - https://interledger.github.io/charts/interledger/ilf-wallet-frontend-0.2.1.tgz
     version: 0.2.1
   - apiVersion: v2
-    appVersion: v0.2.1
-    created: "2025-06-24T14:44:39.850119376+02:00"
+    appVersion: v0.2.2
+    created: "2025-06-24T16:32:43.412899+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
       version: 0.3.4
     description: Interledger App Wallet backend service for the Interledger App network
-    digest: 2220fda12a16a5140439f956e9e1c9c8544fff94ea6109c6d8749e8eff4f82e9
+    digest: 086669fd0bb7a0c4825bca9c116e66b73584bce950d2673c73ba0d3113b2c629
     home: https://github.com/interledger/interledger-app
     maintainers:
     - email: stephan@interledger.foundation
@@ -483,7 +521,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.849295669+02:00"
+    created: "2025-06-24T16:32:43.412281+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -501,7 +539,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: v0.1.2
-    created: "2025-06-24T14:44:39.848657604+02:00"
+    created: "2025-06-24T16:32:43.411766+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -519,7 +557,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.1
-    created: "2025-06-24T14:44:39.848006604+02:00"
+    created: "2025-06-24T16:32:43.410895+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -538,7 +576,7 @@ entries:
   rafiki-auth:
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.851830858+02:00"
+    created: "2025-06-24T16:32:43.414003+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -558,7 +596,7 @@ entries:
     version: 0.11.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.859058868+02:00"
+    created: "2025-06-24T16:32:43.418767+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -578,7 +616,7 @@ entries:
     version: 0.9.2
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.858212047+02:00"
+    created: "2025-06-24T16:32:43.418182+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -598,7 +636,7 @@ entries:
     version: 0.9.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.857247955+02:00"
+    created: "2025-06-24T16:32:43.417602+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -618,7 +656,7 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.856428691+02:00"
+    created: "2025-06-24T16:32:43.416855+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -638,7 +676,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.855641282+02:00"
+    created: "2025-06-24T16:32:43.416347+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -658,7 +696,7 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-    created: "2025-06-24T14:44:39.854801622+02:00"
+    created: "2025-06-24T16:32:43.415818+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -678,7 +716,7 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.853967222+02:00"
+    created: "2025-06-24T16:32:43.415166+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -698,7 +736,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.852614271+02:00"
+    created: "2025-06-24T16:32:43.414569+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -717,7 +755,7 @@ entries:
   rafiki-backend:
   - apiVersion: v2
     appVersion: v1.1.2-beta
-    created: "2025-06-24T14:44:39.860873749+02:00"
+    created: "2025-06-24T16:32:43.420014+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -737,7 +775,7 @@ entries:
     version: 0.11.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
-    created: "2025-06-24T14:44:39.859952352+02:00"
+    created: "2025-06-24T16:32:43.419391+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -757,7 +795,7 @@ entries:
     version: 0.10.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
-    created: "2025-06-24T14:44:39.869696424+02:00"
+    created: "2025-06-24T16:32:43.425557+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -777,7 +815,7 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: v1.1.2-beta
-    created: "2025-06-24T14:44:39.86887795+02:00"
+    created: "2025-06-24T16:32:43.425034+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -797,7 +835,7 @@ entries:
     version: 0.8.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.868074373+02:00"
+    created: "2025-06-24T16:32:43.424559+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -817,7 +855,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.867287657+02:00"
+    created: "2025-06-24T16:32:43.424058+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -837,7 +875,7 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.866475035+02:00"
+    created: "2025-06-24T16:32:43.423519+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -857,7 +895,7 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.865669941+02:00"
+    created: "2025-06-24T16:32:43.422966+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -877,7 +915,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.86487003+02:00"
+    created: "2025-06-24T16:32:43.422253+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -897,7 +935,7 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-    created: "2025-06-24T14:44:39.864016155+02:00"
+    created: "2025-06-24T16:32:43.421769+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -917,7 +955,7 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.863161716+02:00"
+    created: "2025-06-24T16:32:43.421154+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -937,7 +975,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.862292983+02:00"
+    created: "2025-06-24T16:32:43.420546+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -956,7 +994,7 @@ entries:
   rafiki-boutique-backend:
   - apiVersion: v2
     appVersion: v0.1.62
-    created: "2025-06-24T14:44:39.870298215+02:00"
+    created: "2025-06-24T16:32:43.425945+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -975,7 +1013,7 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: v0.1.58
-    created: "2025-06-24T14:44:39.871407168+02:00"
+    created: "2025-06-24T16:32:43.426253+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -995,7 +1033,7 @@ entries:
   rafiki-boutique-frontend:
   - apiVersion: v2
     appVersion: v0.1.62
-    created: "2025-06-24T14:44:39.872591032+02:00"
+    created: "2025-06-24T16:32:43.426888+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1014,7 +1052,7 @@ entries:
     version: 0.1.15
   - apiVersion: v2
     appVersion: v0.1.58
-    created: "2025-06-24T14:44:39.87202588+02:00"
+    created: "2025-06-24T16:32:43.426536+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1034,7 +1072,7 @@ entries:
   rafiki-frontend:
   - apiVersion: v2
     appVersion: v1.1.1-beta
-    created: "2025-06-24T14:44:39.875243394+02:00"
+    created: "2025-06-24T16:32:43.428286+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1054,7 +1092,7 @@ entries:
     version: 0.6.2
   - apiVersion: v2
     appVersion: v1.1.0-beta
-    created: "2025-06-24T14:44:39.874477604+02:00"
+    created: "2025-06-24T16:32:43.42798+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1074,7 +1112,7 @@ entries:
     version: 0.6.1
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.873915364+02:00"
+    created: "2025-06-24T16:32:43.427454+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1094,7 +1132,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.0.0-alpha.20
-    created: "2025-06-24T14:44:39.873189138+02:00"
+    created: "2025-06-24T16:32:43.427169+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1113,7 +1151,7 @@ entries:
   rafiki-money-backend:
   - apiVersion: v2
     appVersion: v0.1.64
-    created: "2025-06-24T14:44:39.881012813+02:00"
+    created: "2025-06-24T16:32:43.43147+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1133,7 +1171,7 @@ entries:
     version: 0.0.49
   - apiVersion: v2
     appVersion: v0.1.63
-    created: "2025-06-24T14:44:39.880246701+02:00"
+    created: "2025-06-24T16:32:43.431012+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1153,7 +1191,7 @@ entries:
     version: 0.0.48
   - apiVersion: v2
     appVersion: v0.1.62
-    created: "2025-06-24T14:44:39.878954912+02:00"
+    created: "2025-06-24T16:32:43.430521+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1173,7 +1211,7 @@ entries:
     version: 0.0.47
   - apiVersion: v2
     appVersion: v0.1.61
-    created: "2025-06-24T14:44:39.878215707+02:00"
+    created: "2025-06-24T16:32:43.430049+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1193,7 +1231,7 @@ entries:
     version: 0.0.46
   - apiVersion: v2
     appVersion: v0.1.60
-    created: "2025-06-24T14:44:39.877475694+02:00"
+    created: "2025-06-24T16:32:43.42957+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1213,7 +1251,7 @@ entries:
     version: 0.0.45
   - apiVersion: v2
     appVersion: v0.1.59
-    created: "2025-06-24T14:44:39.876729371+02:00"
+    created: "2025-06-24T16:32:43.429065+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1233,7 +1271,7 @@ entries:
     version: 0.0.44
   - apiVersion: v2
     appVersion: v0.1.58
-    created: "2025-06-24T14:44:39.875988427+02:00"
+    created: "2025-06-24T16:32:43.428671+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1254,7 +1292,7 @@ entries:
   rafiki-money-frontend:
   - apiVersion: v2
     appVersion: v0.1.64
-    created: "2025-06-24T14:44:39.883302769+02:00"
+    created: "2025-06-24T16:32:43.433138+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1274,7 +1312,7 @@ entries:
     version: 0.0.43
   - apiVersion: v2
     appVersion: v0.1.62
-    created: "2025-06-24T14:44:39.882737224+02:00"
+    created: "2025-06-24T16:32:43.432457+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1294,7 +1332,7 @@ entries:
     version: 0.0.42
   - apiVersion: v2
     appVersion: v0.1.59
-    created: "2025-06-24T14:44:39.882163918+02:00"
+    created: "2025-06-24T16:32:43.432043+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1314,7 +1352,7 @@ entries:
     version: 0.0.41
   - apiVersion: v2
     appVersion: v0.1.58
-    created: "2025-06-24T14:44:39.881592291+02:00"
+    created: "2025-06-24T16:32:43.431753+02:00"
     dependencies:
     - name: common
       repository: https://interledger.github.io/charts/interledger
@@ -1332,4 +1370,4 @@ entries:
     urls:
     - https://interledger.github.io/charts/interledger/rafiki-money-frontend-0.0.40.tgz
     version: 0.0.40
-generated: "2025-06-24T14:44:39.825376878+02:00"
+generated: "2025-06-24T16:32:43.390802+02:00"
