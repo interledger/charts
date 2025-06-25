@@ -37,12 +37,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                     name: '{{ include "common.fullname" $top }}'
-                    key: "{{ $top.Values.database.backend.urlSecretRef }}"
+                    key: "{{ $top.Values.initialisation.backend.urlSecretRef }}"
             - name: PACIOLI_DB_URL_WITH_CERTS
               valueFrom:
                 secretKeyRef:
                     name: '{{ include "common.fullname" $top }}'
-                    key: "{{ $top.Values.database.pacioli.urlSecretRef }}"
+                    key: "{{ $top.Values.initialisation.pacioli.urlSecretRef }}"
             - name: LOG_OUTPUT_PATH
               value: "stderr"
           args: ["migrate"]

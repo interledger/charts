@@ -15,12 +15,10 @@ imageOverride:
 
 initialisation: 
   serviceAccountName: ""
-  host: "localhost"
-  port: "5432"
   backend:
-    urlSecretRef: "dbBackendURL"
+    urlSecretRef: "dbBackendMigrationsURL"
   pacioli:
-    urlSecretRef: "dbPacioliURL"
+    urlSecretRef: "dbPacioliMigrationsURL"
   rafiki_backend:
     urlSecretRef: "dbRafikiBackendURL"
   rafiki_auth:
