@@ -88,7 +88,7 @@ jobs:
             pwd
             ls          
             echo "Validating Kubernetes manifests for chart: ${{ matrix.chart }}"
-            helm kubeconform ${{ matrix.chart }} --output json --validate
+            helm kubeconform ${{ matrix.chart }} --output json
             if [ $? -ne 0 ]; then
               echo "Kubeconform validation failed for chart: ${{ matrix.chart }}"
               exit 1
