@@ -44,3 +44,21 @@ tests:
       - equal:
           path: metadata.annotations["helm.sh/hook-delete-policy"]
           value: before-hook-creation,hook-succeeded
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: DB_URL_WITH_CERTS
+      - equal:
+          path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.name
+          value: wallet-backend
+      - equal:
+          path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.key
+          value: dbBackendMigrationsURL
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: PACIOLI_DB_URL_WITH_CERTS
+      - equal:
+          path: spec.template.spec.containers[0].env[1].valueFrom.secretKeyRef.name
+          value: wallet-backend
+      - equal:
+          path: spec.template.spec.containers[0].env[1].valueFrom.secretKeyRef.key
+          value: dbPacioliMigrationsURL
