@@ -9,6 +9,10 @@
 # You can override the version of the image used used across the chart here.
 # versionOverride: "v0.2.0"
 
+imageOverride:
+  repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+  name: backend
+
 initialisation: 
   serviceAccountName: ""
   host: "localhost"
@@ -147,9 +151,6 @@ server:
   containers:
     # Backend server task
     - name: server
-      image:
-        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-        name: backend
       imagePullPolicy: Always
 
       livenessProbe:
@@ -372,9 +373,6 @@ worker:
   containers:
     # Temporal related worker task
     - name: worker
-      image:
-        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-        name: backend
       imagePullPolicy: Always
       args:
         - "worker"

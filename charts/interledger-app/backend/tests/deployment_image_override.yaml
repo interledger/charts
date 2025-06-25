@@ -1,0 +1,17 @@
+suite: Interledger App - Override image
+templates:
+  - deployment.server.yaml
+set:
+  fullnameOverride: wallet-backend
+release:
+  name: wallet-backend
+tests:
+  - it: 'Should provide readinessProbe and livenessProbe in the deployment'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /healthz
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /healthz
+

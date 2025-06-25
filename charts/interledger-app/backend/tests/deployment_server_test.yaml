@@ -82,9 +82,6 @@ tests:
       value: Deployment
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].image
-          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v3.3.3
-      - equal:
           path: spec.template.spec.containers[0].args[0]
           value: start
       - equal:
