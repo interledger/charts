@@ -33,16 +33,12 @@ spec:
           image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisationSelectedTag }}
           imagePullPolicy: Always
           env:
-            - secretRef:
-                name: DB_URL_WITH_CERTS
-                valueFrom:
-                  secretKeyRef:
+            - name: DB_URL_WITH_CERTS
+              valueFrom:
                     name: '{{ include "common.fullname" $top }}'
                     key: "{{ $top.Values.database.backend.urlSecretRef }}"
-            - secretRef:
-                name: PACIOLI_DB_URL_WITH_CERTS
-                valueFrom:
-                  secretKeyRef:
+            - name: PACIOLI_DB_URL_WITH_CERTS
+              valueFrom:
                     name: '{{ include "common.fullname" $top }}'
                     key: "{{ $top.Values.database.pacioli.urlSecretRef }}"
             - name: LOG_OUTPUT_PATH
