@@ -72,10 +72,26 @@ jobs:
           run: |
               chmod 700 get_helm.sh
               ./get_helm.sh
+              # Install Unittest plugin for running unit tests
               helm plugin install https://github.com/helm-unittest/helm-unittest.git
+              # Install Kubeconform plugin for validating Kubernetes manifests
+              helm plugin install https://github.com/melmorabity/helm-kubeconform
         - name: Run Helm Unit Tests
           run: |
             echo "Running unit tests for chart: ${{ matrix.chart }}"
             cd charts
             ls
             helm unittest ${{ matrix.chart }}
+        - name: Run Kubeconform Validation
+          run: |
+            cd charts
+            pwd
+            ls          
+            echo "Validating Kubernetes manifests for chart: ${{ matrix.chart }}"
+            helm kubeconform ${{ matrix.chart }} --output json
+            if [ $? -ne 0 ]; then
+              echo "Kubeconform validation failed for chart: ${{ matrix.chart }}"
+              exit 1
+            else
+              echo "Kubeconform validation passed for chart: ${{ matrix.chart }}"
+            fi
