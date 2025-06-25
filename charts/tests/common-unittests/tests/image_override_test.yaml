@@ -1,0 +1,14 @@
+suite: Common - Should be able to override the image
+templates:
+  - deployment.yaml
+tests:
+  - it: 'Should imageOverride be configured then it should be used as the image'
+    set:
+      imageOverride:
+        repository: somewhere/else
+        name: tralala
+        tag: v0.1.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: somewhere/else/tralala:v0.1.0
