@@ -77,64 +77,55 @@ containers:
         port: 3000
     envFrom:
       - configMapRef:
-          name: "{{ .Release.Name }}"
-      - secretRef:
-          name: COOKIE_SECRETS
-          valueFrom:
+          name: '{{ include "common.fullname" . }}'
+    env:
+      - name: COOKIE_SECRETS
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.cookie_secrets_ref }}'
-      - secretRef:
-          name: PUSHER_APP_KEY
-          valueFrom:
+      - name: PUSHER_APP_KEY
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.pusher.app_key_ref }}'
-      - secretRef:
-          name: PUSHER_APP_CLUSTER
-          valueFrom:
+      - name: PUSHER_APP_CLUSTER
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.pusher.app_cluster_ref }}'
-      - secretRef:
-          name: BT_TOKEN
-          valueFrom:
+      - name: BT_TOKEN
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.bt_token_ref }}'
-      - secretRef:
-          name: SENTRY_DSN
-          valueFrom:
+      - name: SENTRY_DSN
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.sentry_dsn }}'
-      - secretRef:
-          name: SEGMENT_API_KEY
-          valueFrom:
+      - name: SEGMENT_API_KEY
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.segment_api_key_ref }}'
-      - secretRef:
-          name: RAFIKI_AUTH_SECRET
-          valueFrom:
+      - name: RAFIKI_AUTH_SECRET
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.rafiki.auth.secret_ref }}'
-      - secretRef:
-          name: CF_TURNSTILE_SITE_KEY
-          valueFrom:
+      - name: CF_TURNSTILE_SITE_KEY
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.cf_turnstile_site_key_ref }}'
-      - secretRef:
-          name: CF_TURNSTILE_SECRET_KEY
-          valueFrom:
+      - name: CF_TURNSTILE_SECRET_KEY
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.cf_turnstile_secret_key_ref }}'
-      - secretRef:
-          name: REDIS_URL
-          valueFrom:
+      - name: REDIS_URL
+        valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: '{{ .Values.config.redis.url_ref }}'
