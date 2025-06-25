@@ -9,6 +9,15 @@
 {{- if not $image.repository }}
     {{- $_ := set $image "repository" "ghcr.io/interledger" }}
 {{- end }}
+{{- if $top.Values.imageOverride }}
+    {{- $_ := set $image "repository" $top.Values.imageOverride.repository | default $image.repository }}
+    {{- $_ := set $image "name" $top.Values.imageOverride.name | default $image.name }}
+    {{- $_ := set $image "tag" $top.Values.imageOverride.tag | default $image.tag }}
+    {{- $_ := set $image "digest" $top.Values.imageOverride.digest | default $image.digest }}
+{{- end }}
+{{- if not $container.name }}
+  {{- $_ := set $container "name" ($top.Chart.Name | default "container") }}
+{{- end }}
 {{- if and $image.digest $image.tag }}
     {{- fail "You cannot set both image.digest and image.tag at the same time. Please use one or the other." }}
 {{- end }}
