@@ -32,15 +32,19 @@ spec:
         - name: migration
           image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisationSelectedTag }}
           imagePullPolicy: Always
-          env:
-            - name: DB_URL_WITH_CERTS
-              value: "{{ print "postgres://" $initialisation.backend.username ":" $initialisation.backend.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.backend.dbname "?sslmode=disable" }}"
-            - name: DB_URL
-              value: "{{ print "postgres://" $initialisation.backend.username ":" $initialisation.backend.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.backend.dbname "?sslmode=disable" }}"    
-            - name: PACIOLI_DB_URL_WITH_CERTS
-              value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
-            - name: PACIOLI_DB_URL
-              value: "{{ print "postgres://" $initialisation.pacioli.username ":" $initialisation.pacioli.password "@" $initialisation.host ":" $initialisation.port "/" $initialisation.pacioli.dbname "?sslmode=disable" }}"
+          envFrom:
+            - secretRef:
+                name: DB_URL_WITH_CERTS
+                valueFrom:
+                  secretKeyRef:
+                    name: '{{ include "common.fullname" $top }}'
+                    key: "{{ $top.Values.database.backend.urlSecretRef }}"
+            - secretRef:
+                name: PACIOLI_DB_URL_WITH_CERTS
+                valueFrom:
+                  secretKeyRef:
+                    name: '{{ include "common.fullname" $top }}'
+                    key: "{{ $top.Values.database.pacioli.urlSecretRef }}"
             - name: LOG_OUTPUT_PATH
               value: "stderr"
           args: ["migrate"]

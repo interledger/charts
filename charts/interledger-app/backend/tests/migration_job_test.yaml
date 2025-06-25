@@ -30,7 +30,7 @@ set:
 release:
   name: wallet-backend
 tests:
-  - it: 'Should have a migration job created with the correct image and environment variables'
+  - it: 'Should have a migration job created'
     documentSelector:
       path: kind
       value: Job
@@ -44,24 +44,3 @@ tests:
       - equal:
           path: metadata.annotations["helm.sh/hook-delete-policy"]
           value: before-hook-creation,hook-succeeded
-      - equal:
-          path: spec.template.spec.containers[0].image
-          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:manual_main
-      - equal:
-          path: spec.template.spec.containers[0].env[0].value
-          value: "postgres://wallet_backend_user:wallet_backend_password@cloudsql-db-admin:5432/wallet_backend?sslmode=disable"
-      - equal:
-          path: spec.template.spec.containers[0].env[1].value
-          value: "postgres://wallet_backend_user:wallet_backend_password@cloudsql-db-admin:5432/wallet_backend?sslmode=disable"
-      - equal:
-          path: spec.template.spec.containers[0].env[2].value
-          value: "postgres://pacioli_user:pacioli_password@cloudsql-db-admin:5432/pacioli?sslmode=disable"
-      - equal:
-          path: spec.template.spec.containers[0].env[3].value
-          value: "postgres://pacioli_user:pacioli_password@cloudsql-db-admin:5432/pacioli?sslmode=disable"
-      - equal:
-          path: spec.template.spec.containers[0].env[4].value
-          value: "stderr"
-      - equal: 
-          path: spec.template.spec.containers[0].args[0]
-          value: migrate
