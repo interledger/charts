@@ -46,7 +46,7 @@
     {{- toYaml $container.resources | nindent 4 }}
 
   {{- with $container.env }}
-  env: {{- toYaml . | nindent 4 }}
+  env: {{- tpl (toYaml . | nindent 4) $top }}
   {{- end }}
 
   {{- if $container.envFrom }}
