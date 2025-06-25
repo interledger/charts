@@ -32,7 +32,7 @@ spec:
         - name: migration
           image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisationSelectedTag }}
           imagePullPolicy: Always
-          envFrom:
+          env:
             - secretRef:
                 name: DB_URL_WITH_CERTS
                 valueFrom:
