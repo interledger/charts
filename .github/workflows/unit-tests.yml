@@ -84,6 +84,9 @@ jobs:
             helm unittest ${{ matrix.chart }}
         - name: Run Kubeconform Validation
           run: |
+            cd charts
+            pwd
+            ls          
             echo "Validating Kubernetes manifests for chart: ${{ matrix.chart }}"
             helm kubeconform ${{ matrix.chart }} --output json --validate
             if [ $? -ne 0 ]; then
