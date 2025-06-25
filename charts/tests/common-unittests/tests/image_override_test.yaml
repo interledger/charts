@@ -2,7 +2,7 @@ suite: Common - Should be able to override the image
 templates:
   - deployment.yaml
 tests:
-  - it: 'Should imageOverride be configured then it should be used as the image'
+  - it: 'given imageOverride is provided, then it should override the image in the deployment'
     set:
       imageOverride:
         repository: somewhere/else
@@ -12,3 +12,20 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: somewhere/else/tralala:v0.1.0
+  - it: 'image specified on container level should take precedence over imageOverride'
+    set:
+      imageOverride:
+        repository: somewhere/else
+        name: tralala
+        tag: v0.1.0
+      containers:
+        - name: backend
+          image:
+            repository: ghcr.io/interledger
+            name: backend
+            tag: v0.2.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/backend:v0.2.0
+
