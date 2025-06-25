@@ -1,0 +1,31 @@
+suite: Interledger App - Sidecar deployment should be able to override the image
+templates:
+  - deployment.server.yaml
+set:
+  fullnameOverride: wallet-backend
+  imageOverride:
+    repository: europe-west4-docker.pkg.dev/wallet-dev-462809/interledger-app
+    name: backend
+    tag: v0.2.2
+  server:
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: latest
+          repository: gcr.io
+        args:
+          - "someproject:europe-west4:6e4edacc"
+          - "--structured-logs"
+        securityContext:
+          runAsNonRoot: true
+release:
+  name: wallet-backend
+tests:
+  - it: 'even though imageOverride is provided, it should not override the sidecar image in the deployment'
+    documentSelector:
+      template: deployment.server.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
