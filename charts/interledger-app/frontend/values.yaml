@@ -103,7 +103,7 @@ containers:
         valueFrom:
             secretKeyRef:
               name: '{{ include "common.fullname" . }}'
-              key: '{{ .Values.config.sentry_dsn }}'
+              key: '{{ .Values.config.sentry_dsn_ref }}'
       - name: SEGMENT_API_KEY
         valueFrom:
             secretKeyRef:
