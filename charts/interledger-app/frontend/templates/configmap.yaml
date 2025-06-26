@@ -1,7 +1,5 @@
 {{- define "interledger-app-frontend.configMap" -}}
 {{- $top := first . }}
-metadata:
-  name: {{ $top.Release.Name }}
 data:
   {{- range $top.Values.configmap }}
     {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
