@@ -64,3 +64,5 @@ containers:
       - name: http
         containerPort: 3000
 
+secrets:
+  - files/secret.yaml
