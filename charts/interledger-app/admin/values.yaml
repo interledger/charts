@@ -8,6 +8,9 @@ config:
   backend:
     grpcUrl: "wallet-backend-service:8448"
 
+imageOverride::
+  repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+  name: botanist
 
 replicaCount: 1
 
@@ -41,9 +44,6 @@ configmap:
 containers:
   # Backend server task
   - name: server
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: botanist
     imagePullPolicy: Always
     envFrom:
       - configMapRef:
