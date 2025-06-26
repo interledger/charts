@@ -2,6 +2,10 @@
 # Chart for the Interledger App Wallet Frontend called Protea.
 #
 
+imageOverride:
+  repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+  name: protea
+
 config:
   backend:
     grpc:
@@ -63,9 +67,6 @@ configmap:
 containers:
   # Frontend
   - name: frontend
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: protea
     imagePullPolicy: Always
     livenessProbe:
       httpGet:
