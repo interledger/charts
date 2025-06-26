@@ -45,9 +45,6 @@ containers:
   # Backend server task
   - name: server
     imagePullPolicy: Always
-    envFrom:
-      - configMapRef:
-          name: "{{ .Release.Name }}"
     resources:
       requests:
         memory: 128Mi
