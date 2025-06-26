@@ -176,7 +176,7 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.pacioli.urlSecretRef }}"
-        -  name: RAFIKI_DB_URL_WITH_CERTS
+        -  name: RAFIKI_DB_URL
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
@@ -368,7 +368,7 @@ worker:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.pacioli.urlSecretRef }}"
-        -  name: RAFIKI_DB_URL_WITH_CERTS
+        -  name: RAFIKI_DB_URL
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
