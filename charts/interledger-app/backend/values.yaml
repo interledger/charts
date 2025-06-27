@@ -406,7 +406,7 @@ worker:
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
-                key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+                key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
