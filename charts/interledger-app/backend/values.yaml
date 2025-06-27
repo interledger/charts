@@ -193,6 +193,11 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+        -  name: RAFIKI_AUTH_DB_URL
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
