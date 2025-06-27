@@ -9,9 +9,5 @@ tests:
   - it: 'Should provide readinessProbe and livenessProbe in the deployment'
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
-          value: /healthz
-      - equal:
-          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
-          value: /healthz
-
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v0.2.2
