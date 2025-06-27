@@ -23,9 +23,10 @@ auth:
   # token.
   introspectionUrl: http://rafiki-auth.rafiki-auth:3007
 
+# TODO: Consider not specifying the rates url if it is not needed
 rates:
   # The endpoint your Rafiki instance uses to request exchange rates.
-  url: http://wallet/prices
+  url: ""
 
 webhook:
   # Where Rafiki is going to send webhooks
