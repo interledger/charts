@@ -114,6 +114,7 @@ config:
     client_id_ref: "slackClientID"
     client_secret_ref: "slackClientSecret"
     signing_secret_ref: "slackSigningSecret"
+    token_ref: "slackToken"
   
   basis_theory:
     api_key_ref: "basisTheoryApiKey"
@@ -293,6 +294,11 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.slack.signing_secret_ref }}"
+        -  name: SLACK_TOKEN
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.token_ref }}"
         -  name: GATEHUB_APP_ID
            valueFrom:
              secretKeyRef:
@@ -502,6 +508,11 @@ worker:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.slack.signing_secret_ref }}"
+        -  name: SLACK_TOKEN
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.slack.token_ref }}"
         -  name: GATEHUB_APP_ID
            valueFrom:
              secretKeyRef:
