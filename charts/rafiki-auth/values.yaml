@@ -111,7 +111,7 @@ containers:
 
 # Specifies where the application will look for a Redis instance to be used for caching
 # and other purposes. This chart will not attempt to create a Redis instance.      
-redisUrl:
+redisUri:
   # value: ""
   secretKeyRef:
     key: REDIS_URL

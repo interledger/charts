@@ -7,7 +7,7 @@ secrets:
 databaseUri:
   value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
 
-redisUrl:
+redisUri:
   value: "redis://rafiki-auth-redis-master:6379"
 
 identityServer:
