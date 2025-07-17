@@ -15,13 +15,15 @@ serviceAccount:
   annotations: {}
   name: ""
 
-# Autoscaling configuration for the deployment.
-autoscaling:
-  enabled: false
-  minReplicas: 2
-  maxReplicas: 1
-  cpuUtilizationPercentage: 80
-  memoryUtilizationPercentage: 80
+secrets:
+  # If true, then the chart will create a secret with the name of the release.
+  # If false, then the secret will not be created and you will have to create it
+  # manually. This is useful if you want to use an existing secret or if you want
+  # to manage secrets outside of the Helm chart.
+  # If true you will have to set the value of each secret manually in the relevant
+  # section below.
+  create: false
+
 
 # Default configuration for the Services to create. If you have specific
 # requirements you can use this section to redefine the service as you wish
@@ -70,7 +72,7 @@ configmap:
 # Defines the location of the templat ethat will be used to generate the default secret
 # used for this chart. You can add additional files here to extend the configuration for 
 # your own purposes
-secrets:
+secretsGenFile:
   - files/secret.yaml
 
 # The containers that will be created as part of the deployment. It is recommended that
@@ -109,23 +111,18 @@ containers:
 
 # Specifies where the application will look for a Redis instance to be used for caching
 # and other purposes. This chart will not attempt to create a Redis instance.      
-redis:
-  auth:
-    enabled: false
-  host: 'rafiki-auth-redis-master'
-  port: "6379"
-  architecture: standalone
+redisUrl:
+  # value: ""
+  secretKeyRef:
+    key: REDIS_URL
 
 trustProxy: true
 
 # Configuration for the PostgreSQL database used by Rafiki Auth.
-postgresql:
-  host: "rafiki-auth-postgresql"
-  port: "5432"
-  auth:
-    username: "rafiki-auth"
-    database: "rafiki-auth"
-    password: "rafiki-auth"
+databaseUrl: # DATABASE_URL
+  # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+  secretKeyRef:
+    key: DATABASE_URL
 
 # The type of node environment: development, test, or production.
 nodeEnv: production
@@ -143,12 +140,14 @@ identityServer:
   # A shared secret between the authorization server and the IdP server; the authorization 
   # server will use the secret to secure its IdP-related endpoints. When the IdP server sends
   # requests to the authorization server, the IdP server must provide the secret via an x-idp-secret header.
-  secret: "changeme"
+  serverSecret:
+    # value: "changeme"
+    secretKeyRef:
+      key: IDENTITY_SERVER_SECRET
 
 interaction:
   # When true, quote grants are interactive.
   quote: "false"
-  # TODO: DOCUMENT THIS
   cookieSameSite: lax
   # When true, incoming Open Payments grant requests are interactive  
   # Note that this is a string
@@ -175,7 +174,10 @@ accessToken:
   expirySeconds: 600
 
 # The koa KeyGrip key that is used to sign cookies for an interaction session.
-cookieKey: 'changeme'
+cookieKey:
+  value: "changeme"
+  secretKeyRef:
+    key: COOKIE_KEY
 
 workers:
   # The number of workers processing expired or revoked access tokens.

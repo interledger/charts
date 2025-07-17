@@ -4,12 +4,12 @@ description: Rafiki Frontend Helm chart for Kubernetes
 home: https://github.com/interledger/rafiki
 
 type: application
-version: 0.6.2
+version: 1.0.0
 appVersion: "v1.1.1-beta"
 
 dependencies:
   - name: common
-    version: 0.2.0
+    version: 0.3.4
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:

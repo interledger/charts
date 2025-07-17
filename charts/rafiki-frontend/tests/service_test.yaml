@@ -17,7 +17,6 @@ tests:
       - isSubset:
           path: metadata.labels
           content:
-            helm.sh/chart: rafiki-frontend-0.6.2
             app.kubernetes.io/name: rafiki-frontend
             app.kubernetes.io/instance: rafiki-frontend
             app.kubernetes.io/managed-by: Helm

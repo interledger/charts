@@ -16,6 +16,15 @@ instanceName: rafiki-backend-changeme
 
 useTigerbeetle: false
 
+secrets:
+  # If true, then the chart will create a secret with the name of the release.
+  # If false, then the secret will not be created and you will have to create it
+  # manually. This is useful if you want to use an existing secret or if you want
+  # to manage secrets outside of the Helm chart.
+  # If true you will have to set the value of each secret manually in the relevant
+  # section below.
+  create: false
+
 auth:
   # The endpoint on your Open Payments authorization server to grant a request.
   grantUrl: http://rafiki-auth.rafiki-auth:3006
@@ -36,20 +45,17 @@ webhook:
   timeout: 200
 
 # Redis configuration, used for caching and session state
-redis:
-  host: 'rafiki-backend-redis-master'
-  port: "6379"
-  # The Redis key used to store the nonce for the Rafiki Backend.
-  nonce: ''
+redisUrl:
+  # value: "redis://rafiki-backend-redis:6379"
+  secretKeyRef:
+    key: REDIS_URL
 
 # PostgreSQL, provide configuration
-postgresql:
-  host: "rafiki-backend-postgresql"
-  port: "5432"
-  auth:
-    username: "rafiki-backend"
-    database: "rafiki-backend"
-    password: "rafiki-backend"
+
+databaseUrl: # DATABASE_URL
+  # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+  secretKeyRef:
+    key: DATABASE_URL
 
 # This feature is experimental and may change in future versions.
 walletAddressRedirectHtmlPage: ''
@@ -66,7 +72,10 @@ ilp:
   # The ILP connector address where ILP packets are received.
   connector: 'http://rafiki-backend:3002'
   # The seed secret to generate shared STREAM secrets.
-  streamSecret: "BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU="  # override this value
+  streamSecret:
+    # value: "changeme"
+    secretKeyRef:
+      key: STREAM_SECRET
   # The accepted ILP rate fluctuation.
 
 slippage: 0.01
@@ -90,7 +99,11 @@ key:
   pvk: ''
 
 # The secret to generate request header signatures for webhook event requests.
-quoteSignatureSecret: "overridethisValue"
+webhookSignatureSecret:
+  # value: "changeme"
+  secretKeyRef:
+    name: rafiki-backend
+    key: SIGNATURE_SECRET
 
 # The delay in liquidity withdrawal processing.
 # Unit ms
@@ -184,9 +197,7 @@ port:
   openPayments: 3000
 
 
-# Default replica count for the Rafiki Backend deployment.
-# This value is used only when autoscaling is disabled. If autoscaling is enabled,
-# the number of replicas will be managed dynamically based on resource utilization.
+# Currently rafiki should run with a single replica, so this value is set to 1.
 replicaCount: 1
 
 # Can be used to ensure rafiki-backend is deployed on a specific node or set of nodes.
@@ -202,14 +213,6 @@ serviceAccount:
   create: false
   annotations: {}
   name: ""
-
-# Autoscaling configuration for the Rafiki Backend deployment.
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 2
-  cpuUtilizationPercentage: 80
-  memoryUtilizationPercentage: 80
 
 # Template for creating the Rafiki Backend deployment services. If you need
 # to customize the service (for example to add annotations), or add additional
@@ -240,7 +243,7 @@ configmap:
 
 # The template for generating the env secrets. The generated secret will have
 # the same name as the full name of the release.
-secrets:
+secretsGenFile:
   - files/secret.yaml
 
 containers:
