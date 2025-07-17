@@ -99,7 +99,7 @@ key:
   pvk: ''
 
 # The secret to generate request header signatures for webhook event requests.
-quoteSignatureSecret:
+webhookSignatureSecret:
   # value: "changeme"
   secretKeyRef:
     name: rafiki-backend

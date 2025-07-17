@@ -1,6 +1,6 @@
 {{- if .Values.secrets.create -}}
 # {{- required "Error: .Values.redisUrl.value must be set" .Values.redisUrl.value }}    
 # {{- required "Error: .Values.databaseUrl.value must be set" .Values.databaseUrl.value }}
-# {{- required "Error: .Values.quoteSignatureSecret.value must be set" .Values.quoteSignatureSecret.value }}
+# {{- required "Error: .Values.webhookSignatureSecret.value must be set" .Values.webhookSignatureSecret.value }}
 # {{- required "Error: .Values.ilp.streamSecret.value must be set" .Values.ilp.streamSecret.value }}
 {{- end -}}
