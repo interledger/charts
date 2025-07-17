@@ -111,7 +111,7 @@ containers:
 
 # Specifies where the application will look for a Redis instance to be used for caching
 # and other purposes. This chart will not attempt to create a Redis instance.      
-redisUri:
+redisUrl:
   # value: ""
   secretKeyRef:
     key: REDIS_URL
@@ -119,7 +119,7 @@ redisUri:
 trustProxy: true
 
 # Configuration for the PostgreSQL database used by Rafiki Auth.
-databaseUri: # DATABASE_URL
+databaseUrl: # DATABASE_URL
   # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
   secretKeyRef:
     key: DATABASE_URL

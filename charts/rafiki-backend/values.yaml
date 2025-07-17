@@ -45,14 +45,14 @@ webhook:
   timeout: 200
 
 # Redis configuration, used for caching and session state
-redisUri:
+redisUrl:
   # value: "redis://rafiki-backend-redis:6379"
   secretKeyRef:
     key: REDIS_URL
 
 # PostgreSQL, provide configuration
 
-databaseUri: # DATABASE_URL
+databaseUrl: # DATABASE_URL
   # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
   secretKeyRef:
     key: DATABASE_URL

@@ -4,10 +4,10 @@
 secrets:
   create: true
 
-databaseUri:
+databaseUrl:
   value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
 
-redisUri:
+redisUrl:
   value: "redis://rafiki-auth-redis-master:6379"
 
 identityServer:
