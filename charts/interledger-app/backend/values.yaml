@@ -201,11 +201,21 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+        -  name: TWILIO_ACCOUNT_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.account_sid_ref }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.twilio.account_token_ref }}"
+        -  name: TWILIO_SERVICE_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.service_sid_ref }}"
         -  name: ZENDESK_TOKEN
            valueFrom:
              secretKeyRef:
@@ -351,16 +361,6 @@ server:
              secretKeyRef:
                  name: '{{ include "common.fullname" . }}'
                  key: "{{ .Values.config.admin.team_domain_ref }}"
-        -  name: TWILIO_ACCOUNT_SID
-           valueFrom:
-             secretKeyRef:
-                name: '{{ include "common.fullname" . }}'
-                key: "{{ .Values.config.twilio.account_sid_ref }}"
-        -  name: TWILIO_SERVICE_SID
-           valueFrom:
-             secretKeyRef:
-                name: '{{ include "common.fullname" . }}'
-                key: "{{ .Values.config.twilio.service_sid_ref }}"
 
       resources:
         requests:
@@ -435,11 +435,21 @@ worker:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+        -  name: TWILIO_ACCOUNT_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.account_sid_ref }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.twilio.account_token_ref }}"
+        -  name: TWILIO_SERVICE_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.service_sid_ref }}"
         -  name: ZENDESK_TOKEN
            valueFrom:
              secretKeyRef:
@@ -585,16 +595,6 @@ worker:
              secretKeyRef:
                  name: '{{ include "common.fullname" . }}'
                  key: "{{ .Values.config.admin.team_domain_ref }}"
-        -  name: TWILIO_ACCOUNT_SID
-           valueFrom:
-             secretKeyRef:
-                name: '{{ include "common.fullname" . }}'
-                key: "{{ .Values.config.twilio.account_sid_ref }}"
-        -  name: TWILIO_SERVICE_SID
-           valueFrom:
-             secretKeyRef:
-                name: '{{ include "common.fullname" . }}'
-                key: "{{ .Values.config.twilio.service_sid_ref }}"
       resources:
         requests:
           memory: 128Mi
