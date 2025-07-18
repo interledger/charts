@@ -52,13 +52,15 @@ config:
   open_payments_port: "8081"
 
   admin:
-    policy_aud: "0000000000000000000000000000000000000000000000000000000000000000"
-    team_domain: "https://fynbos.cloudflareaccess.com"
+    # The CloudFlare admin policy and team to identify users trying to enter the admin portal.
+    # these refer to the secrets
+    policy_aud_ref: adminPortalCloudFlarePolicyAud
+    team_domain_ref: adminPortalCloudflareTeamDomain
 
   twilio:
-    account_sid: "0000000000000000000000000000000000"
-    service_sid: "VA00000000000000000000000000000000"
-    account_token_ref: "twilioAccountToken"
+    account_sid_ref: twilioAccountSID
+    service_sid_ref: twilioServiceSID
+    account_token_ref: twilioAccountToken
 
   zenddesk:
     user: "support@interledger-app.dev"
@@ -199,11 +201,21 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+        -  name: TWILIO_ACCOUNT_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.account_sid_ref }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.twilio.account_token_ref }}"
+        -  name: TWILIO_SERVICE_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.service_sid_ref }}"
         -  name: ZENDESK_TOKEN
            valueFrom:
              secretKeyRef:
@@ -339,6 +351,16 @@ server:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.otel.exporter_otlp_headers_ref }}"
+        -  name: ADMIN_POLICY_AUD
+           valueFrom:
+             secretKeyRef:
+                 name: '{{ include "common.fullname" . }}'
+                 key: "{{ .Values.config.admin.policy_aud_ref }}"
+        -  name: ADMIN_TEAM_DOMAIN
+           valueFrom:
+             secretKeyRef:
+                 name: '{{ include "common.fullname" . }}'
+                 key: "{{ .Values.config.admin.team_domain_ref }}"
 
       resources:
         requests:
@@ -413,11 +435,21 @@ worker:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+        -  name: TWILIO_ACCOUNT_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.account_sid_ref }}"
         -  name: TWILIO_ACCOUNT_TOKEN
            valueFrom:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.twilio.account_token_ref }}"
+        -  name: TWILIO_SERVICE_SID
+           valueFrom:
+             secretKeyRef:
+                name: '{{ include "common.fullname" . }}'
+                key: "{{ .Values.config.twilio.service_sid_ref }}"
         -  name: ZENDESK_TOKEN
            valueFrom:
              secretKeyRef:
@@ -553,6 +585,16 @@ worker:
              secretKeyRef:
                 name: '{{ include "common.fullname" . }}'
                 key: "{{ .Values.config.otel.exporter_otlp_headers_ref }}"
+        -  name: ADMIN_POLICY_AUD
+           valueFrom:
+             secretKeyRef:
+                 name: '{{ include "common.fullname" . }}'
+                 key: "{{ .Values.config.admin.policy_aud_ref }}"
+        -  name: ADMIN_TEAM_DOMAIN
+           valueFrom:
+             secretKeyRef:
+                 name: '{{ include "common.fullname" . }}'
+                 key: "{{ .Values.config.admin.team_domain_ref }}"
       resources:
         requests:
           memory: 128Mi
