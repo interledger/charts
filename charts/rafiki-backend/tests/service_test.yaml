@@ -25,11 +25,11 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
-  - it: 'Should have three ports exposed'
+  - it: 'Should have four ports exposed'
     asserts:
       - lengthEqual:
           path: spec.ports
-          count: 3
+          count: 4
   - it: 'Should have correct ports exposed'
     asserts:
       - contains:
@@ -53,6 +53,13 @@ tests:
             port: 3002
             protocol: TCP
             targetPort: 3002
+      - contains:
+          path: spec.ports
+          content:
+            name: auto-peering
+            port: 3005
+            protocol: TCP
+            targetPort: 3005
   - it: 'Should have selectors set'
     asserts:
       - isSubset:
