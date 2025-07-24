@@ -142,6 +142,7 @@ idempotency:
 telemetry:
   # Enables the telemetry service on Rafiki.
   enabled: false
+  livenet: false
 
 autoPeering:
   # Enables the auto-peering service on Rafiki.
