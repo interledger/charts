@@ -10,7 +10,7 @@
 nodeEnv: production
 logLevel: info
 
-# Your Rafiki instance’s name used to communicate for auto-peering and/or 
+# Your Rafiki instance’s name used to communicate for auto-peering and/or
 # telemetry. Required when auto-peering and/or telemetry is enabled
 instanceName: rafiki-backend-changeme
 
@@ -28,7 +28,7 @@ secrets:
 auth:
   # The endpoint on your Open Payments authorization server to grant a request.
   grantUrl: http://rafiki-auth.rafiki-auth:3006
-  # The endpoint on your Open Payments authorization server to introspect an access 
+  # The endpoint on your Open Payments authorization server to introspect an access
   # token.
   introspectionUrl: http://rafiki-auth.rafiki-auth:3007
 
@@ -40,7 +40,7 @@ rates:
 webhook:
   # Where Rafiki is going to send webhooks
   url: http://wallet/webhooks/rafiki
-  # The time, in milliseconds, that WALLET_ADDRESS_WORKERS wait until checking the 
+  # The time, in milliseconds, that WALLET_ADDRESS_WORKERS wait until checking the
   # empty wallet address request queue again.
   timeout: 200
 
@@ -60,7 +60,7 @@ databaseUrl: # DATABASE_URL
 # This feature is experimental and may change in future versions.
 walletAddressRedirectHtmlPage: ''
 
-# Must be set to true when running Rafiki behind a proxy. When true, the 
+# Must be set to true when running Rafiki behind a proxy. When true, the
 # X-Forwarded-Proto header is used to determine if connections are secure.
 trustProxy: true
 
@@ -110,12 +110,12 @@ webhookSignatureSecret:
 withdrawalThrottleDelay: ''
 
 lifetime:
-  # The time, in milliseconds, the exchange rates you provide via the EXCHANGE_RATES_URL 
+  # The time, in milliseconds, the exchange rates you provide via the EXCHANGE_RATES_URL
   # are valid.
   exchangeRate: 15000
   # The time, in milliseconds, an Open Payments quote is valid for.
   quote: 300000
-  # The time, in milliseconds, that your Rafiki instance will wait for a 200 response 
+  # The time, in milliseconds, that your Rafiki instance will wait for a 200 response
   # from your webhook endpoint. If a 200 response is not received, Rafiki will time out
   # and try to send the webhook event again.
   webhook: 200
@@ -128,14 +128,14 @@ workers:
   paymentPointer: 1
   webhook: 1
 
-# The time, in milliseconds, that WEBHOOK_WORKERS will wait until they check the 
+# The time, in milliseconds, that WEBHOOK_WORKERS will wait until they check the
 # empty webhook event queue again.
 workerIdle: 200
 
 idempotency:
   # The TTL, in milliseconds, for idempotencyKey on GraphQL mutations on the Backend Admin API.
   keyTTL: 86400000
-  # The TTL, in milliseconds, for idempotencyKey concurrency lock on GraphQL 
+  # The TTL, in milliseconds, for idempotencyKey concurrency lock on GraphQL
   # mutations on the Backend Admin API.
   keyLock: 2000
 
@@ -143,13 +143,17 @@ telemetry:
   # Enables the telemetry service on Rafiki.
   enabled: false
 
+autoPeering:
+  # Enables the auto-peering service on Rafiki.
+  enabled: false
+
 # ==========================================================
 # Chart customization
 # ==========================================================
-# Everything below this point is used to configure the Rafiki Backend Helm 
+# Everything below this point is used to configure the Rafiki Backend Helm
 # chart framework and is not typically used by the Rafiki Backend itself. It is used to
 # customize the deployment, service, and other Kubernetes resources created by the Helm chart.
-# 
+#
 # We recommend not changing these values unless you know what you are doing.
 
 # This chart does support the generation of init containers using the convention
@@ -189,12 +193,13 @@ telemetry:
 #       - "3600"
 
 # Configures the ports on which the containers will listen. It is recommended to
-# not change these values unless you know what you are doing. Rather use the 
+# not change these values unless you know what you are doing. Rather use the
 # service configuration to change the exposed ports.
 port:
   admin: 3001
   connector: 3002
   openPayments: 3000
+  autoPeering: 3005
 
 
 # Currently rafiki should run with a single replica, so this value is set to 1.
@@ -235,6 +240,10 @@ service:
         targetPort: 3002
         protocol: TCP
         name: connector
+      - port: 3005
+        targetPort: 3005
+        protocol: TCP
+        name: auto-peering
 
 # The template for generating the default env configmap. The generated configmap
 # will have the same name as the full name of the release.
@@ -275,9 +284,12 @@ containers:
       - name: connector
         containerPort: 3002
         protocol: TCP
+      - name: auto-peering
+        containerPort: 3005
+        protocol: TCP
     # See deployment.yaml to see how the mount itself is created
     volumeMounts:
       - name: keys
         mountPath: /mnt/keys
         readOnly: true
-        
+
