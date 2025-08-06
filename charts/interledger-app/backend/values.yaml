@@ -12,6 +12,7 @@
 imageOverride:
   repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
   name: backend
+  # by default tag will be the application version
 
 initialisation: 
   serviceAccountName: ""
@@ -50,6 +51,12 @@ config:
   google_oauth2_client_id: "google_oauth"
   authorisation_port: "8082"
   open_payments_port: "8081"
+  
+  # A comma separated list of region codes
+  region_blocking:
+    blocked_regions: ""
+    allowed_wallet_ids: ""
+
 
   admin:
     # The CloudFlare admin policy and team to identify users trying to enter the admin portal.

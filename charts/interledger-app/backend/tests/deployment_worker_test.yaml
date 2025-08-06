@@ -87,5 +87,5 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.requests.memory
           value: 128Mi
-# The idea is that the rest should have been tested in common
+
 

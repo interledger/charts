@@ -3,6 +3,10 @@ templates:
   - deployment.server.yaml
 set:
   fullnameOverride: wallet-backend
+  imageOverride:
+    repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+    name: zulu
+    tag: v0.2.2
 release:
   name: wallet-backend
 tests:
@@ -10,4 +14,4 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v0.2.2
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/zulu:v0.2.2

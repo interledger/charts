@@ -1,0 +1,31 @@
+suite: Interledger App - Check configmap
+templates:
+  - configmap.yaml
+set:
+  fullnameOverride: wallet-backend
+release:
+  name: wallet-backend
+tests:
+  - it: 'should contain a empty BLOCKED_REGIONS in data'
+    set:
+      config:
+        region_blocking:
+          blocked_regions: ""
+          allowed_wallet_ids: ""
+    asserts:
+      - equal:
+          path: data.BLOCKED_REGIONS
+          value: ""
+  - it: 'should contain a non-empty BLOCKED_REGIONS in data'
+    set:
+      config:
+        region_blocking:
+          blocked_regions: "ZA,US,CA"
+          allowed_wallet_ids: "wallet1,wallet2"    
+    asserts:
+      - equal:
+          path: data.BLOCKED_REGIONS
+          value: "ZA,US,CA"
+      - equal:
+          path: data.ALLOWED_WALLET_IDS
+          value: "wallet1,wallet2"
