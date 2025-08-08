@@ -104,6 +104,7 @@ config:
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
     webhook_secret_ref: "gatehubWebhookSecret"
+    # fallback_webhook_url: "https://example.com/gatehub/webhooks"
 
   chimoney:
     webhook_secret_ref: "chimoneyWebhookSecret"
