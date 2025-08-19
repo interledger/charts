@@ -49,14 +49,24 @@ containers:
       requests:
         memory: 128Mi
         cpu: 200m
-      limits:
-        memory: 512Mi
-        cpu: 400m
+      limits:   
+        memory: 128Mi
+        cpu: 200m
     livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3    
       httpGet:
         path: /healthz
         port: 3000
     readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3      
       httpGet:
         path: /healthz
         port: 3000

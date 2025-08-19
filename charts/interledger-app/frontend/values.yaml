@@ -49,7 +49,7 @@ config:
 
   environment: dev
 
-replicaCount: 3
+replicaCount: 1
 nodeSelector: {}
 
 service:
@@ -70,10 +70,20 @@ containers:
   - name: frontend
     imagePullPolicy: Always
     livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3      
       httpGet:
         path: /healthz
         port: 3000
     readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3      
       httpGet:
         path: /healthz
         port: 3000
