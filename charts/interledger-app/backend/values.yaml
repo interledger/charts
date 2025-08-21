@@ -150,7 +150,7 @@ config:
     client_id_ref: "ptiClientID"
 
 server:
-  replicaCount: 3
+  replicaCount: 1
   nodeSelector: {}
   serviceAccount:
     create: false
@@ -163,10 +163,20 @@ server:
       imagePullPolicy: Always
 
       livenessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
         httpGet:
           path: /healthz
           port: 8080
       readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3      
         httpGet:
           path: /healthz
           port: 8080
@@ -385,7 +395,7 @@ server:
         - name: http
           containerPort: 8080
 worker:
-  replicaCount: 3
+  replicaCount: 1
   nodeSelector: {}
   serviceAccount:
     create: false
@@ -399,10 +409,20 @@ worker:
       args:
         - "worker"
       livenessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3      
         httpGet:
           path: /healthz
           port: 8081
       readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3      
         httpGet:
           path: /healthz
           port: 8081
