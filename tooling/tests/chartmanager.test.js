@@ -70,7 +70,7 @@ description: A sample chart
 });
 
 describe("chartFinder/updateChartVersionFiles", () => {
-  it("updates the Chart.yaml files for specifie charts under given base directory", async () => {
+  it("updates the Chart.yaml files for specified charts under given base directory", async () => {
     // Copy test data to a temp directory to avoid modifying original files
     const fs = await import("fs/promises");
     const path = await import("path");
