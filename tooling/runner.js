@@ -173,7 +173,7 @@ export async function runPRVersioning(params = /** @type {any} */({})) {
     (core?.info ?? console.log)(` - ${f.changeType}: ${f.path}`);
   }
 
-  console.log("Apllying chart filter");
+  console.log("Applying chart filter");
   // Filter to only those under charts/
   const changed = changedAll.filter((f) => typeof f.path === "string" && /^charts\//.test(f.path));
 
