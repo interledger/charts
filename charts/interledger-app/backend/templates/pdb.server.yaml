@@ -1,4 +1,4 @@
-{{- define "interledger-app-backend.hpa.server" -}}
+{{- define "interledger-app-backend.pdb.server" -}}
 {{- $top := first . -}}
 {{- $deployment := index . 1 -}}
 ---
@@ -16,4 +16,4 @@ spec:
       app.kubernetes.io/instance: {{ include "common.fullname" $top }}
   minAvailable: 1
 {{- end }}
-{{- include "interledger-app-backend.hpa.server" (list . .Values.server) }}
+{{- include "interledger-app-backend.pdb.server" (list . .Values.server) }}

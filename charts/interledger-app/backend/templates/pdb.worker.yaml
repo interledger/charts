@@ -1,4 +1,4 @@
-{{- define "interledger-app-backend.hpa.worker" -}}
+{{- define "interledger-app-backend.pdb.worker" -}}
 {{- $top := first . -}}
 {{- $deployment := index . 1 -}}
 ---
@@ -16,4 +16,4 @@ spec:
       app.kubernetes.io/instance: {{ include "common.fullname" $top }}
   minAvailable: 1
 {{- end }}
-{{- include "interledger-app-backend.hpa.worker" (list . .Values.worker) }}
+{{- include "interledger-app-backend.pdb.worker" (list . .Values.worker) }}
