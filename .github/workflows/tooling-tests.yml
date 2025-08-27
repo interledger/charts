@@ -1,0 +1,32 @@
+name: Tooling tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+    test-tooling:
+        name: Run tooling tests
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+              node-version: '20'
+        - name: Install pnpm
+          run: npm install -g pnpm
+        - name: Install dependencies
+          run: pnpm install
+          working-directory: ./tooling
+        - name: Run linting
+          run: pnpm lint
+          working-directory: ./tooling          
+        - name: Run tests
+          run: pnpm line
+          working-directory: ./tooling
