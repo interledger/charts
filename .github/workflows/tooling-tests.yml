@@ -28,5 +28,5 @@ jobs:
           run: pnpm lint
           working-directory: ./tooling          
         - name: Run tests
-          run: pnpm line
+          run: pnpm test
           working-directory: ./tooling
