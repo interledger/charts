@@ -66,7 +66,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
-          value: wallet-backend-worker
+          value: wallet-backend
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
           value: wallet-backend-worker

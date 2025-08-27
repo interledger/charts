@@ -1,0 +1,26 @@
+suite: Interledger App - PDB server
+templates:
+  - pdb.server.yaml
+set:
+  fullnameOverride: black
+release:
+  name: black
+tests:
+  - it: 'Should have a PodDisruptionBudget created'
+    documentSelector:
+      path: kind
+      value: PodDisruptionBudget
+
+    asserts:
+      - equal:
+          path: metadata.name
+          value: black-server
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: black-server
+      - equal:
+          path: spec.minAvailable
+          value: 1
