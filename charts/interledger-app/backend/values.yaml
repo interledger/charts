@@ -150,7 +150,7 @@ config:
     client_id_ref: "ptiClientID"
 
 server:
-  replicaCount: 1
+  replicaCount: 2
   nodeSelector: {}
   serviceAccount:
     create: false
@@ -395,7 +395,7 @@ server:
         - name: http
           containerPort: 8080
 worker:
-  replicaCount: 1
+  replicaCount: 2
   nodeSelector: {}
   serviceAccount:
     create: false

@@ -1,0 +1,25 @@
+suite: Interledger App - Validations
+templates:
+  - validations.yaml
+set:
+  fullnameOverride: wallet-backend
+
+release:
+  name: wallet-backend  
+tests:
+  - it: 'server.replicaCount of 1 not allowed'
+    set:
+      server:
+        replicaCount: 1
+    asserts:
+      - failedTemplate:
+          template: validations.yaml
+          errorMessage: "server.replicaCount must be at least 2"
+  - it: 'worker.replicaCount of 1 not allowed'
+    set:
+      worker:
+        replicaCount: 1
+    asserts:
+      - failedTemplate:
+          template: validations.yaml
+          errorMessage: "worker.replicaCount must be at least 2"
