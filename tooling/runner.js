@@ -143,6 +143,26 @@ export async function runPRVersioning(params = /** @type {any} */({})) {
   const octokit = github; // In actions/github-script, `github` is an authenticated Octokit
   const chartsRoot = "charts";
 
+  // If PR has label 'manual-versioning', skip automatic versioning early
+  if (pullRequestMode) {
+    try {
+      const prNumber = context?.payload?.pull_request?.number;
+      if (prNumber && octokit) {
+        const { data: labels } = await octokit.rest.issues.listLabelsOnIssue({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: prNumber,
+        });
+        if ((/** @type {{name: string}[]} */ (labels)).some((l) => l.name === "manual-versioning")) {
+          (core?.info ?? console.log)("PR has label 'manual-versioning'. Skipping automatic versioning.");
+          return;
+        }
+      }
+    } catch (e) {
+      (core?.warning ?? console.warn)(`Failed to check PR labels: ${errorMessage(e)}`);
+    }
+  }
+
   // Get changed files from PR/push context
   /** @type {{ path: string, changeType: string }[]} */
   const changedAll = await getChangedFiles(octokit, orDefault(context, {}), core);
