@@ -17,8 +17,6 @@ jobs:
   version-on-merge:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    env:
-      AUTO_MERGE_TOKEN: ${{ secrets.AUTO_MERGE_TOKEN }}
     steps:
     - name: Checkout base branch (main)
       uses: actions/checkout@v4
@@ -73,7 +71,6 @@ jobs:
           versioning
           automated
           automerge
-        team-reviewers: charts-maintainers
         add-paths: |
           charts/**
           docs/interledger/**
