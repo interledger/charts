@@ -58,7 +58,6 @@ jobs:
       id: cpr
       uses: peter-evans/create-pull-request@v6
       with:
-        token: ${{ github.token }}
         commit-message: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         title: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         body: |
@@ -80,6 +79,5 @@ jobs:
       if: ${{ steps.cpr.outputs.pull-request-number != '' }}
       uses: peter-evans/enable-pull-request-automerge@v3
       with:
-        token: ${{ github.token }}
         pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
         merge-method: squash
