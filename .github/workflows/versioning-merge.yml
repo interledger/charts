@@ -25,6 +25,11 @@ jobs:
         persist-credentials: false
         token: ${{ secrets.CI_BOT_PAT }}
         fetch-depth: 0
+
+    - name: Configure PAT for subsequent Git ops
+      run: |
+        git remote set-url origin "https://x-access-token:${{ secrets.CI_BOT_PAT }}@github.com/${{ github.repository }}.git"
+
     - name: Sync local main with remote
       run: |
         git fetch origin main
