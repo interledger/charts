@@ -23,4 +23,14 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.httpGet.path
           value: /healthz
+  - it: 'Should provide topologySpreadConstraints in the deployment'
+    asserts:
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].topologyKey
+          value: kubernetes.io/hostname
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].whenUnsatisfiable
+          value: DoNotSchedule
+
+
 
