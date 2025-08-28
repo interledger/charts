@@ -12,7 +12,7 @@ permissions:
 jobs:
     bump:
         name: Preview of bump chart versions
-        if: !startsWith(github.event.pull_request.head.ref, 'chore/version-bump')        
+        if: ${{ !startsWith(github.event.pull_request.head.ref, 'chore/version-bump') }}
         runs-on: ubuntu-latest
         steps:
         - name: Checkout code
