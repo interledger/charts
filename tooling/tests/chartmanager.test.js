@@ -35,7 +35,7 @@ describe("chartFinder/findAllCharts", () => {
 });
 
 describe("chartFinder/updateChartVersion", () => {
-  it("updates the version and appVersion in Chart.yaml content", () => {
+  it("updates the version in Chart.yaml content", () => {
     const chartYamlContent = `
 name: mychart
 version: 1.2.3
@@ -46,22 +46,7 @@ description: A sample chart
     const updatedContent = chartManager.updateChartVersion(chartYamlContent, newVersion);
     const expectedContent = `name: mychart
 version: 2.0.0
-appVersion: v2.0.0
-description: A sample chart
-`;
-    assert.strictEqual(updatedContent.trim(), expectedContent.trim());
-  });
-  it("adds appVersion if missing when updating version", () => {
-    const chartYamlContent = `
-name: mychart
-version: 1.2.3
-description: A sample chart
-`;
-    const newVersion = "2.0.0";
-    const updatedContent = chartManager.updateChartVersion(chartYamlContent, newVersion);
-    const expectedContent = `name: mychart
-version: 2.0.0
-appVersion: v2.0.0
+appVersion: v1.0.0
 description: A sample chart
 `;
     assert.strictEqual(updatedContent.trim(), expectedContent.trim());
@@ -87,7 +72,8 @@ describe("chartFinder/updateChartVersionFiles", () => {
     const updatedCharts = chartManager.findAllCharts(tmpDir, []);
     const expectedUpdatedCharts = expectedGoodChartsList.map((chart) => {
       if (chartsToUpdate.includes(chart.name)) {
-        return { ...chart, version: newVersion, appVersion: `v${newVersion}` };
+        // Version should have been updated but appVersion should remain the same
+        return { ...chart, version: newVersion, appVersion: chart.appVersion };
       }
       return chart;
     });

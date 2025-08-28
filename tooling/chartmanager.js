@@ -140,23 +140,13 @@ function updateChartVersion(content, newVersion) {
     updated = `${updated}${endNL}version: ${newVersion}\n`;
   }
 
-  // Update or insert 'appVersion' (preserve indentation)
+  // Keep the existing appVersion if it exists, otherwise add it after version
   const appVersionRe = /^([ \t]*)appVersion:\s*([^\r\n#]+)/m;
   if (appVersionRe.test(updated)) {
-    updated = updated.replace(appVersionRe, (_m, indent) => `${indent}appVersion: v${newVersion}`);
+    // appVersion exists, do nothing
   } else {
-    const lines = updated.split(/\r?\n/);
-    const versionIdx = lines.findIndex((line) => /^([ \t]*)version:\s*/.test(line));
-    const indentMatch = versionIdx >= 0 ? lines[versionIdx].match(/^([ \t]*)/) : null;
-    const indent = indentMatch ? indentMatch[1] : "";
-    const insertLine = `${indent}appVersion: v${newVersion}`;
-    if (versionIdx >= 0) {
-      lines.splice(versionIdx + 1, 0, insertLine);
-    } else {
-      // If we couldn't find version (shouldn't happen due to earlier branch), append
-      lines.push(insertLine);
-    }
-    updated = lines.join("\n");
+    // Insert appVersion after version line
+    updated = updated.replace(versionRe, (_m, indent) => `${indent}version: ${newVersion}\n${indent}appVersion: v${newVersion}`);
   }
 
   return updated;
