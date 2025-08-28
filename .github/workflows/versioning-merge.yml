@@ -17,6 +17,8 @@ jobs:
   version-on-merge:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env:
+      AUTO_MERGE_TOKEN: ${{ secrets.AUTO_MERGE_TOKEN }}
     steps:
     - name: Checkout base branch (main)
       uses: actions/checkout@v4
@@ -55,11 +57,12 @@ jobs:
       run: rm -f get_helm.sh
 
     - name: Create version bump PR to main
+      id: cpr
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: chore(version): bump charts after merge of #${{ github.event.pull_request.number }}
-        title: chore(version): bump charts after merge of #${{ github.event.pull_request.number }}
+        commit-message: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
+        title: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         body: |
           Automated chart versioning after merge of PR #${{ github.event.pull_request.number }}.
           This PR updates Chart.yaml versions, packages updated charts into docs/interledger,
@@ -69,6 +72,17 @@ jobs:
         labels: |
           versioning
           automated
+          automerge
+        team-reviewers: charts-maintainers
         add-paths: |
           charts/**
           docs/interledger/**
+        delete-branch: true
+
+    - name: Enable auto-merge (squash)
+      if: ${{ steps.cpr.outputs.pull-request-number != '' }}
+      uses: peter-evans/enable-pull-request-automerge@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        merge-method: squash
