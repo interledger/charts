@@ -59,7 +59,6 @@ jobs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ github.token }}
-        team-reviewers: charts-maintainers
         commit-message: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         title: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         body: |
