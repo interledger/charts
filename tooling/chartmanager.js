@@ -140,13 +140,19 @@ function updateChartVersion(content, newVersion) {
     updated = `${updated}${endNL}version: ${newVersion}\n`;
   }
 
-  // Keep the existing appVersion if it exists, otherwise add it after version
+  // Keep the existing appVersion as is if it exists
   const appVersionRe = /^([ \t]*)appVersion:\s*([^\r\n#]+)/m;
   if (appVersionRe.test(updated)) {
     // appVersion exists, do nothing
   } else {
-    // Insert appVersion after version line
-    updated = updated.replace(versionRe, (_m, indent) => `${indent}version: ${newVersion}\n${indent}appVersion: v${newVersion}`);
+    // Insert a new appVersion line after version, give it the same value as version with a 'v' prefix
+    const insertRe = /^([ \t]*)version:\s*([^\r\n#]+)/m;
+    if (insertRe.test(updated)) {
+      updated = updated.replace(insertRe, (_m, indent, _ver) => `${indent}version: ${newVersion}\n${indent}appVersion: v${newVersion}`);
+    } else {
+      // If version is missing entirely, throw error
+      throw new Error("Cannot insert appVersion because version line is missing");
+    }
   }
 
   return updated;
