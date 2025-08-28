@@ -140,23 +140,19 @@ function updateChartVersion(content, newVersion) {
     updated = `${updated}${endNL}version: ${newVersion}\n`;
   }
 
-  // Update or insert 'appVersion' (preserve indentation)
+  // Keep the existing appVersion as is if it exists
   const appVersionRe = /^([ \t]*)appVersion:\s*([^\r\n#]+)/m;
   if (appVersionRe.test(updated)) {
-    updated = updated.replace(appVersionRe, (_m, indent) => `${indent}appVersion: v${newVersion}`);
+    // appVersion exists, do nothing
   } else {
-    const lines = updated.split(/\r?\n/);
-    const versionIdx = lines.findIndex((line) => /^([ \t]*)version:\s*/.test(line));
-    const indentMatch = versionIdx >= 0 ? lines[versionIdx].match(/^([ \t]*)/) : null;
-    const indent = indentMatch ? indentMatch[1] : "";
-    const insertLine = `${indent}appVersion: v${newVersion}`;
-    if (versionIdx >= 0) {
-      lines.splice(versionIdx + 1, 0, insertLine);
+    // Insert a new appVersion line after version, give it the same value as version with a 'v' prefix
+    const insertRe = /^([ \t]*)version:\s*([^\r\n#]+)/m;
+    if (insertRe.test(updated)) {
+      updated = updated.replace(insertRe, (_m, indent, _ver) => `${indent}version: ${newVersion}\n${indent}appVersion: v${newVersion}`);
     } else {
-      // If we couldn't find version (shouldn't happen due to earlier branch), append
-      lines.push(insertLine);
+      // If version is missing entirely, throw error
+      throw new Error("Cannot insert appVersion because version line is missing");
     }
-    updated = lines.join("\n");
   }
 
   return updated;
