@@ -1,4 +1,4 @@
-{{- define "interledger-app-frontend.pdb.server" -}}
+{{- define "interledger-app-frontend.pdb" -}}
 {{- $top := first . -}}
 {{- $deployment := index . 1 -}}
 ---
@@ -16,4 +16,4 @@ spec:
       app.kubernetes.io/instance: {{ include "common.fullname" $top }}
   minAvailable: 1
 {{- end }}
-{{- include "interledger-app-frontend.pdb.server" (list . .Values.server) }}
+{{- include "interledger-app-frontend.pdb" (list . .Values) }}
