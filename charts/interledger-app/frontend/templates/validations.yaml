@@ -1,0 +1,4 @@
+# We require replicaCount to be at least 2 for redundancy and high availability.
+{{- if lt (int .Values.replicaCount) 2 -}}
+{{- fail "replicaCount must be at least 2" -}}
+{{- end -}}
