@@ -60,7 +60,7 @@ jobs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.CI_BOT_PAT }}
-        team-reviewers: interledger/charts-maintainers
+        team-reviewers: charts-maintainers
         commit-message: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         title: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         body: |
