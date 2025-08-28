@@ -1,4 +1,16 @@
 {{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "interledger-app-frontend.deployment") }}
-
 {{- define "interledger-app-frontend.deployment" -}}
+{{- $top := first . -}}
+{{- $deployment := index . 1 -}}
+spec:
+    template:
+        spec:
+            topologySpreadConstraints:
+                -   maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: DoNotSchedule
+                    labelSelector:
+                        matchLabels:
+                            app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+                            app.kubernetes.io/name: {{ include "common.fullname" $top }}
 {{- end }}
