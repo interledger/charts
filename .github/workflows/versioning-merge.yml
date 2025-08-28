@@ -1,0 +1,68 @@
+name: Chart Versioning on Merge
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: versioning-on-merge
+  cancel-in-progress: false
+
+jobs:
+  version-on-merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout base branch (main)
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+    - name: Sync local main with remote
+      run: |
+        git fetch origin main
+        git checkout -B main origin/main
+        git reset --hard origin/main
+    - name: Set up Helm
+      run: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+    - name: Calculate and stage chart version bumps on main
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Skip if PR has manual-versioning label
+          const pr = context.payload.pull_request;
+          const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: pr.number,
+          });
+          if (labels.some(l => l.name === 'manual-versioning')) {
+            core.info("PR has label 'manual-versioning'. Skipping automatic versioning on merge.");
+            return;
+          }
+          const { default: runPRVersioning } = await import('${{ github.workspace }}/tooling/runner.js')
+          await runPRVersioning({ github, core, context, pullRequestMode: false })
+    - name: Commit and push bumps to main (if any)
+      run: |
+        set -euo pipefail
+        git add -A
+        if git diff --cached --quiet; then
+          echo "No changes to commit."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        # Rebase once to avoid non-fast-forward in rare races
+        git fetch origin main
+        git rebase origin/main || true
+        git commit -m "chore(version): bump charts after merge of #${{ github.event.pull_request.number }}"
+        git push origin HEAD:main
