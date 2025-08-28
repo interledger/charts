@@ -22,7 +22,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: main
-        token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: false
+        token: ${{ secrets.CI_BOT_PAT }}
         fetch-depth: 0
     - name: Sync local main with remote
       run: |
@@ -58,7 +59,8 @@ jobs:
       id: cpr
       uses: peter-evans/create-pull-request@v6
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.CI_BOT_PAT }}
+        team-reviewers: interledger/charts-maintainers
         commit-message: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         title: chore(version) - bump charts after merge of PR #${{ github.event.pull_request.number }}
         body: |
