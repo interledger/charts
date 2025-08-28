@@ -1,4 +1,6 @@
 # CODEOWNERS for automated chart versioning PRs
 # Requests reviews from the charts-maintainers team on chart and Helm repo changes.
+charts/** @interledger/charts-maintainers
+docs/** @interledger/charts-maintainers
 tooling/** @interledger/charts-maintainers
 .github/workflows/** @interledger/charts-maintainers
