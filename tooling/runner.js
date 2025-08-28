@@ -234,8 +234,8 @@ export async function runPRVersioning(params = /** @type {any} */({})) {
 
   // Regenerate the index using chartManager.regenerateHelmIndex
   try {
-    await chartManager.regenerateHelmIndex("docs/interledger", "https://interledger.org/charts/", cp);
-    run(`git add "docs/interledger/index.yaml"`);
+    await chartManager.regenerateHelmIndex("docs/interledger", "https://interledger.github.io/charts/interledger", cp);
+    run(`git add "docs/interledger"`);
     (core?.info ?? console.log)("Regenerated Helm index");
   } catch (e) {
     (core?.warning ?? console.warn)(`Failed to regenerate Helm index: ${errorMessage(e)}`);
