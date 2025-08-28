@@ -1,0 +1,12 @@
+{
+  "name": "github-scripts",
+  "type": "module",
+  "devDependencies": {
+    "@types/github-script": "github:actions/github-script"
+  },
+  "scripts": {
+    "lint": "pnpm --package=typescript dlx tsc",
+    "test": "node --test --test-reporter=spec tests"
+  },
+  "packageManager": "pnpm@8.5.0"
+}
