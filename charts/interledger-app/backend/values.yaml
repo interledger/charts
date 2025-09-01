@@ -398,6 +398,7 @@ server:
           containerPort: 8448
         - name: http
           containerPort: 8080
+
 worker:
   name: worker
   replicaCount: 2
@@ -406,6 +407,9 @@ worker:
     create: false
     annotations: {}
     name: ""
+
+  pdb:
+    annotations: {}
 
   containers:
     # Temporal related worker task

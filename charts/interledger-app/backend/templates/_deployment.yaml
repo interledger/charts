@@ -1,0 +1,31 @@
+{{- define "interledger-app-backend.deployment.tpl" -}}
+{{- $top := first . -}}
+{{- $deployment := index . 1 -}}
+{{- $name := printf "%s-%s" (include "common.fullname" $top) $deployment.name -}}
+metadata:
+    name: {{ $name }}
+    labels:
+        app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+        app.kubernetes.io/name: {{ $name }}
+spec:
+    selector:
+        matchLabels:
+            app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+        app.kubernetes.io/name: {{ $name }}
+    template:
+        metadata:
+            labels:
+                app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+                app.kubernetes.io/name: {{ $name }}
+        spec:
+            topologySpreadConstraints:
+                -   maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: DoNotSchedule
+                    labelSelector:
+                        matchLabels:
+                            app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+                            app.kubernetes.io/name: {{ $name }}
+        
+{{- end }}
+

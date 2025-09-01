@@ -1,7 +1,7 @@
 {{- define "interledger-app.pdb.tpl" -}}
 {{- $top := first . }}
 {{- $deployment := index . 1 }}
-{{- $name := printf "%s-%s" (include "common.fullname" $top) "server" -}}
+{{- $name := printf "%s-%s" (include "common.fullname" $top) $deployment.name -}}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
