@@ -1,0 +1,31 @@
+suite: Interledger App - http service checks
+templates:
+  - service.http.yaml
+set:
+  fullnameOverride: black
+release:
+  name: black
+tests:
+  - it: 'Should have a http Service created'
+    documentSelector:
+      path: kind
+      value: Service
+    asserts:
+      - equal:
+          path: metadata.name
+          value: black-service-http
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: black-server
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports[0].name
+          value: http
+      - equal:
+          path: spec.ports[0].port
+          value: 8080

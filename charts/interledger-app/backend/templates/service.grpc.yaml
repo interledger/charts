@@ -1,0 +1,12 @@
+{{- define "interledger-app-backend.service-grpc" -}}
+{{- $top := first . }}
+metadata:
+    name: {{ include "common.fullname" $top }}-service-grpc
+    labels:
+        app.kubernetes.io/name: {{ include "common.fullname" $top }}-service-grpc
+spec:
+    selector:
+        app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+        app.kubernetes.io/name: {{ include "common.fullname" $top }}-server
+{{- end }}
+{{- include "interledger-app.service" (list . .Values.services.grpc "interledger-app-backend.service-grpc") }}

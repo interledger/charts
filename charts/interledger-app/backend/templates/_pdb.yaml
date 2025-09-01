@@ -1,0 +1,30 @@
+{{- define "interledger-app.pdb.tpl" -}}
+{{- $top := first . }}
+{{- $deployment := index . 1 }}
+{{- $name := printf "%s-%s" (include "common.fullname" $top) "server" -}}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $name }}
+  {{- include "common.metadata" (list $top) | nindent 2 }}
+  annotations:
+    {{- range $key, $value := $deployment.pdb.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+    selector:
+        matchLabels:
+            app.kubernetes.io/name: {{ $name }}
+            app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+    {{ if not $deployment.pdb.maxUnavailable }}
+    minAvailable: {{ default 1 $deployment.pdb.minAvailable }}
+    {{- end }}
+    {{ if $deployment.pdb.maxUnavailable }}
+    maxUnavailable: {{ $deployment.pdb.maxUnavailable }}
+    {{- end }}
+{{- end }}
+
+{{- define "interledger-app.pdb" -}}
+{{- include "common.utils.merge" (append . "interledger-app.pdb.tpl") }}
+{{- end }}

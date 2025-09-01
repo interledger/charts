@@ -1,0 +1,37 @@
+suite: Interledger App - gRPC service checks
+templates:
+  - service.grpc.yaml
+set:
+  fullnameOverride: black
+release:
+  name: black
+tests:
+  - it: 'Should have a gRPC Service created'
+    documentSelector:
+      path: kind
+      value: Service
+    asserts:
+      - equal:
+          path: metadata.name
+          value: black-service-grpc
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: black-server
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports[0].name
+          value: admin
+      - equal:
+          path: spec.ports[0].port
+          value: 8448
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 8448
+      - equal:
+          path: spec.ports[0].protocol
+          value: TCP

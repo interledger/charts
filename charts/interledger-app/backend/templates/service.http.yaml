@@ -1,0 +1,12 @@
+{{- define "interledger-app-backend.service-http" -}}
+{{- $top := first . }}
+metadata:
+    name: {{ include "common.fullname" $top }}-service-http
+    labels:
+        app.kubernetes.io/name: {{ include "common.fullname" $top }}-service-http
+spec:
+    selector:
+        app.kubernetes.io/instance: {{ include "common.fullname" $top }}
+        app.kubernetes.io/name: {{ include "common.fullname" $top }}-server
+{{- end }}
+{{- include "interledger-app.service" (list . .Values.services.http "interledger-app-backend.service-http") }}
