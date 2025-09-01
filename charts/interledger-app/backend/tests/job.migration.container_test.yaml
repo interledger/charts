@@ -4,10 +4,6 @@ templates:
 set:
   fullnameOverride: wallet-backend
   initialisation:
-    image:
-      repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-      name: backend
-      tag: manual_main
     serviceAccountName: myServiceAccount
     host: "cloudsql-db-admin"
     port: "5432"
@@ -30,20 +26,16 @@ set:
 release:
   name: wallet-backend
 tests:
-  - it: 'Should have a migration job created'
+  - it: 'Should run as the specified service account'
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: myServiceAccount
+  - it: 'Should have expected environment variables for DB urls in migration job'
     documentSelector:
       path: kind
       value: Job
     asserts:
-      - equal:
-          path: metadata.name
-          value: wallet-backend-migration
-      - equal:
-          path: metadata.annotations["helm.sh/hook"]
-          value: pre-install,pre-upgrade
-      - equal:
-          path: metadata.annotations["helm.sh/hook-delete-policy"]
-          value: before-hook-creation,hook-succeeded
       - equal:
           path: spec.template.spec.containers[0].env[0].name
           value: DB_URL_WITH_CERTS

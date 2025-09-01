@@ -1,0 +1,23 @@
+{{- define "interledger-app.service.tpl" -}}
+{{- $top := first . }}
+{{- $service := index . 1 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  {{- include "common.metadata" (list $top) | nindent 2 }}
+  annotations:
+    {{- range $key, $value := $service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  type: {{ $service.type }}
+  ports: {{- toYaml $service.ports | nindent 4 }}
+  {{- if $service.loadBalancerIP }}
+  loadBalancerIP: {{ $service.loadBalancerIP }}
+  {{- end }}
+{{- end }}
+
+{{- define "interledger-app.service" -}}
+{{- include "common.utils.merge" (append . "interledger-app.service.tpl") }}
+{{- end }}

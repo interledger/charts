@@ -7,11 +7,12 @@
 # See templates/initialisation.yaml for more details on how the job is created.
 
 # You can override the version of the image used used across the chart here.
-# versionOverride: "v0.2.0"
-
+# If you specify an image in the deployment or initialisation sections specifically
+# those will take precedence over this one.
 imageOverride:
   repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
   name: backend
+  # tag: vA.B.C
   # by default tag will be the application version
 
 initialisation: 
@@ -25,10 +26,12 @@ initialisation:
   rafiki_auth:
     urlSecretRef: "dbRafikiAuthURL"
 
-  # What image should be used for the initialisation job.
-  image:
-    repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
-    name: backend
+  # One can override the image and tag used for the initialisation job specifically here.
+  # otherwise it will use the imageOverride values above.
+  # image:
+  #   repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+  #   name: backend
+  #   tag: vA.B.C
   imagePullPolicy: Always
 
 database:
@@ -150,12 +153,16 @@ config:
     client_id_ref: "ptiClientID"
 
 server:
+  name: server
   replicaCount: 2
   nodeSelector: {}
   serviceAccount:
     create: false
     annotations: {}
     name: ""
+
+  pdb:
+    annotations: {}
 
   containers:
     # Backend server task
@@ -394,13 +401,18 @@ server:
           containerPort: 8448
         - name: http
           containerPort: 8080
+
 worker:
+  name: worker
   replicaCount: 2
   nodeSelector: {}
   serviceAccount:
     create: false
     annotations: {}
     name: ""
+
+  pdb:
+    annotations: {}
 
   containers:
     # Temporal related worker task
@@ -631,8 +643,10 @@ worker:
           memory: 512Mi
           cpu: 400m
 
-service:
-  - name: service
+services:
+  grpc:
+    annotations:
+      traefik.ingress.kubernetes.io/service.serversscheme: h2c
     type: ClusterIP
     ports:
       # Private gRPC Server (Used by the Admin Portal)
@@ -640,17 +654,20 @@ service:
         targetPort: 8448
         protocol: TCP
         name: admin
-      # Handling of webhooks
-      - port: 8080
-        targetPort: 8080
-        protocol: TCP
-        name: http
       # Public gRPC Server (Used by Mobile & External applications)
       - port: 8443
         targetPort: 8443
         protocol: TCP
         name: grpc
         appProtocol: HTTP2
+  http:
+    type: ClusterIP
+    ports:
+      # Handling of webhooks
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: http
 
 configmap:
   - files/config.yaml

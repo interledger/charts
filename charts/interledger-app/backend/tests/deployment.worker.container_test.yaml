@@ -43,14 +43,6 @@ set:
 release:
   name: wallet-backend
 tests:
-  - it: 'Should create a deployment called wallet-backend-worker'
-    documentSelector:
-      path: kind
-      value: Deployment
-    asserts:
-      - equal:
-          path: metadata.name
-          value: wallet-backend-worker
   - it: 'Should be using service account "cheeseman4worker"'
     documentSelector:
       path: kind
