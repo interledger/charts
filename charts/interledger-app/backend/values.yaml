@@ -667,7 +667,7 @@ services:
       - port: 8080
         targetPort: 8080
         protocol: TCP
-        name: http        
+        name: http
 
 configmap:
   - files/config.yaml
