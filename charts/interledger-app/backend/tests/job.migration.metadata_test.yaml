@@ -1,0 +1,73 @@
+suite: Interledger App - Initialisation and migration job metadata
+templates:
+  - initialisation.yaml
+set:
+  fullnameOverride: green
+release:
+  name: green
+tests:
+  - it: 'Should have a migration job created'
+    documentSelector:
+      path: kind
+      value: Job
+    asserts:
+      - equal:
+          path: metadata.name
+          value: green-migration
+  - it: 'annotations should contain helm hook info to run before install/upgrade'
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+      - equal:
+          path: metadata.annotations["helm.sh/hook-delete-policy"]
+          value: before-hook-creation,hook-succeeded    
+  - it: 'labels should contain app.kubernetes.io tags'
+    documentSelector:
+      path: kind
+      value: Job  
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: green
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - exists:
+          path: metadata.labels["app.kubernetes.io/version"]
+  - it: 'Should be able to set the initialisation job image specifically'
+    set:
+      initialisation:
+        image:
+          repository: nl-west4-docker.pkg.dev/wallet-451208/lalaland
+          name: rodeo
+          tag: v3.3.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: nl-west4-docker.pkg.dev/wallet-451208/lalaland/rodeo:v3.3.3
+  - it: 'Consumer should be able to override image for everything'
+    set:
+      imageOverride:
+        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+        name: zulu
+        tag: v0.2.2    
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/zulu:v0.2.2
+  - it: 'Initialisation image should take precedence over global imageOverride'
+    set:
+      imageOverride:
+        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+        name: zulu
+        tag: v0.2.2
+      initialisation:
+        image:
+          repository: nl-west4-docker.pkg.dev/wallet-451208/lalaland
+          name: rodeo
+          tag: v3.3.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: nl-west4-docker.pkg.dev/wallet-451208/lalaland/rodeo:v3.3.3

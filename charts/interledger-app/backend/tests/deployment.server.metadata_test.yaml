@@ -1,0 +1,43 @@
+suite: Interledger App - Override image
+templates:
+  - deployment.server.yaml
+set:
+  fullnameOverride: wallet-backend
+release:
+  name: wallet-backend
+tests:
+  - it: 'Overriding image should override container image'
+    set:
+      imageOverride:
+        repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+        name: zulu
+        tag: v0.2.2
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/zulu:v0.2.2
+  - it: 'Server deployment should contain correctly named instance and name labels'
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: wallet-backend
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: wallet-backend-server
+  - it: 'Server deployment should contain metadata labels'
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - exists:
+          path: metadata.labels["app.kubernetes.io/version"]
+      - exists:
+          path: metadata.labels["helm.sh/chart"]
+  - it: 'Workload template should contain metadata labels'
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: wallet-backend
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]          
+          value: wallet-backend-server

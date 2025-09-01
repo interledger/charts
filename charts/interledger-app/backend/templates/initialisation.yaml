@@ -1,8 +1,20 @@
 {{- define "interledger-app-backend.initialisation" -}}
 {{- $top := first . }}
 {{- $initialisation := $top.Values.initialisation }}
-{{- $globalSelectedTag := $top.Values.versionOverride | default $top.Chart.AppVersion}}
-{{- $initialisationSelectedTag := $initialisation.image.tag | default $globalSelectedTag }}
+
+{{- $globalSelectedRepository := $top.Values.imageOverride.repository }}
+{{- $globalSelectedName := $top.Values.imageOverride.name }}
+{{- $globalSelectedVersion := $top.Values.imageOverride.tag | default $top.Chart.AppVersion }}
+
+{{- if not $initialisation.image }}
+  {{- $initialisation := dict "image" (dict) | merge $initialisation }}
+{{- end }}
+
+{{- $initialisationSelectedRepository := $initialisation.image.repository | default $globalSelectedRepository }}
+{{- $initialisationSelectedName := $initialisation.image.name | default $globalSelectedName }}
+{{- $initialisationSelectedTag := $initialisation.image.tag | default $globalSelectedVersion }}
+
+{{- $migrationImageString := printf "%s/%s:%s" $initialisationSelectedRepository $initialisationSelectedName $initialisationSelectedTag }}
 
 {{/*
     This template is responsible for creating a Kubernetes Job that runs the
@@ -30,7 +42,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migration
-          image: {{ $initialisation.image.repository }}/{{ $initialisation.image.name }}:{{ $initialisationSelectedTag }}
+          image: {{ $migrationImageString }}
           imagePullPolicy: Always
           env:
             - name: DB_URL_WITH_CERTS
