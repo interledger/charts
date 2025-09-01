@@ -661,7 +661,7 @@ services:
         name: grpc
         appProtocol: HTTP2
   http:
-    type: ClusterIP  
+    type: ClusterIP
     ports:
       # Handling of webhooks
       - port: 8080
