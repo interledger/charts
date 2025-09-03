@@ -53,6 +53,10 @@ spec:
   {{- with $pod.priorityClassName }}
   priorityClassName: {{ . }}
   {{- end }}
+  {{- if $pod.topologySpreadConstraints }}
+  topologySpreadConstraints:
+    {{- toYaml $pod.topologySpreadConstraints | nindent 4 }}
+  {{- end }}
   {{- if or ($pod.secretProvider) ($pod.volumes) }}
 volumes:
   {{- range $secretProvider := $pod.secretProvider }}

@@ -205,3 +205,20 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[0].value
           value: extra_value
+  - it: 'given topologySpreadConstraints in worker should be added to the pod spec'
+    set:
+      worker:
+        topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: topology.kubernetes.io/zone
+            whenUnsatisfiable: ScheduleAnyway
+            labelSelector:
+              matchLabels:
+                app: myapp
+    asserts:
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].maxSkew
+          value: 1
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].topologyKey
+          value: topology.kubernetes.io/zone
