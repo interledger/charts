@@ -130,3 +130,78 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].ports[0].protocol
           value: TCP
+  - it: 'sidecars provided in worker should be added to the deployment'
+    set:
+      worker:
+        sidecars:
+          - name: sidecar1
+            image:
+              repository: ghcr.io/interledger/sidecarrepo
+              name: sidecar
+              tag: 1.0.0
+            resources:
+              requests:
+                memory: 22Mi
+                cpu: 22m
+              limits:
+                memory: 222Mi
+                cpu: 222m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: sidecar1
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: ghcr.io/interledger/sidecarrepo/sidecar:1.0.0
+  - it: 'initContainers provided in worker should be added to the deployment'
+    set:
+      worker:
+        initContainers:
+          - name: init1
+            image:
+              repository: ghcr.io/interledger/initrepo
+              name: initcontainer
+              tag: 0.1.0
+            resources:
+              requests:
+                memory: 11Mi
+                cpu: 11m
+              limits:
+                memory: 111Mi
+                cpu: 111m
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: init1
+      - equal:
+          path: spec.template.spec.initContainers[0].image
+          value: ghcr.io/interledger/initrepo/initcontainer:0.1.0
+  - it: "sidecars provided should appended to the containers generated"
+    set:
+      worker:
+        sidecars:
+          - name: sidecar1
+            image:
+              repository: ghcr.io/interledger/sidecarrepo
+              name: sidecar
+              tag: 1.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: sidecar1
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: ghcr.io/interledger/sidecarrepo/sidecar:1.0.0
+  - it: 'env provided in worker should be added to the main container env'
+    set:
+      worker:
+        env:
+          - name: EXTRA_ENV_VAR
+            value: extra_value
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: EXTRA_ENV_VAR
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: extra_value

@@ -34,5 +34,11 @@ worker:
   #     cpu: 888m
   initContainers: []
   sidecars: []
-  extraEnv: []
+  env: []
   ports: []
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}
