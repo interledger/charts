@@ -9,7 +9,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "common.selectorLabels" $top | nindent 6 }}
+      {{- include "common.selectorLabels" (list $top) | nindent 6 }}
   {{- if not (or (empty $pdb.minAvailable) (empty $pdb.maxUnavailable)) }}
     {{- fail "minAvailable and maxUnavailable can not be set together" }}
   {{- end }}

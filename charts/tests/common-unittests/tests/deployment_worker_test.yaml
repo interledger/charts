@@ -1,0 +1,59 @@
+suite: Common - Spefific deployment workers should have correct labels
+templates:
+  - deployment.worker.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'given a name the lables should use the name in the metadata labels as a suffix'
+    set:
+      worker:
+        name: jhonny
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: black-jhonny
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: black-jhonny
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: black-jhonny
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: black
+  - it: 'given no name the lables should use the default name in the metadata labels as a suffix'
+    set:
+      worker:
+        name: ""
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: black
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: black
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: black
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: black
+  - it: 'given the worker is disabled no deployment should be created'
+    set:
+      worker:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

@@ -1,4 +1,3 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "some-app.deployment") }}
-
 {{- define "some-app.deployment" -}}
 {{- end }}
+{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "some-app.deployment") }}

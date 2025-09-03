@@ -1,3 +1,4 @@
+# Default deployment scenario
 containers:
   - name: server
     resources:
@@ -11,3 +12,25 @@ containers:
       - name: http
         containerPort: 8080
         protocol: TCP
+
+# Specific deployment scenario
+worker:
+  name: worker
+  enabled: false
+  serviceAccount:
+    create: true
+    name: "superman"
+  image:
+    repository: ghcr.io/interledger/rafiki
+    tag: 2.0.0
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 2048Mi
+      cpu: 2000m
+  sidecars: []
+  extraEnv: []
+  ports: []

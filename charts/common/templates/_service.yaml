@@ -21,7 +21,7 @@ spec:
   selector: {{- toYaml $service.selector | nindent 4 }}
   {{ else }}
   selector:
-    {{- include "common.selectorLabels" $top | nindent 4 }}
+    {{- include "common.selectorLabels" (list $top) | nindent 4 }}
   {{- end }}
   {{- if $service.loadBalancerIP }}
   loadBalancerIP: {{ $service.loadBalancerIP }}

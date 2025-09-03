@@ -8,7 +8,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "common.selectorLabels" $top | nindent 4 }}
+    {{- include "common.selectorLabels" (list $top $pod) | nindent 4 }}
   {{- with $pod.podLabels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}

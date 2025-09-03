@@ -1,0 +1,707 @@
+---
+# Source: ilf-wallet-backend/templates/pdb.server.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations: null
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-server
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-ilf-wallet-backend
+      app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+---
+# Source: ilf-wallet-backend/templates/pdb.worker.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations: null
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-worker
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-ilf-wallet-backend
+      app.kubernetes.io/name: release-name-ilf-wallet-backend-worker
+---
+# Source: ilf-wallet-backend/templates/configmap.yaml
+apiVersion: v1
+data:
+  ADMIN_POLICY_AUD: ""
+  ADMIN_TEAM_DOMAIN: ""
+  ALLOWED_WALLET_IDS: ""
+  ASTRA_CODE_EXCHANGE_REDIRECT: ""
+  AUTHORISATION_PORT: "8082"
+  BLOCKED_REGIONS: ""
+  FYNBOS_ENV: dev
+  GATEHUB_FALLBACK_WEBHOOK_URL: ""
+  GOOGLE_OAUTH2_CLIENT_ID: google_oauth
+  KRATOS_ADMIN_URL: http://kratos.wallet:4434
+  KRATOS_URL: http://kratos.wallet:4433
+  LOG_LEVEL: info
+  NOOP_EQUITY_ACCOUNT_ID: 00000000-0000-0000-0000-000000000000
+  OPEN_PAYMENTS_PORT: "8081"
+  OTEL_EXPORTER_OTLP_ENDPOINT: grpc://api.honeycomb.io:443
+  OTEL_SERVICE_NAME: backend
+  RAFIKI_AUTH_GRAPHQL_URL: http://rafiki-auth:3003/graphql
+  RAFIKI_BACKEND_GRAPHQL_URL: http://rafiki-backend:3001/graphql
+  SMARTY_AUTH_ID: not_used
+  SMARTY_AUTH_TOKEN: not_used
+  TEMPORAL_URL: temporal:7233
+  TWILIO_ACCOUNT_SID: ""
+  TWILIO_SERVICE_SID: ""
+  TWITTER_BEARER_TOKEN: not_used
+  TWITTER_CLIENT_ID: not_used
+  TWITTER_CLIENT_SECRET: not_used
+  TWITTER_REDIRECT_URL: not_used
+  USD_LEDGER_ID: "1"
+  VAULT_ADDR: http://vault:8200
+  VAULT_TRANSIT_ENGINE_PATH: transit/prod/backend
+  ZENDESK_USER: support@interledger-app.dev
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend
+---
+# Source: ilf-wallet-backend/templates/service.grpc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/service.serversscheme: h2c
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-service-grpc
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-service-grpc
+spec:
+  ports:
+  - name: admin
+    port: 8448
+    protocol: TCP
+    targetPort: 8448
+  - appProtocol: HTTP2
+    name: grpc
+    port: 8443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+  type: ClusterIP
+---
+# Source: ilf-wallet-backend/templates/service.http.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-service-http
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-service-http
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+  type: ClusterIP
+---
+# Source: ilf-wallet-backend/templates/deployment.server.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-ilf-wallet-backend
+      app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: release-name-ilf-wallet-backend
+        app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - start
+        env:
+        - name: PGSSLMODE
+          value: disable
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: PACIOLI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbPacioliURL
+              name: release-name-ilf-wallet-backend
+        - name: DB_URL_WITH_CERTS
+          valueFrom:
+            secretKeyRef:
+              key: dbBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: PACIOLI_DB_URL_WITH_CERTS
+          valueFrom:
+            secretKeyRef:
+              key: dbPacioliURL
+              name: release-name-ilf-wallet-backend
+        - name: RAFIKI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbRafikiBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: RAFIKI_AUTH_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbRafikiAuthURL
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_ACCOUNT_SID
+          valueFrom:
+            secretKeyRef:
+              key: twilioAccountSID
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_ACCOUNT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: twilioAccountToken
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_SERVICE_SID
+          valueFrom:
+            secretKeyRef:
+              key: twilioServiceSID
+              name: release-name-ilf-wallet-backend
+        - name: ZENDESK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: zendeskToken
+              name: release-name-ilf-wallet-backend
+        - name: SENDGRID_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: sendgridApiKey
+              name: release-name-ilf-wallet-backend
+        - name: PUSHER_ADDR
+          valueFrom:
+            secretKeyRef:
+              key: pusherAddr
+              name: release-name-ilf-wallet-backend
+        - name: SEGMENT_KEY
+          valueFrom:
+            secretKeyRef:
+              key: segmentKey
+              name: release-name-ilf-wallet-backend
+        - name: PERSONA_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: personaToken
+              name: release-name-ilf-wallet-backend
+        - name: PERSONA_WEBHOOK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: personaWebhookToken
+              name: release-name-ilf-wallet-backend
+        - name: BASIS_THEORY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: basisTheoryApiKey
+              name: release-name-ilf-wallet-backend
+        - name: BT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: basisTheoryToken
+              name: release-name-ilf-wallet-backend
+        - name: CDN_KEY
+          valueFrom:
+            secretKeyRef:
+              key: cdnKey
+              name: release-name-ilf-wallet-backend
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              key: sentryDSN
+              name: release-name-ilf-wallet-backend
+        - name: XAGO_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: xagoApiSecret
+              name: release-name-ilf-wallet-backend
+        - name: XAGO_API_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              key: xagoApiPublicKey
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_WEBHOOK_BEARER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: astraWebhookBearerToken
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: astraClientID
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: astraClientSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: slackClientID
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: slackClientSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_SIGNING_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: slackSigningSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: slackToken
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_APP_ID
+          valueFrom:
+            secretKeyRef:
+              key: gatehubAppID
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: gatehubSecret
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: gatehubWebhookSecret
+              name: release-name-ilf-wallet-backend
+        - name: CHIMONEY_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: chimoneyWebhookSecret
+              name: release-name-ilf-wallet-backend
+        - name: CHIMONEY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: chimoneyToken
+              name: release-name-ilf-wallet-backend
+        - name: PTI_JWK
+          valueFrom:
+            secretKeyRef:
+              key: ptiJwk
+              name: release-name-ilf-wallet-backend
+        - name: PTI_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: ptiClientID
+              name: release-name-ilf-wallet-backend
+        - name: OTEL_EXPORTER_OTLP_HEADERS
+          valueFrom:
+            secretKeyRef:
+              key: otelExporterHeaders
+              name: release-name-ilf-wallet-backend
+        - name: ADMIN_POLICY_AUD
+          valueFrom:
+            secretKeyRef:
+              key: adminPortalCloudFlarePolicyAud
+              name: release-name-ilf-wallet-backend
+        - name: ADMIN_TEAM_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              key: adminPortalCloudflareTeamDomain
+              name: release-name-ilf-wallet-backend
+        envFrom:
+        - configMapRef:
+            name: release-name-ilf-wallet-backend
+        image: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v1.2.16
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: server
+        ports:
+        - containerPort: 8443
+          name: grpc
+        - containerPort: 8448
+          name: admin
+        - containerPort: 8080
+          name: http
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        securityContext: null
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: release-name-ilf-wallet-backend
+            app.kubernetes.io/name: release-name-ilf-wallet-backend-server
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+---
+# Source: ilf-wallet-backend/templates/deployment.worker.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-ilf-wallet-backend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-ilf-wallet-backend-worker
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-backend-1.2.3
+  name: release-name-ilf-wallet-backend-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-ilf-wallet-backend
+      app.kubernetes.io/name: release-name-ilf-wallet-backend-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: release-name-ilf-wallet-backend
+        app.kubernetes.io/name: release-name-ilf-wallet-backend-worker
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - worker
+        env:
+        - name: PGSSLMODE
+          value: disable
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: PACIOLI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbPacioliURL
+              name: release-name-ilf-wallet-backend
+        - name: DB_URL_WITH_CERTS
+          valueFrom:
+            secretKeyRef:
+              key: dbBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: PACIOLI_DB_URL_WITH_CERTS
+          valueFrom:
+            secretKeyRef:
+              key: dbPacioliURL
+              name: release-name-ilf-wallet-backend
+        - name: RAFIKI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbRafikiBackendURL
+              name: release-name-ilf-wallet-backend
+        - name: RAFIKI_AUTH_DB_URL
+          valueFrom:
+            secretKeyRef:
+              key: dbRafikiAuthURL
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_ACCOUNT_SID
+          valueFrom:
+            secretKeyRef:
+              key: twilioAccountSID
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_ACCOUNT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: twilioAccountToken
+              name: release-name-ilf-wallet-backend
+        - name: TWILIO_SERVICE_SID
+          valueFrom:
+            secretKeyRef:
+              key: twilioServiceSID
+              name: release-name-ilf-wallet-backend
+        - name: ZENDESK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: zendeskToken
+              name: release-name-ilf-wallet-backend
+        - name: SENDGRID_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: sendgridApiKey
+              name: release-name-ilf-wallet-backend
+        - name: PUSHER_ADDR
+          valueFrom:
+            secretKeyRef:
+              key: pusherAddr
+              name: release-name-ilf-wallet-backend
+        - name: SEGMENT_KEY
+          valueFrom:
+            secretKeyRef:
+              key: segmentKey
+              name: release-name-ilf-wallet-backend
+        - name: PERSONA_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: personaToken
+              name: release-name-ilf-wallet-backend
+        - name: PERSONA_WEBHOOK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: personaWebhookToken
+              name: release-name-ilf-wallet-backend
+        - name: BASIS_THEORY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: basisTheoryApiKey
+              name: release-name-ilf-wallet-backend
+        - name: BT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: basisTheoryToken
+              name: release-name-ilf-wallet-backend
+        - name: CDN_KEY
+          valueFrom:
+            secretKeyRef:
+              key: cdnKey
+              name: release-name-ilf-wallet-backend
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              key: sentryDSN
+              name: release-name-ilf-wallet-backend
+        - name: XAGO_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: xagoApiSecret
+              name: release-name-ilf-wallet-backend
+        - name: XAGO_API_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              key: xagoApiPublicKey
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_WEBHOOK_BEARER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: astraWebhookBearerToken
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: astraClientID
+              name: release-name-ilf-wallet-backend
+        - name: ASTRA_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: astraClientSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: slackClientID
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: slackClientSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_SIGNING_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: slackSigningSecret
+              name: release-name-ilf-wallet-backend
+        - name: SLACK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: slackToken
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_APP_ID
+          valueFrom:
+            secretKeyRef:
+              key: gatehubAppID
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: gatehubSecret
+              name: release-name-ilf-wallet-backend
+        - name: GATEHUB_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: gatehubWebhookSecret
+              name: release-name-ilf-wallet-backend
+        - name: CHIMONEY_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: chimoneyWebhookSecret
+              name: release-name-ilf-wallet-backend
+        - name: CHIMONEY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: chimoneyToken
+              name: release-name-ilf-wallet-backend
+        - name: PTI_JWK
+          valueFrom:
+            secretKeyRef:
+              key: ptiJwk
+              name: release-name-ilf-wallet-backend
+        - name: PTI_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: ptiClientID
+              name: release-name-ilf-wallet-backend
+        - name: OTEL_EXPORTER_OTLP_HEADERS
+          valueFrom:
+            secretKeyRef:
+              key: otelExporterHeaders
+              name: release-name-ilf-wallet-backend
+        - name: ADMIN_POLICY_AUD
+          valueFrom:
+            secretKeyRef:
+              key: adminPortalCloudFlarePolicyAud
+              name: release-name-ilf-wallet-backend
+        - name: ADMIN_TEAM_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              key: adminPortalCloudflareTeamDomain
+              name: release-name-ilf-wallet-backend
+        envFrom:
+        - configMapRef:
+            name: release-name-ilf-wallet-backend
+        image: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v1.2.16
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: worker
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        securityContext: null
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: release-name-ilf-wallet-backend
+            app.kubernetes.io/name: release-name-ilf-wallet-backend-worker
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+---
+# Source: ilf-wallet-backend/templates/validations.yaml
+# We require replicaCount to be at least 2 for both server and worker
+# so that we can do rolling updates without downtime.
+---
+# Source: ilf-wallet-backend/templates/initialisation.yaml
+# templates/initialisation.yaml
+  # Job responsible for initialising the interledger-app backend
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: release-name-ilf-wallet-backend-migration
+    namespace: default
+    labels:
+      helm.sh/chart: ilf-wallet-backend-1.2.3
+      app.kubernetes.io/name: release-name-ilf-wallet-backend
+      app.kubernetes.io/instance: release-name-ilf-wallet-backend
+      app.kubernetes.io/version: "v1.2.16"
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      "helm.sh/hook": pre-install,pre-upgrade
+      "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  spec:
+    backoffLimit: 10
+    template:
+      spec:
+        restartPolicy: OnFailure
+        containers:
+          - name: migration
+            image: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/backend:v1.2.16
+            imagePullPolicy: Always
+            env:
+              - name: DB_URL_WITH_CERTS
+                valueFrom:
+                  secretKeyRef:
+                      name: 'release-name-ilf-wallet-backend'
+                      key: "dbBackendMigrationsURL"
+              - name: PACIOLI_DB_URL_WITH_CERTS
+                valueFrom:
+                  secretKeyRef:
+                      name: 'release-name-ilf-wallet-backend'
+                      key: "dbPacioliMigrationsURL"
+              - name: LOG_OUTPUT_PATH
+                value: "stderr"
+            args: ["migrate"]

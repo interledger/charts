@@ -3,10 +3,14 @@
 {{- $deployment := index . 1 }}
 {{- $autoscaling := index . 2 }}
 {{- $serviceAccount := index . 3 }}
+{{- $name := include "common.fullname" $top }}
+{{- if $deployment.name }}
+{{- $name = printf "%s-%s" $name $deployment.name }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "common.fullname" $top }}
+  name: {{ $name }}
   {{- include "common.metadata" (list $top $deployment) | nindent 2 }}
 spec:
   {{- if not $autoscaling.enabled }}
@@ -14,7 +18,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "common.selectorLabels" $top | nindent 6 }}
+      {{- include "common.selectorLabels" (list $top $deployment) | nindent 6 }}
   template: {{- include "common.pod.template" (list $top $deployment $serviceAccount nil) | nindent 4 }}
 {{- end }}
 
