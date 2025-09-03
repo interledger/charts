@@ -57,3 +57,76 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: 'no image policy configured should default to IfNotPresent'
+    set:
+      worker:
+        image:
+          repository: ghcr.io/interledger/somerepo
+          name: worker
+          tag: 2.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
+  - it: 'worker image should be overridden correctly'
+    set:
+      worker:
+        image:
+          repository: ghcr.io/interledger/somerepoz
+          name: workerz
+          tag: 4.2.0
+        imagePullPolicy: Always
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/somerepoz/workerz:4.2.0
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+  - it: 'worker resources should be overridden correctly'
+    set:
+      worker:
+        resources:
+          requests:
+            memory: 5Mi
+            cpu: 5m
+          limits:
+            memory: 88Mi
+            cpu: 88m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 5Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 5m
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 88Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 88m
+  - it: 'worker with no ports should have no ports in the deployment'
+    set:
+      worker:
+        ports: []
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].ports
+  - it: 'ports provided in worker should be used for the main container'
+    set:
+      worker:
+        ports:
+          - name: workerport
+            containerPort: 1234
+            protocol: TCP
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: workerport
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 1234
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].protocol
+          value: TCP

@@ -7,6 +7,7 @@
 {{- if $deployment.name }}
 {{- $name = printf "%s-%s" $name $deployment.name }}
 {{- end }}
+{{- if or (not (hasKey $deployment "enabled")) $deployment.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +21,9 @@ spec:
     matchLabels:
       {{- include "common.selectorLabels" (list $top $deployment) | nindent 6 }}
   template: {{- include "common.pod.template" (list $top $deployment $serviceAccount nil) | nindent 4 }}
+{{- else }}
+# Deployment {{ $name }} is disabled
+{{- end }}
 {{- end }}
 
 {{- define "common.deployment" -}}

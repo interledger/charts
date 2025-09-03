@@ -16,21 +16,23 @@ containers:
 # Specific deployment scenario
 worker:
   name: worker
-  enabled: false
+  enabled: true
   serviceAccount:
     create: true
     name: "superman"
   image:
-    repository: ghcr.io/interledger/rafiki
+    repository: ghcr.io/interledger/somerepo
+    name: worker
     tag: 2.0.0
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
-    limits:
-      memory: 2048Mi
-      cpu: 2000m
+  # imagePullPolicy: IfNotPresent
+  # resources:
+  #   requests:
+  #     memory: 555Mi
+  #     cpu: 55m
+  #   limits:
+  #     memory: 8888Mi
+  #     cpu: 888m
+  initContainers: []
   sidecars: []
   extraEnv: []
   ports: []
