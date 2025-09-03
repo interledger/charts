@@ -2,4 +2,4 @@
 {{- $top := first . -}}
 {{- end }}
 
-{{- include "common.service" (list . .Values.service "app.service") }}
+{{- include "common.service" (list . .Values.service .Values.web "app.service") }}
