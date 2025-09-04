@@ -1,7 +1,7 @@
 apiVersion: v2
-name: common-unittests
-description: chart for unittesting the common library
-home: https://github.com/interledger/interledger-app
+name: multideployment
+description: example on how to use the common library to deploy multiple deployments
+home: https://github.com/interledger/charts
 
 type: application
 version: 0.1.1

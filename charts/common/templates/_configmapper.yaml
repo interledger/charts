@@ -1,0 +1,60 @@
+{{/*
+Template: "common.configMapper" / "common.configMapper.tpl"
+Purpose: Render a Kubernetes ConfigMap from a descriptor object with validation.
+
+Inputs:
+- top (root context, typically ".")
+- obj (map):
+  - name: string (required)
+  - labels: map[string]string (optional)
+  - contentMap: []Entry (optional)
+    - Entry:
+      - key: string (required)
+      - value: string (optional)
+      - valueRef: path or path-list (optional; resolved via "common.resolve.path")
+
+Behavior:
+- name = "<common.fullname>-<obj.name>"
+- metadata merged via "common.metadata"
+- data = {} when contentMap is empty/omitted
+- Fails fast if obj/obj.name missing or entries invalid
+*/}}
+{{- define "common.configMapper.tpl" -}}
+{{- $top := first . }}
+{{- $obj := index . 1 }}
+{{- if not $obj }}
+{{- fail "No configMap object provided" -}}
+{{- end }}
+{{- if not $obj.name }}
+{{- fail "ConfigMap name missing" -}}
+{{- end }}
+{{- $name := printf "%s-%s" (include "common.fullname" $top) $obj.name }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+  {{- include "common.metadata" (list $top $obj) | nindent 2 }}
+  {{- if $obj.labels }}
+  {{- include "common.metadata" (list $top $obj) | nindent 2 }}
+    labels:
+        {{- range $key, $value := $obj.labels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    {{- end }}
+{{- if empty $obj.contentMap }}
+data: {}
+{{- else }}
+data:
+{{- range $entry := $obj.contentMap }}
+  {{- if and $entry.key (or $entry.value $entry.valueRef) }}
+  {{ $entry.key }}: {{ include "common.resolve.path" (list $top $entry.valueRef) | quote }}
+  {{- else }}
+  {{- fail (printf "Invalid configMap entry in configMap %s: %v" $obj.name $entry) -}}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "common.configMapper" -}}
+{{- include "common.utils.merge" (append . "common.configMapper.tpl") }}
+{{- end }}

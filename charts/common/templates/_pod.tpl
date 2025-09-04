@@ -8,7 +8,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "common.selectorLabels" $top | nindent 4 }}
+    {{- include "common.selectorLabels" (list $top $pod) | nindent 4 }}
   {{- with $pod.podLabels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -27,6 +27,11 @@ spec:
     {{- end }}
   {{- end }}
   containers:
+  {{/* If current deployment object has no containers defined we assume we can get the paramers from the deployment object for the main container */}}
+  {{- if empty $pod.containers }}
+    {{- include "common.container" (list $top $pod $pod) | nindent 4 }}  
+  {{- end }}
+  {{/* If the containers array is provided then use that to generate the main container*/}}
   {{- range $container := $pod.containers }}
     {{- include "common.container" (list $top $container $pod) | nindent 4 }}
   {{- end }}
@@ -48,19 +53,23 @@ spec:
   {{- with $pod.priorityClassName }}
   priorityClassName: {{ . }}
   {{- end }}
+  {{- if $pod.topologySpreadConstraints }}
+  topologySpreadConstraints:
+    {{- toYaml $pod.topologySpreadConstraints | nindent 4 }}
+  {{- end }}
   {{- if or ($pod.secretProvider) ($pod.volumes) }}
-  volumes:
-    {{- range $secretProvider := $pod.secretProvider }}
-    - name: {{ $secretProvider.name }}
-      csi:
-        driver: secrets-store.csi.k8s.io
-        readOnly: true
-        volumeAttributes:
-          secretProviderClass: {{ $secretProvider.name }}
-    {{- end }}
-    {{- with $pod.volumes }}
-      {{- toYaml . | nindent 4 }}
-    {{- end }}
+volumes:
+  {{- range $secretProvider := $pod.secretProvider }}
+  - name: {{ $secretProvider.name }}
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: {{ $secretProvider.name }}
+  {{- end }}
+  {{- with $pod.volumes }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- end }}
 {{- end }}
 

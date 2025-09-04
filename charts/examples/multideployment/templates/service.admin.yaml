@@ -1,0 +1,4 @@
+{{- define "admin.service" -}}
+{{- $top := first . -}}
+{{- end }}
+{{- include "common.svc" (list . .Values.admin.service .Values.admin "admin.service") }}

@@ -16,7 +16,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
-          value: hello-there-common-unittests
+          value: hello-there
       - equal:
           path: spec.template.spec.containers[0].envFrom[1].secretRef.name
-          value: hello-there-common-unittests
+          value: hello-there

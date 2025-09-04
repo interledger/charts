@@ -1,0 +1,5 @@
+{{- define "app.service.classic" -}}
+{{- $top := first . -}}
+{{- end }}
+
+{{- include "common.svc" (list . .Values.services.web .Values.web "app.service.classic") }}

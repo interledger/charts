@@ -1,0 +1,3 @@
+{{- define "worker.pdb" -}}
+{{- end }}
+{{- include "common.pdb" (list . .Values.worker "worker.pdb") }}

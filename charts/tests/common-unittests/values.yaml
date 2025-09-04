@@ -1,3 +1,4 @@
+# Default deployment scenario
 containers:
   - name: server
     resources:
@@ -7,7 +8,103 @@ containers:
       limits:
         memory: 2048Mi
         cpu: 4
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
     ports:
       - name: http
         containerPort: 8080
         protocol: TCP
+
+services:
+  web:
+    name: web
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 1080
+        targetPort: http
+        protocol: TCP
+
+  worker:
+    name: worker
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 4455
+        targetPort: http
+        protocol: TCP
+
+
+
+web:
+  name: web
+  enabled: true
+  serviceAccount:
+    create: true
+    name: "batman"
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: web
+    tag: 2.0.0
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  # imagePullPolicy: IfNotPresent
+  # resources:
+  #   requests:
+  #     memory: 256Mi
+  #     cpu: 1
+  #   limits:
+  #     memory: 2048Mi
+  #     cpu: 4
+  initContainers: []
+  sidecars: []
+  env: []
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}
+
+
+# Specific deployment scenario
+worker:
+  name: worker
+  enabled: true
+  serviceAccount:
+    create: true
+    name: "superman"
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: worker
+    tag: 2.0.0
+  # imagePullPolicy: IfNotPresent
+  # resources:
+  #   requests:
+  #     memory: 555Mi
+  #     cpu: 55m
+  #   limits:
+  #     memory: 8888Mi
+  #     cpu: 888m
+  initContainers: []
+  sidecars: []
+  env: []
+  ports:
+    - name: http
+      containerPort: 4455
+      protocol: TCP
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}

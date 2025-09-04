@@ -1,0 +1,19 @@
+suite: Common - Service pointing to web deployment
+templates:
+  - service.web.yaml
+release:
+  name: zebra
+tests:
+  - it: 'Service should be created with name'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: zebra-common-unittests-web
+  - it: 'Service should have selector matching web deployment labels'
+    asserts:
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: zebra-common-unittests-web
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: zebra-common-unittests
