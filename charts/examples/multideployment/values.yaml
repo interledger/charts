@@ -8,7 +8,7 @@ config:
 web:
   name: web
   enabled: true
-  replicas: 2
+  replicaCount: 2
   serviceAccount: {}
     # create: false
     # name: "webksa"
@@ -42,6 +42,9 @@ web:
   initContainers: []
   sidecars: []
   env: []
+  envFrom:
+    - configMapRef:
+        name: "{{ .Release.Name }}-admin"  
   ports:
     - name: http
       containerPort: 8080
@@ -56,7 +59,7 @@ web:
 backend:
   name: backend
   enabled: true
-  replicas: 2
+  replicaCount: 2
   serviceAccount: {}
     # create: false
     # name: "webksa"
@@ -91,7 +94,7 @@ backend:
   env: []
   envFrom:
     - configMapRef:
-        name: backend
+        name: "{{ .Release.Name }}-admin"
   ports:
     - name: http
       containerPort: 8080
@@ -106,7 +109,7 @@ backend:
 admin:
   name: admin
   enabled: true
-  replicas: 2
+  replicaCount: 2
   serviceAccount: {}
     # create: false
     # name: "webksa"
@@ -140,6 +143,9 @@ admin:
   initContainers: []
   sidecars: []
   env: []
+  envFrom:
+    - configMapRef:
+        name: "{{ .Release.Name }}-admin"
   ports:
     - name: http
       containerPort: 8080
@@ -154,7 +160,7 @@ admin:
 worker:
   name: worker
   enabled: true
-  replicas: 2
+  replicaCount: 2
   serviceAccount: {}
     # create: false
     # name: "workerksa"
@@ -177,6 +183,9 @@ worker:
   initContainers: []
   sidecars: []
   env: []
+  envFrom:
+    - configMapRef:
+        name: "{{ .Release.Name }}-worker"  
   podDisruptionBudget:
     enabled: true
     minAvailable: 1
@@ -191,6 +200,11 @@ worker:
 # Describes the list of configmaps which will be automatically generated
 # based on the provided contentMap. Note that references are pointing to
 # this values file
+#
+# Each configMap generated will be given the name using the 
+# release name suffixed with the configMap name, e.g.
+# <release-name>-<configMap.name>
+#
 configMaps:
   backend:
     name: backend

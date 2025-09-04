@@ -8,6 +8,11 @@ containers:
       limits:
         memory: 2048Mi
         cpu: 4
+    envFrom:
+      - configMapRef:
+          name: "{{ .Release.Name }}"
+      - secretRef:
+          name: "{{ .Release.Name }}"
     ports:
       - name: http
         containerPort: 8080
