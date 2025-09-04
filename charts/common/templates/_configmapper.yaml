@@ -30,7 +30,7 @@ Behavior:
 {{- end }}
 {{- $name := printf "%s-%s" (include "common.fullname" $top) $obj.name }}
 apiVersion: v1
-kind: configMap
+kind: ConfigMap
 metadata:
   name: {{ $name }}
   {{- include "common.metadata" (list $top $obj) | nindent 2 }}
