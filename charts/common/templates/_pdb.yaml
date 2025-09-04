@@ -30,7 +30,8 @@ metadata:
   {{- end }}
 spec:
   selector:
-    {{- include "common.selectorLabels" (list $top $deployment) | nindent 4 }}    
+    matchLabels:
+      {{- include "common.selectorLabels" (list $top $deployment) | nindent 6 }}    
   {{ if not $deployment.podDisruptionBudget.maxUnavailable }}
   minAvailable: {{ default 1 $deployment.podDisruptionBudget.minAvailable }}
   {{- end }}

@@ -4,21 +4,34 @@ templates:
 release:
   name: zebra
 tests:
-  # - it: 'Worker PDB should be created with name'
-  #   asserts:
-  #     - equal:
-  #         path: metadata.name
-  #         value: zebra-multideployment-worker
-  #     - equal:
-  #         path: metadata.labels["app.kubernetes.io/name"]
-  #         value: zebra-multideployment-worker
-  #     - equal:
-  #         path: metadata.labels["app.kubernetes.io/instance"]
-  #         value: zebra-multideployment
+  - it: 'Worker PDB should be created with name'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: zebra-multideployment-worker
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: zebra-multideployment-worker
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: zebra-multideployment
   - it: 'Disabling the PDB for backend should not create a PDB'
     set:
       worker.podDisruptionBudget.enabled: false
     asserts:
       - hasDocuments:
           count: 0
+  - it: 'Selectors should match labels'
+    asserts:
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: zebra-multideployment-worker
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: zebra-multideployment
+  - it: 'PDB should have minAvailable set to 1 to match values file'
+    asserts:
+      - equal:
+          path: spec.minAvailable
+          value: 1
         
