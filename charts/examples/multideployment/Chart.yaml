@@ -1,0 +1,17 @@
+apiVersion: v2
+name: multideployment
+description: example on how to use the common library to deploy multiple deployments
+home: https://github.com/interledger/charts
+
+type: application
+version: 0.1.1
+appVersion: "v0.1.0"
+
+dependencies:
+  - name: common
+    version: 0.5.0
+    repository: file://../../common
+
+maintainers:
+  - name: Stephan Butler
+    email: stephan@interledger.foundation

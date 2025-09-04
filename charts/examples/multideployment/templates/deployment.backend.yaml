@@ -1,0 +1,3 @@
+{{- define "backend.deployment" -}}
+{{- end }}
+{{- include "common.deployment" (list . .Values.backend .Values.backend.autoscaling .Values.backend.serviceAccount "backend.deployment") }}

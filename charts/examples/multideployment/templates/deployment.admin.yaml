@@ -1,0 +1,3 @@
+{{- define "admin.deployment" -}}
+{{- end }}
+{{- include "common.deployment" (list . .Values.admin .Values.admin.autoscaling .Values.admin.serviceAccount "admin.deployment") }}

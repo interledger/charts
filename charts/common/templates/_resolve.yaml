@@ -1,0 +1,56 @@
+{{/*
+common.resolve.path:
+  Usage:
+    {{ include "common.resolve.path" (list $ ".Values.config.dsn") }}
+    {{ include "common.resolve.path" (list $ "config.items.0.name") }}
+
+  Returns the looked-up value (empty if not found).
+*/}}
+{{- define "common.resolve.path" -}}
+{{- $root := index . 0 -}}
+{{- $path := trim (index . 1) -}}
+
+{{- /* Normalize: strip optional .Values./Values. prefix */ -}}
+{{- if hasPrefix $path ".Values." -}}
+  {{- $path = trimPrefix ".Values." $path -}}
+{{- else if hasPrefix $path "Values." -}}
+  {{- $path = trimPrefix "Values." $path -}}
+{{- end -}}
+
+{{- $parts := splitList "." $path -}}
+{{- $cur := $root.Values -}}
+{{- $ok := true -}}
+
+{{- range $i, $p := $parts -}}
+  {{- if not $ok -}}
+    {{- break -}}
+  {{- end -}}
+
+  {{- $isNum := regexMatch "^[0-9]+$" $p -}}
+  {{- if and $isNum (kindIs "slice" $cur) -}}
+    {{- $idx := atoi $p -}}
+    {{- if lt $idx (len $cur) -}}
+      {{- $cur = index $cur $idx -}}
+    {{- else -}}
+      {{- $ok = false -}}
+    {{- end -}}
+  {{- else if kindIs "map" $cur -}}
+    {{- if hasKey $cur $p -}}
+      {{- $cur = index $cur $p -}}
+    {{- else -}}
+      {{- $ok = false -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $ok = false -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $ok -}}
+  {{- /* If it’s a map or slice, return YAML for easy embedding */ -}}
+  {{- if or (kindIs "map" $cur) (kindIs "slice" $cur) -}}
+{{ toYaml $cur | nindent 0 }}
+  {{- else -}}
+{{ $cur }}
+  {{- end -}}
+{{- end -}}
+{{- end -}}

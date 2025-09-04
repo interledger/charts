@@ -1,0 +1,22 @@
+suite: multideployment backend - generated configmap
+templates:
+  - configMap.backend.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'ConfigMap should be created with name'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: black-backend
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: black-backend
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: black
+  - it: 'DATABASE_DSN should be mapped correctly'
+    asserts:
+      - equal:
+          path: data.DATABASE_DSN
+          value: postgresql://user:password@postgres:5432/dbname

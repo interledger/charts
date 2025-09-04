@@ -1,0 +1,3 @@
+{{- define "worker.deployment" -}}
+{{- end }}
+{{- include "common.deployment" (list . .Values.worker .Values.worker.autoscaling .Values.worker.serviceAccount "worker.deployment") }}

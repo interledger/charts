@@ -1,0 +1,193 @@
+config:
+  host: example.com
+  
+  databaseDsn: postgresql://user:password@postgres:5432/dbname
+  redisUrl: redis://redis:63799
+  logLevel: info
+
+web:
+  name: web
+  enabled: true
+  replicas: 2
+  serviceAccount: {}
+    # create: false
+    # name: "webksa"
+  service:
+    name: web
+    type: ClusterIP
+    port: 80
+    targetPort: http
+    nodePort: null
+    annotations: {}
+  # imagePullPolicy: IfNotPresent
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: web
+    tag: 2.0.0
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+  initContainers: []
+  sidecars: []
+  env: []
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}
+
+backend:
+  name: backend
+  enabled: true
+  replicas: 2
+  serviceAccount: {}
+    # create: false
+    # name: "webksa"
+  # imagePullPolicy: IfNotPresent
+  service:
+    name: backend
+    type: ClusterIP
+    ports:
+      - port: 80
+        targetPort: http
+        protocol: TCP
+        name: http
+    annotations:
+      "some.annotation/key": "somevalue"
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: web
+    tag: 2.0.0
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+  initContainers: []
+  sidecars: []
+  env: []
+  envFrom:
+    - configMapRef:
+        name: backend
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}
+
+admin:
+  name: admin
+  enabled: true
+  replicas: 2
+  serviceAccount: {}
+    # create: false
+    # name: "webksa"
+  # imagePullPolicy: IfNotPresent
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: admin
+    tag: 2.0.0
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+  initContainers: []
+  sidecars: []
+  env: []
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  # command: []
+  # args: []
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # volumeMounts: []
+  # securityContext: {}
+
+worker:
+  name: worker
+  enabled: true
+  replicas: 2
+  serviceAccount: {}
+    # create: false
+    # name: "workerksa"
+  # imagePullPolicy: IfNotPresent
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: worker
+    tag: 2.0.0
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+  initContainers: []
+  sidecars: []
+  env: []
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+
+# Describes the list of configmaps which will be automatically generated
+# based on the provided contentMap. Note that references are pointing to
+# this values file
+configMaps:
+  backend:
+    name: backend
+    contentMap:
+      - key: DATABASE_DSN
+        valueRef: config.databaseDsn
+      # - key: REDIS_URL
+      #   valueRef: config.redisUrl
+      # - key: LOG_LEVEL
+      #   valueRef: config.logLevel
+  web:
+    name: web
+    # contentMap:
+    #   - key: DATABASE_DSN
+    #     valueRef: config.databaseDsn
+    #   - key: REDIS_URL
+    #     valueRef: config.redisUrl
+    #   - key: LOG_LEVEL
+    #     valueRef: config.logLevel
+    #   - key: HOST
+    #     valueRef: config.host

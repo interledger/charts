@@ -7,7 +7,6 @@ app.kubernetes.io/version: {{ . | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ $top.Release.Service }}
 {{- end }}
-
 {{- define "common.selectorLabels" -}}
 {{ $top := first . -}}
 {{- if eq (len .) 2 -}}
@@ -22,7 +21,6 @@ app.kubernetes.io/name: {{ include "common.fullname" $top }}
 {{- end }}
 app.kubernetes.io/instance: {{ include "common.fullname" $top }}
 {{- end }}
-
 {{- define "common.metadata.tpl" -}}
 {{- $top := first . -}}
 {{- $component := dict -}}
@@ -32,7 +30,6 @@ app.kubernetes.io/instance: {{ include "common.fullname" $top }}
 labels:
   {{- include "common.labels" (list $top $component) | nindent 2 }}
 {{- end }}
-
 {{- define "common.metadata" -}}
 {{- include "common.utils.merge" (append . "common.metadata.tpl") }}
 {{- end }}

@@ -1,0 +1,201 @@
+suite: multideployment backend - unittesting backend deployment
+templates:
+  - deployment.backend.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'given a name the lables should use the name in the metadata labels as a suffix'
+    set:
+      backend:
+        name: johnny
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: black-johnny
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: black-johnny
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: black
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: black-johnny
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: black
+  - it: 'given the backend is disabled no deployment should be created'
+    set:
+      backend:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'no image policy configured should default to IfNotPresent'
+    set:
+      backend:
+        image:
+          repository: ghcr.io/interledger/somerepo
+          name: backend
+          tag: 2.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
+  - it: 'backend image should be overridden correctly'
+    set:
+      backend:
+        image:
+          repository: ghcr.io/interledger/somerepoz
+          name: backendz
+          tag: 4.2.0
+        imagePullPolicy: Always
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/somerepoz/backendz:4.2.0
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+  - it: 'backend resources should be overridden correctly'
+    set:
+      backend:
+        resources:
+          requests:
+            memory: 5Mi
+            cpu: 5m
+          limits:
+            memory: 88Mi
+            cpu: 88m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 5Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 5m
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 88Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 88m
+  - it: 'backend with no ports should have no ports in the deployment'
+    set:
+      backend:
+        ports: []
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].ports
+  - it: 'ports provided in backend should be used for the main container'
+    set:
+      backend:
+        ports:
+          - name: backendport
+            containerPort: 1234
+            protocol: TCP
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: backendport
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 1234
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].protocol
+          value: TCP
+  - it: 'sidecars provided in backend should be added to the deployment'
+    set:
+      backend:
+        sidecars:
+          - name: sidecar1
+            image:
+              repository: ghcr.io/interledger/sidecarrepo
+              name: sidecar
+              tag: 1.0.0
+            resources:
+              requests:
+                memory: 22Mi
+                cpu: 22m
+              limits:
+                memory: 222Mi
+                cpu: 222m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: sidecar1
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: ghcr.io/interledger/sidecarrepo/sidecar:1.0.0
+  - it: 'initContainers provided in backend should be added to the deployment'
+    set:
+      backend:
+        initContainers:
+          - name: init1
+            image:
+              repository: ghcr.io/interledger/initrepo
+              name: initcontainer
+              tag: 0.1.0
+            resources:
+              requests:
+                memory: 11Mi
+                cpu: 11m
+              limits:
+                memory: 111Mi
+                cpu: 111m
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: init1
+      - equal:
+          path: spec.template.spec.initContainers[0].image
+          value: ghcr.io/interledger/initrepo/initcontainer:0.1.0
+  - it: "sidecars provided should appended to the containers generated"
+    set:
+      backend:
+        sidecars:
+          - name: sidecar1
+            image:
+              repository: ghcr.io/interledger/sidecarrepo
+              name: sidecar
+              tag: 1.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: sidecar1
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: ghcr.io/interledger/sidecarrepo/sidecar:1.0.0
+  - it: 'env provided in backend should be added to the main container env'
+    set:
+      backend:
+        env:
+          - name: EXTRA_ENV_VAR
+            value: extra_value
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: EXTRA_ENV_VAR
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: extra_value
+  - it: 'given topologySpreadConstraints in backend should be added to the pod spec'
+    set:
+      backend:
+        topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: topology.kubernetes.io/zone
+            whenUnsatisfiable: ScheduleAnyway
+            labelSelector:
+              matchLabels:
+                app: myapp
+    asserts:
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].maxSkew
+          value: 1
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].topologyKey
+          value: topology.kubernetes.io/zone

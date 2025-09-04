@@ -1,0 +1,3 @@
+{{- define "web.deployment" -}}
+{{- end }}
+{{- include "common.deployment" (list . .Values.web .Values.web.autoscaling .Values.web.serviceAccount "web.deployment") }}
