@@ -177,6 +177,9 @@ worker:
   initContainers: []
   sidecars: []
   env: []
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
   envFrom:
     - configMapRef:
         name: worker
