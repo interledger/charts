@@ -14,13 +14,13 @@ tests:
     asserts:
       - equal:
           path: metadata.name
-          value: black
+          value: black-server
       - equal:
           path: spec.selector.matchLabels["app.kubernetes.io/instance"]
           value: black
       - equal:
           path: spec.selector.matchLabels["app.kubernetes.io/name"]
-          value: black
+          value: black-server
       - equal:
           path: spec.minAvailable
           value: 1
