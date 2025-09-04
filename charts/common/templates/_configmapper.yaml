@@ -1,3 +1,24 @@
+{{/*
+Template: "common.configMapper" / "common.configMapper.tpl"
+Purpose: Render a Kubernetes ConfigMap from a descriptor object with validation.
+
+Inputs:
+- top (root context, typically ".")
+- obj (map):
+  - name: string (required)
+  - labels: map[string]string (optional)
+  - contentMap: []Entry (optional)
+    - Entry:
+      - key: string (required)
+      - value: string (optional)
+      - valueRef: path or path-list (optional; resolved via "common.resolve.path")
+
+Behavior:
+- name = "<common.fullname>-<obj.name>"
+- metadata merged via "common.metadata"
+- data = {} when contentMap is empty/omitted
+- Fails fast if obj/obj.name missing or entries invalid
+*/}}
 {{- define "common.configMapper.tpl" -}}
 {{- $top := first . }}
 {{- $obj := index . 1 }}

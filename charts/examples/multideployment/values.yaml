@@ -176,18 +176,18 @@ configMaps:
     contentMap:
       - key: DATABASE_DSN
         valueRef: config.databaseDsn
-      # - key: REDIS_URL
-      #   valueRef: config.redisUrl
-      # - key: LOG_LEVEL
-      #   valueRef: config.logLevel
+      - key: REDIS_URL
+        valueRef: config.redisUrl
+      - key: LOG_LEVEL
+        valueRef: config.logLevel
   web:
     name: web
-    # contentMap:
-    #   - key: DATABASE_DSN
-    #     valueRef: config.databaseDsn
-    #   - key: REDIS_URL
-    #     valueRef: config.redisUrl
-    #   - key: LOG_LEVEL
-    #     valueRef: config.logLevel
-    #   - key: HOST
-    #     valueRef: config.host
+    contentMap:
+      - key: DATABASE_DSN
+        valueRef: config.databaseDsn
+      - key: REDIS_URL
+        valueRef: config.redisUrl
+      - key: LOG_LEVEL
+        valueRef: config.logLevel
+      - key: HOST
+        valueRef: config.host
