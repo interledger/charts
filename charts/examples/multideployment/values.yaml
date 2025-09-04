@@ -15,7 +15,11 @@ web:
   service:
     name: web
     type: ClusterIP
-    port: 80
+    ports:
+      - port: 80
+        targetPort: http
+        protocol: TCP
+        name: http
     targetPort: http
     nodePort: null
     annotations: {}
@@ -106,6 +110,17 @@ admin:
   serviceAccount: {}
     # create: false
     # name: "webksa"
+  service:
+    name: admin
+    type: ClusterIP
+    ports:
+      - port: 80
+        targetPort: http
+        protocol: TCP
+        name: http
+    targetPort: http
+    nodePort: null
+    annotations: {}
   # imagePullPolicy: IfNotPresent
   image:
     repository: ghcr.io/interledger/somerepo
@@ -162,6 +177,9 @@ worker:
   initContainers: []
   sidecars: []
   env: []
+  envFrom:
+    - configMapRef:
+        name: worker
   ports:
     - name: http
       containerPort: 8080
@@ -191,3 +209,16 @@ configMaps:
         valueRef: config.logLevel
       - key: HOST
         valueRef: config.host
+
+  admin:
+    name: admin
+    contentMap:
+      - key: DATABASE_DSN
+        valueRef: config.databaseDsn
+  worker:
+    name: worker
+    contentMap:
+      - key: DATABASE_DSN
+        valueRef: config.databaseDsn
+      - key: LOG_LEVEL
+        valueRef: config.logLevel

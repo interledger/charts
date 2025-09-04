@@ -6,6 +6,18 @@
 {{- if ge (len .) 3 }}
 {{- $deployment = index . 2 }}
 {{- end }}
+{{- if not $service }}
+{{- fail "No service object provided" -}}
+{{- end }}
+{{- if not $service.name }}
+{{- fail "Service name missing" -}}
+{{- end }}
+{{- if not $service.type }}
+{{- fail (printf "Service type missing for service %s" $service.name) -}}
+{{- end }}
+{{- if not $service.ports }}
+{{- fail (printf "Service ports missing for service %s" $service.name) -}}
+{{- end }}
 {{- $name := printf "%s-%s" (include "common.fullname" $top) $service.name }}
 ---
 apiVersion: v1
