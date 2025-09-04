@@ -154,7 +154,7 @@ server:
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
+      whenUnsatisfiable: DoNotSchedule
 
 
 configMaps:
