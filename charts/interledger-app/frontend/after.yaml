@@ -1,0 +1,184 @@
+---
+# Source: ilf-wallet-frontend/templates/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/instance: wallet-frontend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wallet-frontend-server
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-frontend-2.0.0
+  name: wallet-frontend-server
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: wallet-frontend
+      app.kubernetes.io/name: wallet-frontend-server
+---
+# Source: ilf-wallet-frontend/templates/configMap.server.yaml
+apiVersion: v1
+data:
+  BACKEND_GRPC_URL: http://wallet-backend-service:8443
+  FYNBOS_ENV: dev
+  GATE_SIGNUP: "false"
+  KRATOS_URL: http://kratos-public
+  OTEL_EXPORTER_OTLP_ENDPOINT: grpc://api.honeycomb.io:443
+  OTEL_SERVICE_NAME: protea
+  PAYMENT_POINTER_BASE: sandbox.ilp.link
+  RAFIKI_AUTH_ENDPOINT: http://rafiki-auth:3003/graphql
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: wallet-frontend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wallet-frontend-server
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-frontend-2.0.0
+  name: wallet-frontend-server
+---
+# Source: ilf-wallet-frontend/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallet-frontend-server
+  
+  labels:
+    helm.sh/chart: ilf-wallet-frontend-2.0.0
+    
+    app.kubernetes.io/name: wallet-frontend-server
+    app.kubernetes.io/instance: wallet-frontend
+    app.kubernetes.io/version: "v1.2.16"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    
+    app.kubernetes.io/name: wallet-frontend-server
+    app.kubernetes.io/instance: wallet-frontend
+---
+# Source: ilf-wallet-frontend/templates/deployment.server.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: wallet-frontend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wallet-frontend-server
+    app.kubernetes.io/version: v1.2.16
+    helm.sh/chart: ilf-wallet-frontend-2.0.0
+  name: wallet-frontend-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: wallet-frontend
+      app.kubernetes.io/name: wallet-frontend-server
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-server-sha256: 167ebdc7864b82cde713ed86f8ffb8e48dc6cae5ded3ad2fcf017bd1ecd87413
+      labels:
+        app.kubernetes.io/instance: wallet-frontend
+        app.kubernetes.io/name: wallet-frontend-server
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: COOKIE_SECRETS
+          valueFrom:
+            secretKeyRef:
+              key: cookieSecretsArrStr
+              name: wallet-frontend
+        - name: PUSHER_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              key: pusherAppKey
+              name: wallet-frontend
+        - name: PUSHER_APP_CLUSTER
+          valueFrom:
+            secretKeyRef:
+              key: pusherAppCluster
+              name: wallet-frontend
+        - name: BT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: basisTheoryToken
+              name: wallet-frontend
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              key: sentryDSN
+              name: wallet-frontend
+        - name: SEGMENT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: segmentAPIKey
+              name: wallet-frontend
+        - name: RAFIKI_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: rafikiAuthSecret
+              name: wallet-frontend
+        - name: CF_TURNSTILE_SITE_KEY
+          valueFrom:
+            secretKeyRef:
+              key: turnstileSiteKey
+              name: wallet-frontend
+        - name: CF_TURNSTILE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              key: turnstileSecret
+              name: wallet-frontend
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              key: redisURL
+              name: wallet-frontend
+        envFrom:
+        - configMapRef:
+            name: wallet-frontend-server
+        image: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/protea:v1.1.0
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: server
+        ports:
+        - containerPort: 3000
+          name: http
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 80m
+            memory: 256Mi
+        securityContext: null
+      securityContext: null
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway

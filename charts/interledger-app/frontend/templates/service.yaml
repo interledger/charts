@@ -1,1 +1,4 @@
-{{- include "common.service" (list . .Values.service ) }}
+{{- define "server.service" -}}
+{{- $top := first . -}}
+{{- end }}
+{{- include "common.svc" (list . .Values.server.service .Values.server "server.service") }}

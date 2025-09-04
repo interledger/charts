@@ -1,9 +1,0 @@
-OTEL_EXPORTER_OTLP_ENDPOINT: "{{ required "needs config.otel.endpoint" .Values.config.otel.endpoint }}"
-OTEL_SERVICE_NAME: "{{ required "needs config.otel.service_name" .Values.config.otel.service_name }}"
-GATE_SIGNUP: "{{ required "needs config.gate_signup" .Values.config.gate_signup }}"
-
-KRATOS_URL: "{{ required "needs config.kratos_url" .Values.config.kratos_url }}"
-PAYMENT_POINTER_BASE: "{{ required "needs config.payment_pointer_base" .Values.config.payment_pointer_base }}"
-RAFIKI_AUTH_ENDPOINT: "{{ required "needs config.rafiki.auth.endpoint" .Values.config.rafiki.auth.endpoint }}"
-BACKEND_GRPC_URL: "{{ required "needs config.backend.grpc.url" .Values.config.backend.grpc.url }}"
-FYNBOS_ENV: "{{ required "needs config.fynbos_env" .Values.config.environment }}"
