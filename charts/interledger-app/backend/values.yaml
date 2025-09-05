@@ -81,7 +81,7 @@ config:
     service_sid_ref: twilioServiceSID
     account_token_ref: twilioAccountToken
 
-  zenddesk:
+  zendesk:
     user: "support@interledger-app.dev"
     token_ref: "zendeskToken"
 
@@ -241,7 +241,7 @@ server:
        valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
-            key: "{{ .Values.config.zenddesk.token_ref }}"
+            key: "{{ .Values.config.zendesk.token_ref }}"
     -  name: SENDGRID_API_KEY
        valueFrom:
           secretKeyRef:
@@ -511,7 +511,7 @@ worker:
        valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
-            key: "{{ .Values.config.zenddesk.token_ref }}"
+            key: "{{ .Values.config.zendesk.token_ref }}"
     -  name: SENDGRID_API_KEY
        valueFrom:
           secretKeyRef:
@@ -689,7 +689,7 @@ configMaps:
       - key: TEMPORAL_URL
         valueRef: config.temporal.url
       - key: ZENDESK_USER
-        valueRef: config.zenddesk.user
+        valueRef: config.zendesk.user
       - key: OTEL_EXPORTER_OTLP_ENDPOINT
         valueRef: config.otel.exporter_otlp_endpoint
       - key: OTEL_SERVICE_NAME
