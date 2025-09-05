@@ -162,6 +162,7 @@ config:
     client_id_ref: "ptiClientID"
 
 server:
+  enabled: true
   replicaCount: 2
   name: server
   imagePullPolicy: Always
@@ -433,6 +434,7 @@ server:
       whenUnsatisfiable: DoNotSchedule
 
 worker:
+  enabled: true
   replicaCount: 2
   name: worker
   imagePullPolicy: Always

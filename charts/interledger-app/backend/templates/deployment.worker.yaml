@@ -1,7 +1,6 @@
 {{- define "worker.deployment" -}}
 {{- $top := first . }}
-{{- if $top.Values.worker.enabled }}
-{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.worker) | fromYaml -}}
+{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.config "interledger-app.ConfigMap") | fromYaml -}}
 {{- $dataHash := $cfgObj.data | toJson | sha256sum -}}
 spec:
   template:
@@ -9,5 +8,6 @@ spec:
       annotations:
         ilf-configmap-worker-sha256: {{ $dataHash | quote }}
 {{- end }}
-{{- end }}
+{{- if .Values.worker.enabled }}
 {{- include "common.deployment" (list . .Values.worker .Values.worker.autoscaling .Values.worker.serviceAccount "worker.deployment") }}
+{{- end }}
