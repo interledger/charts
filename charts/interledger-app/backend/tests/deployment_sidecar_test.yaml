@@ -1,5 +1,6 @@
 suite: Interledger App - Sidecar deployment should be able to override the image
 templates:
+  - configMap.yaml
   - deployment.server.yaml
 set:
   fullnameOverride: wallet-backend
@@ -23,8 +24,8 @@ release:
   name: wallet-backend
 tests:
   - it: 'even though imageOverride is provided, it should not override the sidecar image in the deployment'
-    documentSelector:
-      template: deployment.server.yaml
+    templates:
+      - deployment.server.yaml
     asserts:
       - equal:
           path: spec.template.spec.containers[1].image

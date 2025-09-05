@@ -1,5 +1,6 @@
 suite: Interledger App - Default server deployment should have probes
 templates:
+  - configMap.yaml
   - deployment.server.yaml
 set:
   fullnameOverride: wallet-backend
@@ -7,6 +8,7 @@ release:
   name: wallet-backend
 tests:
   - it: 'Should provide readinessProbe and livenessProbe in the deployment'
+    template: deployment.server.yaml
     asserts:
       - equal:
           path: spec.template.spec.containers[0].readinessProbe.httpGet.path

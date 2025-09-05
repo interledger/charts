@@ -1,3 +1,5 @@
-{{- define "interledger-app-backend.pdb.deployment" -}}
+{{- define "worker.pdb" -}}
 {{- end }}
-{{- include "interledger-app.pdb" (list .  .Values.worker "interledger-app-backend.pdb.deployment") }}
+{{- if .Values.worker.podDisruptionBudget.enabled }}
+{{- include "common.pdb" (list . .Values.worker "worker.pdb") }}
+{{- end }}

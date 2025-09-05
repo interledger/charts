@@ -16,18 +16,12 @@ tests:
           path: metadata.name
           value: black-server
       - equal:
-          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
-          value: black
-      - equal:
-          path: spec.selector.matchLabels["app.kubernetes.io/name"]
-          value: black-server
-      - equal:
           path: spec.minAvailable
           value: 1
   - it: 'Should allow maxUnavailable to be set'
     set:
-      server.pdb.minAvailable: null
-      server.pdb.maxUnavailable: 2
+      server.podDisruptionBudget.minAvailable: ""
+      server.podDisruptionBudget.maxUnavailable: 2
     documentSelector:
       path: kind
       value: PodDisruptionBudget

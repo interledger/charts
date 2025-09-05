@@ -1,5 +1,6 @@
 suite: Interledger App - Override image
 templates:
+  - configMap.yaml
   - deployment.worker.yaml
 set:
   fullnameOverride: wallet-backend
@@ -7,6 +8,7 @@ release:
   name: wallet-backend
 tests:
   - it: 'Overriding image should override container image'
+    template: deployment.worker.yaml
     set:
       imageOverride:
         repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
@@ -17,6 +19,7 @@ tests:
           path: spec.template.spec.containers[0].image
           value: europe-west4-docker.pkg.dev/wallet-451208/interledger-app/zulu:v0.2.2
   - it: 'worker deployment should contain correctly named instance and name labels'
+    template: deployment.worker.yaml  
     asserts:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
@@ -25,6 +28,7 @@ tests:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
           value: wallet-backend-worker
   - it: 'worker deployment should contain metadata labels'
+    template: deployment.worker.yaml  
     asserts:
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
@@ -34,6 +38,7 @@ tests:
       - exists:
           path: metadata.labels["helm.sh/chart"]
   - it: 'Workload template should contain metadata labels'
+    template: deployment.worker.yaml  
     asserts:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
@@ -41,3 +46,8 @@ tests:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]          
           value: wallet-backend-worker
+  - it: 'Should contain configmap hash annotation'
+    template: deployment.worker.yaml  
+    asserts:
+      - exists:
+          path: spec.template.metadata.annotations["ilf-configmap-worker-sha256"]

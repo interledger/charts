@@ -1,6 +1,6 @@
 suite: Interledger App - Check configmap
 templates:
-  - configmap.yaml
+  - configMap.yaml
 set:
   fullnameOverride: wallet-backend
 release:
