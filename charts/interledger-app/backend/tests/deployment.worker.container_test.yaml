@@ -1,5 +1,6 @@
 suite: Interledger App - Deployment for worker
 templates:
+  - configMap.yaml
   - deployment.worker.yaml
 set:
   fullnameOverride: wallet-backend
@@ -44,6 +45,7 @@ release:
   name: wallet-backend
 tests:
   - it: 'Should be using service account "cheeseman4worker"'
+    template: deployment.worker.yaml
     documentSelector:
       path: kind
       value: Deployment
@@ -52,6 +54,7 @@ tests:
           path: spec.template.spec.serviceAccountName
           value: cheeseman4worker
   - it: 'Should have correct template labels'
+    template: deployment.worker.yaml  
     documentSelector:
       path: kind
       value: Deployment
@@ -63,6 +66,7 @@ tests:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
           value: wallet-backend-worker
   - it: 'Should have attributes from the spec'
+    template: deployment.worker.yaml  
     documentSelector:
       path: kind
       value: Deployment
