@@ -23,7 +23,7 @@ server:
     name: ""
   envFrom:
     - configMapRef:
-        name: '{{ include "common.fullname" . }}-config'        
+        name: '{{ include "common.fullname" . }}-config'
   resources:
     requests:
       memory: 128Mi
