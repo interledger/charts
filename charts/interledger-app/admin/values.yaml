@@ -21,6 +21,9 @@ server:
     create: false
     annotations: {}
     name: ""
+  envFrom:
+    - configMapRef:
+        name: '{{ include "common.fullname" . }}-config'        
   resources:
     requests:
       memory: 128Mi
