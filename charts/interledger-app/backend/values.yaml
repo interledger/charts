@@ -432,8 +432,8 @@ server:
       topologyKey: kubernetes.io/hostname
       whenUnsatisfiable: DoNotSchedule
 
-
 worker:
+  replicaCount: 2
   name: worker
   imagePullPolicy: Always
   args:
