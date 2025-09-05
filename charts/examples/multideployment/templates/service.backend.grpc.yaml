@@ -1,0 +1,4 @@
+{{- define "backend.grpc.service" -}}
+{{- $top := first . -}}
+{{- end }}
+{{- include "common.svc" (list . .Values.backend.service.grpc .Values.backend "backend.grpc.service") }}
