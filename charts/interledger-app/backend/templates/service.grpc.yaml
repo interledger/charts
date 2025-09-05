@@ -1,3 +1,8 @@
 {{- define "server.grpc.service" -}}
+{{- $top := first . -}}
+metadata:
+  labels:
+    {{/* Due to a bug in the common framework we need to override this here*/}}    
+    app.kubernetes.io/name: {{ include "common.fullname" $top }}-service-grpc
 {{- end }}
 {{- include "common.svc" (list . .Values.server.service.grpc .Values.server "server.grpc.service") }}

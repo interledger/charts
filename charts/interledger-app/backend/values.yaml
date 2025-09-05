@@ -55,6 +55,10 @@ config:
   authorisation_port: "8082"
   open_payments_port: "8081"
   
+  admin:
+    policy_aud_ref: adminPolicyAud
+    team_domain_ref: adminTeamDomain
+
   twitter:
     client:
       id: "not_used"
@@ -71,13 +75,6 @@ config:
   region_blocking:
     blocked_regions: ""
     allowed_wallet_ids: ""
-
-
-  admin:
-    # The CloudFlare admin policy and team to identify users trying to enter the admin portal.
-    # these refer to the secrets
-    policy_aud_ref: adminPortalCloudFlarePolicyAud
-    team_domain_ref: adminPortalCloudflareTeamDomain
 
   twilio:
     account_sid_ref: twilioAccountSID
@@ -691,20 +688,12 @@ configMaps:
         valueRef: config.google_oauth2_client_id
       - key: TEMPORAL_URL
         valueRef: config.temporal.url
-      - key: TWILIO_ACCOUNT_SID
-        valueRef: config.twilio.account_sid_ref
-      - key: TWILIO_SERVICE_SID
-        valueRef: config.twilio.service_sid_ref
       - key: ZENDESK_USER
         valueRef: config.zenddesk.user
       - key: OTEL_EXPORTER_OTLP_ENDPOINT
         valueRef: config.otel.exporter_otlp_endpoint
       - key: OTEL_SERVICE_NAME
         valueRef: config.otel.service_name
-      - key: ADMIN_POLICY_AUD
-        valueRef: config.admin.policy_aud_ref
-      - key: ADMIN_TEAM_DOMAIN
-        valueRef: config.admin.team_domain_ref
       - key: AUTHORISATION_PORT
         valueRef: config.authorisation_port
       - key: OPEN_PAYMENTS_PORT
