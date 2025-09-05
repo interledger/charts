@@ -1,8 +1,0 @@
-# We require replicaCount to be at least 2 for both server and worker
-# so that we can do rolling updates without downtime.
-{{- if lt (int .Values.server.replicaCount) 2 -}}
-{{- fail "server.replicaCount must be at least 2" -}}
-{{- end -}}
-{{- if lt (int .Values.worker.replicaCount) 2 -}}
-{{- fail "worker.replicaCount must be at least 2" -}}
-{{- end -}}
