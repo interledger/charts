@@ -1,9 +1,0 @@
-service:
-  - name: service
-    type: LoadBalancer
-    ports:
-      - port: 8080
-        targetPort: 8080 
-        protocol: TCP
-        name: service
-    loadBalancerIP: 123.123.123.123

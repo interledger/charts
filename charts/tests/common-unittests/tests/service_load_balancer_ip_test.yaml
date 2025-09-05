@@ -1,8 +1,6 @@
 suite: Common - Service Load BalancerIP
 templates:
   - service.yaml
-values:
-  - samples/service_load_balancer_ip.yaml
 release:
   name: hello
 tests:

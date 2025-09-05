@@ -65,15 +65,26 @@ backend:
     # name: "webksa"
   # imagePullPolicy: IfNotPresent
   service:
-    name: backend
-    type: ClusterIP
-    ports:
-      - port: 80
-        targetPort: http
-        protocol: TCP
-        name: http
-    annotations:
-      "some.annotation/key": "somevalue"
+    http:
+      name: backend-http
+      type: ClusterIP
+      ports:
+        - port: 80
+          targetPort: http
+          protocol: TCP
+          name: http
+      annotations:
+        "some.annotation/key": "somevalue"
+    grpc:
+      name: backend-grpc
+      type: ClusterIP
+      ports:
+        - port: 8888
+          targetPort: grpc
+          protocol: TCP
+          name: grpc
+      annotations:
+        "some.annotation/key": "somevalue"
   image:
     repository: ghcr.io/interledger/somerepo
     name: web
@@ -81,6 +92,9 @@ backend:
   ports:
     - name: http
       containerPort: 8080
+      protocol: TCP
+    - name: grpc
+      containerPort: 8888
       protocol: TCP
   resources:
     requests:

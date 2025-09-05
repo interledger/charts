@@ -1,0 +1,7 @@
+{{- define "backend.http.service" -}}
+{{- $top := first . -}}
+metadata:
+    labels:
+        some-override-label: grpc-service
+{{- end }}
+{{- include "common.svc" (list . .Values.backend.service.http .Values.backend "backend.http.service") }}
