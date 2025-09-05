@@ -1,20 +1,23 @@
 suite: Wallet Admin - Default values file
 templates:
-  - deployment.yaml
+  - configMap.yaml
+  - deployment.server.yaml
 set:
   fullnameOverride: wallet-admin
 release:
   name: wallet-admin
 tests:
   - it: 'Should create a deployment called wallet-admin'
+    template: deployment.server.yaml
     documentSelector:
       path: kind
       value: Deployment
     asserts:
       - equal:
           path: metadata.name
-          value: wallet-admin
+          value: wallet-admin-server
   - it: 'Should provide readinessProbe and livenessProbe in the deployment'
+    template: deployment.server.yaml  
     asserts:
       - equal:
           path: spec.template.spec.containers[0].readinessProbe.httpGet.path
@@ -23,6 +26,7 @@ tests:
           path: spec.template.spec.containers[0].livenessProbe.httpGet.path
           value: /healthz
   - it: 'Should provide topologySpreadConstraints in the deployment'
+    template: deployment.server.yaml  
     asserts:
       - equal:
           path: spec.template.spec.topologySpreadConstraints[0].topologyKey

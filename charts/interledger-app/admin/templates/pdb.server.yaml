@@ -1,0 +1,5 @@
+{{- define "server.pdb" -}}
+{{- end }}
+{{- if .Values.server.podDisruptionBudget.enabled }}
+{{- include "common.pdb" (list . .Values.server "server.pdb") }}
+{{- end }}
