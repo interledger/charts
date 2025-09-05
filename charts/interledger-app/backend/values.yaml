@@ -56,8 +56,8 @@ config:
   open_payments_port: "8081"
   
   admin:
-    policy_aud_ref: adminPolicyAud
-    team_domain_ref: adminTeamDomain
+    policy_aud_ref: adminPortalCloudFlarePolicyAud
+    team_domain_ref: adminPortalCloudflareTeamDomain
 
   twitter:
     client:
