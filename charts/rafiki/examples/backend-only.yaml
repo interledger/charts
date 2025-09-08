@@ -1,3 +1,7 @@
+#
+# Example on how to deploy only the backend of Rafiki and have it create
+# its own secrets.
+#
 config:
   backend:
     shouldCreateSecrets: true

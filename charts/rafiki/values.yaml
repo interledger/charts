@@ -105,7 +105,6 @@ config:
     # already exist.
     shouldCreateSecrets: false
 
-
     nodeEnv: production
     logLevel: info
 
@@ -254,6 +253,7 @@ deployments:
     replicaCount: 1
     image:
       name: rafiki-auth
+      # tag: "1.2.0"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
     args:
       - "start"

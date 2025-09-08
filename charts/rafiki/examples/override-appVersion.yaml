@@ -1,0 +1,19 @@
+fullnameOverride: "rafiki"
+
+imageOverride:
+  repository: ghcr.io/interledger
+  name: zulu
+
+deployments:
+  auth:
+    image:
+      # should now use image ghcr.io/interledger/zulu:3.3.3
+      tag: "3.3.3"
+  frontend:
+    image:
+      # should now use image ghcr.io/interledger/zulu:4.4.4
+      tag: "4.4.4"
+  backend:
+    image:
+      # should now use image ghcr.io/interledger/zulu:5.5.5    
+      tag: "5.5.5"
