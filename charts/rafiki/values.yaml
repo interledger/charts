@@ -1,7 +1,94 @@
 
 # fullnameOverride: "rafiki"
 
+imageOverride:
+  repository: ghcr.io/interledger
+
 config:
+  frontend:
+    serviceUrls:
+      GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
+      OPEN_PAYMENTS_URL: https://rafiki-backend-service/
+
+    port: 3010
+
+    kratos:
+      enabled: false    
+
+  auth:
+    # Specifies where the application will look for a Redis instance to be used for caching
+    # and other purposes. This chart will not attempt to create a Redis instance.      
+    redisUrl:
+      # value: ""
+      secretKeyRef:
+        key: REDIS_URL
+
+    trustProxy: true
+
+    # Configuration for the PostgreSQL database used by Rafiki Auth.
+    databaseUrl: # DATABASE_URL
+      # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+      secretKeyRef:
+        key: DATABASE_URL
+
+    # The type of node environment: development, test, or production.
+    nodeEnv: production
+
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
+    logLevel: info
+
+    # The public endpoint for your Rafiki instance’s public Open Payments routes.
+    authServerUrl: "http://rafiki-auth:3006"
+
+    identityServer:
+      # The URL of your IdP’s server, used by the authorization server to inform 
+      # an Open Payments client of where to redirect the end-user to start interactions.
+      domain: "http://rafiki-backend/idp"
+      # A shared secret between the authorization server and the IdP server; the authorization 
+      # server will use the secret to secure its IdP-related endpoints. When the IdP server sends
+      # requests to the authorization server, the IdP server must provide the secret via an x-idp-secret header.
+      serverSecret:
+        # value: "changeme"
+        secretKeyRef:
+          key: IDENTITY_SERVER_SECRET
+
+    interaction:
+      # When true, quote grants are interactive.
+      quote: "false"
+      cookieSameSite: lax
+      # When true, incoming Open Payments grant requests are interactive  
+      # Note that this is a string
+      incomingPayment: "false"
+
+
+    # Defines the ports on which the container will listen for incoming requests. It
+    # is recommended that you do not change these values, but rather use the service 
+    # section to expose the ports as needed.
+    port:
+      admin: 3003
+      auth: 3006
+      introspection: 3007
+
+    grant:
+      # The wait time, in seconds, included in a grant request response (grant.continue).
+      waitSeconds: 5
+
+    accessToken:
+      # The days until expired and/or revoked access tokens are deleted.
+      deletionDays: 30
+      # The expiry time, in seconds, for access tokens.
+      expirySeconds: 600
+
+    # The koa KeyGrip key that is used to sign cookies for an interaction session.
+    cookieKey:
+      value: "changeme"
+      secretKeyRef:
+        key: COOKIE_KEY
+
+    workers:
+      # The number of workers processing expired or revoked access tokens.
+      cleanup: 1  
+
   backend:
     # ==========================================================
     # Rafiki Backend configuration
@@ -13,6 +100,7 @@ config:
     # telemetry. Required when auto-peering and/or telemetry is enabled
     instanceName: rafiki-backend-changeme
 
+    # I argue we should remove this because nobody has actually tested it with a real deployment
     useTigerbeetle: false
 
     secrets:
@@ -155,13 +243,74 @@ config:
       autoPeering: 3005
 
 deployments:
+  auth:
+    name: auth
+    enabled: true
+    replicaCount: 1
+    image:
+      name: rafiki-auth
+    imagePullPolicy: IfNotPresent
+    args:
+      - "start"
+    envFrom:
+      configMapRef:
+        name: '{{ include "common.fullname" . }}-auth'
+    ports:
+      - name: auth
+        containerPort: 3006
+        protocol: TCP
+      - name: admin
+        containerPort: 3003
+        protocol: TCP
+      - name: introspection
+        containerPort: 3007
+        protocol: TCP
+      - name: interaction
+        containerPort: 3009
+        protocol: TCP
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 500m
+      limits:
+        memory: 1024Mi
+        cpu: 2
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+
+  frontend:
+    replicaCount: 1
+    nodeSelector: {}
+    serviceAccount: {}
+    name: frontend
+    image:
+      name: rafiki-frontend
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-frontend'
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 1
+    ports:
+      - name: http
+        containerPort: 3010
+        protocol: TCP
+
   backend:
     name: backend
     enabled: true
     replicaCount: 1
     image:
-      repository: ghcr.io/interledger/rafiki
-      tag: v1.2.0-beta
+      name: rafiki-backend
     imagePullPolicy: IfNotPresent
     args:
       - "start"
@@ -249,8 +398,40 @@ deployments:
 
 
 services:
+  auth:
+    name: auth
+    enabled: true
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - port: 3006
+        targetPort: 3006
+        protocol: TCP
+        name: auth
+      - port: 3003
+        targetPort: 3003
+        protocol: TCP
+        name: admin
+      - port: 3007
+        targetPort: 3007
+        protocol: TCP
+        name: introspection
+      - port: 3009
+        targetPort: 3009
+        protocol: TCP
+        name: interaction
+  frontend:
+    name: frontend
+    enabled: true
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 3010
+        targetPort: 3010
+        protocol: TCP
+        name: http    
   backend:
-    name: service
+    name: backend
     enabled: true
     annotations: {}
     type: ClusterIP
@@ -330,3 +511,56 @@ configMaps:
         valueRef: config.backend.key.pvk
       - key: LIVENET
         valueRef: config.backend.telemetry.livenet }}"
+  frontend:
+    name: "frontend"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.frontend.logLevel
+      - key: NODE_ENV
+        valueRef: config.frontend.nodeEnv
+      - key: PORT
+        valueRef: config.frontend.port
+      - key: GRAPHQL_URL
+        valueRef: config.frontend.serviceUrls.GRAPHQL_URL
+      - key: OPEN_PAYMENTS_URL
+        valueRef: config.frontend.serviceUrls.OPEN_PAYMENTS_URL
+      - key: AUTH_ENABLED
+        valueRef: config.frontend.kratos.enabled
+
+  auth:
+    name: "auth"
+    contentMap:
+      - key: ACCESS_TOKEN_DELETION_DAYS
+        valueRef: config.auth.accessToken.deletionDays
+      - key: ACCESS_TOKEN_EXPIRY_SECONDS
+        valueRef: config.auth.accessToken.expirySeconds
+      - key: ADMIN_PORT
+        valueRef: config.auth.port.admin
+      - key: AUTH_PORT
+        valueRef: config.auth.port.auth
+      - key: AUTH_SERVER_URL
+        valueRef: config.auth.authServerUrl
+      - key: DATABASE_CLEANUP_WORKERS
+        valueRef: config.auth.workers.cleanup
+      - key: IDENTITY_SERVER_URL
+        valueRef: config.auth.identityServer.domain
+      - key: IDENTITY_SERVER_SECRET
+        valueRef: config.auth.identityServer.serverSecret
+      - key: INCOMING_PAYMENT_INTERACTION
+        valueRef: config.auth.interaction.incomingPayment
+      - key: QUOTE_INTERACTION
+        valueRef: config.auth.interaction.quote
+      - key: INTROSPECTION_PORT
+        valueRef: config.auth.port.introspection
+      - key: LOG_LEVEL
+        valueRef: config.auth.logLevel
+      - key: NODE_ENV
+        valueRef: config.auth.nodeEnv
+      - key: PORT
+        valueRef: config.auth.port.auth
+      - key: WAIT_SECONDS
+        valueRef: config.auth.grant.waitSeconds
+      - key: TRUST_PROXY
+        valueRef: config.auth.trustProxy
+      - key: INTERACTION_COOKIE_SAME_SITE
+        valueRef: config.auth.interaction.cookieSameSite
