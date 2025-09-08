@@ -1,0 +1,18 @@
+config:
+  backend:
+    shouldCreateSecrets: true
+    redisUrl:
+      value: "redis://rafiki-backend-redis:6379"
+    databaseUrl:
+      value: "postgresql://postgres:password@rafiki-backend-postgresql:5432/rafiki"
+    ilp:
+      streamSecret:
+        value: "test-stream-secret"
+    webhookSignatureSecret:
+      value: "cheese"
+
+deployments:
+  auth:
+    enabled: false
+  frontend:
+    enabled: false

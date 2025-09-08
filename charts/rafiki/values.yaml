@@ -16,6 +16,11 @@ config:
       enabled: false    
 
   auth:
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
     # Specifies where the application will look for a Redis instance to be used for caching
     # and other purposes. This chart will not attempt to create a Redis instance.      
     redisUrl:
@@ -28,6 +33,7 @@ config:
     # Configuration for the PostgreSQL database used by Rafiki Auth.
     databaseUrl: # DATABASE_URL
       # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+      value: ""
       secretKeyRef:
         key: DATABASE_URL
 
@@ -48,7 +54,7 @@ config:
       # server will use the secret to secure its IdP-related endpoints. When the IdP server sends
       # requests to the authorization server, the IdP server must provide the secret via an x-idp-secret header.
       serverSecret:
-        # value: "changeme"
+        value: ""
         secretKeyRef:
           key: IDENTITY_SERVER_SECRET
 
@@ -93,6 +99,13 @@ config:
     # ==========================================================
     # Rafiki Backend configuration
     # ==========================================================  
+
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
+
     nodeEnv: production
     logLevel: info
 
@@ -102,15 +115,6 @@ config:
 
     # I argue we should remove this because nobody has actually tested it with a real deployment
     useTigerbeetle: false
-
-    secrets:
-      # If true, then the chart will create a secret with the name of the release.
-      # If false, then the secret will not be created and you will have to create it
-      # manually. This is useful if you want to use an existing secret or if you want
-      # to manage secrets outside of the Helm chart.
-      # If true you will have to set the value of each secret manually in the relevant
-      # section below.
-      create: false
 
     auth:
       # The endpoint on your Open Payments authorization server to grant a request.
@@ -134,6 +138,7 @@ config:
     # Redis configuration, used for caching and session state
     redisUrl:
       # value: "redis://rafiki-backend-redis:6379"
+      value: ""
       secretKeyRef:
         key: REDIS_URL
 
@@ -159,7 +164,7 @@ config:
       connector: 'http://rafiki-backend:3002'
       # The seed secret to generate shared STREAM secrets.
       streamSecret:
-        # value: "changeme"
+        value: ""
         secretKeyRef:
           key: STREAM_SECRET
       # The accepted ILP rate fluctuation.
@@ -186,7 +191,7 @@ config:
 
     # The secret to generate request header signatures for webhook event requests.
     webhookSignatureSecret:
-      # value: "changeme"
+      value: ""
       secretKeyRef:
         name: rafiki-backend
         key: SIGNATURE_SECRET
@@ -564,3 +569,28 @@ configMaps:
         valueRef: config.auth.trustProxy
       - key: INTERACTION_COOKIE_SAME_SITE
         valueRef: config.auth.interaction.cookieSameSite
+
+secretsMaps:
+  auth:
+    name: auth
+    contentMap:
+      - key: AUTH_DATABASE_URL
+        valueRef: config.auth.databaseUrl.value
+      - key: COOKIE_KEY
+        valueRef: config.auth.cookieKey.value
+      - key: IDENTITY_SERVER_SECRET
+        valueRef: config.auth.identityServer.serverSecret.value
+      - key: REDIS_URL
+        valueRef: config.auth.redisUrl.value
+
+  backend:
+    name: backend
+    contentMap:
+      - key: DATABASE_URL
+        valueRef: config.backend.databaseUrl.value
+      - key: REDIS_URL
+        valueRef: config.backend.redisUrl.value
+      - key: SIGNATURE_SECRET
+        valueRef: config.backend.webhookSignatureSecret.value
+      - key: STREAM_SECRET
+        valueRef: config.backend.ilp.streamSecret.value
