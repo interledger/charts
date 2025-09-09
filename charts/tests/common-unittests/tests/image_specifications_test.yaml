@@ -60,11 +60,14 @@ tests:
           value: ghcr.io/interledger/common-unittests:v0.3.0
   - it: 'Should digest it should be used as the image'
     set:
+      imageOverride:
+        tag: ""
       containers:
         - name: test-container
           image:
             repository: somewhere/else
             name: tralala
+            tag: ""
             digest: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
     asserts:
       - equal:
