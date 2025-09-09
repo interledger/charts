@@ -6,6 +6,9 @@ imageOverride:
 
 config:
   frontend:
+    logLevel: info
+    nodeEnv: production
+
     serviceUrls:
       GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
       OPEN_PAYMENTS_URL: https://rafiki-backend-service/
@@ -289,10 +292,11 @@ deployments:
       httpGet:
 
   frontend:
+    name: frontend
+    enabled: true
     replicaCount: 1
     nodeSelector: {}
     serviceAccount: {}
-    name: frontend
     image:
       name: rafiki-frontend
     envFrom:
