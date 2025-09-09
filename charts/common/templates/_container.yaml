@@ -2,25 +2,30 @@
 {{- $top := first . }}
 {{- $container := index . 1 }}
 {{- $pod := index . 2 }}
-{{- $image := $container.image | default (dict) }}
-{{- if and $top.Values.imageOverride (not $image) }}
-    {{- $_ := set $image "repository" $top.Values.imageOverride.repository | default $image.repository }}
-    {{- $_ := set $image "name" $top.Values.imageOverride.name | default $image.name }}
-    {{- $_ := set $image "tag" $top.Values.imageOverride.tag | default $image.tag }}
-    {{- $_ := set $image "digest" $top.Values.imageOverride.digest | default $image.digest }}
+
+{{- $image := $container.image | default (dict) -}}
+{{- $ovr := $top.Values.imageOverride | default (dict) -}}
+
+{{- /* Merge repository/name first (prefer container > global > default) */ -}}
+{{- $_ := set $image "repository" (coalesce $image.repository $ovr.repository "ghcr.io/interledger") -}}
+{{- $_ := set $image "name"       (coalesce $image.name       $ovr.name       ($top.Chart.Name | default "container")) -}}
+
+{{- /* Tag resolution (prefer container tag > versionOverride > global tag > Chart.AppVersion > latest) */ -}}
+{{- $tag := coalesce $image.tag $top.Values.versionOverride $ovr.tag ($top.Chart.AppVersion | default "latest") -}}
+{{- $_ := set $image "tag" $tag -}}
+
+{{- /* Digest (prefer container > global) and guard against tag+digest together */ -}}
+{{- $digest := coalesce $image.digest $ovr.digest -}}
+{{- if $digest }}
+  {{- $tag = "" -}}
+  {{- $_ := set $image "tag" $tag -}}
+  {{- $_ := set $image "digest" $digest -}}
 {{- end }}
-{{- if not $image.name }}
-    {{- $_ := set $image "name" ($top.Chart.Name | default $top.Chart.Name) }}
-{{- end }}
-{{- if not $image.repository }}
-    {{- $_ := set $image "repository" "ghcr.io/interledger" }}
-{{- end }}
+
 {{- if not $container.name }}
   {{- $_ := set $container "name" ($top.Chart.Name | default "container") }}
 {{- end }}
-{{- if and $image.digest $image.tag }}
-    {{- fail "You cannot set both image.digest and image.tag at the same time. Please use one or the other." }}
-{{- end }}
+
 {{- if not $image.tag }}
     {{- $_ := set $image "tag" ($top.Chart.AppVersion | default "latest") }}
     {{- if $top.Values.versionOverride }}
