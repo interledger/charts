@@ -638,7 +638,7 @@ ingress:
               name: rafiki-backend-service
               port: 3000
   frontend:
-    enabled: true
+    enabled: false
     className: nginx
     hosts:
       - host: frontend.interledger-test.dev
