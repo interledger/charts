@@ -407,7 +407,7 @@ deployments:
 
 services:
   auth:
-    name: auth
+    name: auth-service
     enabled: true
     type: ClusterIP
     annotations: {}
@@ -429,7 +429,7 @@ services:
         protocol: TCP
         name: interaction
   frontend:
-    name: frontend
+    name: frontend-service
     enabled: true
     annotations: {}
     type: ClusterIP
@@ -439,7 +439,7 @@ services:
         protocol: TCP
         name: http    
   backend:
-    name: backend
+    name: backend-service
     enabled: true
     annotations: {}
     type: ClusterIP
