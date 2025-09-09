@@ -258,8 +258,8 @@ deployments:
     args:
       - "start"
     envFrom:
-      configMapRef:
-        name: '{{ include "common.fullname" . }}-auth'
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-auth'
     ports:
       - name: auth
         containerPort: 3006
@@ -320,8 +320,8 @@ deployments:
     args:
       - "start"
     envFrom:
-      configMapRef:
-        name: '{{ include "common.fullname" . }}-backend'
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-backend'
     autoscaling:
       enabled: false
     serviceAccount: {}
