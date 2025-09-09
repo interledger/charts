@@ -1,0 +1,12 @@
+{{- define "rafiki-backend.ingress" -}}
+{{- $top := first . -}}
+metadata:
+    annotations:
+       {{- if eq $top.Values.ingress.backend.className "nginx" }}
+        nginx.ingress.kubernetes.io/rewrite-target: /
+       {{- end }}
+{{- end }}
+
+{{- if .Values.ingress.backend.enabled }}
+{{- include "common.ingress" (list . .Values.ingress.backend "rafiki-backend.ingress") }}
+{{- end }}

@@ -404,7 +404,6 @@ deployments:
     #       - sleep
     #       - "3600"
 
-
 services:
   auth:
     name: auth-service
@@ -461,6 +460,10 @@ services:
         protocol: TCP
         name: auto-peering
 
+# This section of the values file defines Kubernetes config maps that will be created
+# for each service (auth, backend, and frontend).
+# You can use this mechanism to add additional environment variables
+# to the relevant deployments.
 configMaps:
   backend:
     name: "backend"
@@ -573,6 +576,8 @@ configMaps:
       - key: INTERACTION_COOKIE_SAME_SITE
         valueRef: config.auth.interaction.cookieSameSite
 
+# This section of the values file defines Kubernetes secrets that will be created
+# when the shouldCreateSecrets value is true for the relevant service (auth or backend).
 secretsMaps:
   auth:
     name: auth
@@ -597,3 +602,49 @@ secretsMaps:
         valueRef: config.backend.webhookSignatureSecret.value
       - key: STREAM_SECRET
         valueRef: config.backend.ilp.streamSecret.value
+
+# This chart supports the creation of an Ingress resource using the common ingress
+# chart from the common chart. The examples below should be modified to suit your
+# specific deployment needs.
+ingress:
+  auth:
+    enabled: false
+    className: nginx
+    tls:
+      - secretName: interledger-test-dev-tls
+        hosts:
+          - auth.interledger-test.dev
+    hosts:
+      - host: auth.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-auth-service
+              port: 3006
+  backend:
+    enabled: false
+    className: nginx
+    # tls:
+    #   - secretName: interledger-test-dev-tls
+    #     hosts:
+    #       - backend.interledger-test.dev
+    hosts:
+      - host: backend.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-backend-service
+              port: 3000
+  frontend:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: frontend.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-frontend-service
+              port: 3010
