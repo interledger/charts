@@ -322,6 +322,9 @@ deployments:
     envFrom:
       configMapRef:
         name: '{{ include "common.fullname" . }}-backend'
+    autoscaling:
+      enabled: false
+    serviceAccount: {}
     ports:
       - name: open-payments
         containerPort: 3000
