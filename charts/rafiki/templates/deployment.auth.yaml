@@ -1,0 +1,13 @@
+{{- define "auth.deployment" -}}
+{{- $top := first . }}
+{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.auth "rafiki.auth.ConfigMap") | fromYaml -}}
+{{- $dataHash := $cfgObj.data | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-auth-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- if .Values.deployments.auth.enabled }}
+{{- include "common.deployment" (list . .Values.deployments.auth .Values.deployments.auth.autoscaling .Values.deployments.auth.serviceAccount "auth.deployment") }}
+{{- end }}

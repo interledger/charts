@@ -1,0 +1,654 @@
+
+# fullnameOverride: "rafiki"
+
+imageOverride:
+  repository: ghcr.io/interledger
+
+config:
+  frontend:
+    logLevel: info
+    nodeEnv: production
+
+    serviceUrls:
+      GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
+      OPEN_PAYMENTS_URL: https://rafiki-backend-service/
+
+    port: 3010
+
+    kratos:
+      enabled: false    
+
+  auth:
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
+    # Specifies where the application will look for a Redis instance to be used for caching
+    # and other purposes. This chart will not attempt to create a Redis instance.      
+    redisUrl:
+      # value: ""
+      secretKeyRef:
+        key: REDIS_URL
+
+    trustProxy: true
+
+    # Configuration for the PostgreSQL database used by Rafiki Auth.
+    databaseUrl: # DATABASE_URL
+      # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+      value: ""
+      secretKeyRef:
+        key: DATABASE_URL
+
+    # The type of node environment: development, test, or production.
+    nodeEnv: production
+
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
+    logLevel: info
+
+    # The public endpoint for your Rafiki instance’s public Open Payments routes.
+    authServerUrl: "http://rafiki-auth:3006"
+
+    identityServer:
+      # The URL of your IdP’s server, used by the authorization server to inform 
+      # an Open Payments client of where to redirect the end-user to start interactions.
+      domain: "http://rafiki-backend/idp"
+      # A shared secret between the authorization server and the IdP server; the authorization 
+      # server will use the secret to secure its IdP-related endpoints. When the IdP server sends
+      # requests to the authorization server, the IdP server must provide the secret via an x-idp-secret header.
+      serverSecret:
+        value: ""
+        secretKeyRef:
+          key: IDENTITY_SERVER_SECRET
+
+    interaction:
+      # When true, quote grants are interactive.
+      quote: "false"
+      cookieSameSite: lax
+      # When true, incoming Open Payments grant requests are interactive  
+      # Note that this is a string
+      incomingPayment: "false"
+
+
+    # Defines the ports on which the container will listen for incoming requests. It
+    # is recommended that you do not change these values, but rather use the service 
+    # section to expose the ports as needed.
+    port:
+      admin: 3003
+      auth: 3006
+      introspection: 3007
+
+    grant:
+      # The wait time, in seconds, included in a grant request response (grant.continue).
+      waitSeconds: 5
+
+    accessToken:
+      # The days until expired and/or revoked access tokens are deleted.
+      deletionDays: 30
+      # The expiry time, in seconds, for access tokens.
+      expirySeconds: 600
+
+    # The koa KeyGrip key that is used to sign cookies for an interaction session.
+    cookieKey:
+      value: "changeme"
+      secretKeyRef:
+        key: COOKIE_KEY
+
+    workers:
+      # The number of workers processing expired or revoked access tokens.
+      cleanup: 1  
+
+  backend:
+    # ==========================================================
+    # Rafiki Backend configuration
+    # ==========================================================  
+
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
+    nodeEnv: production
+    logLevel: info
+
+    # Your Rafiki instance’s name used to communicate for auto-peering and/or
+    # telemetry. Required when auto-peering and/or telemetry is enabled
+    instanceName: rafiki-backend-changeme
+
+    # I argue we should remove this because nobody has actually tested it with a real deployment
+    useTigerbeetle: false
+
+    auth:
+      # The endpoint on your Open Payments authorization server to grant a request.
+      grantUrl: http://rafiki-auth.rafiki-auth:3006
+      # The endpoint on your Open Payments authorization server to introspect an access
+      # token.
+      introspectionUrl: http://rafiki-auth.rafiki-auth:3007
+
+    # TODO: Consider not specifying the rates url if it is not needed
+    rates:
+      # The endpoint your Rafiki instance uses to request exchange rates.
+      url: ""
+
+    webhook:
+      # Where Rafiki is going to send webhooks
+      url: http://wallet/webhooks/rafiki
+      # The time, in milliseconds, that WALLET_ADDRESS_WORKERS wait until checking the
+      # empty wallet address request queue again.
+      timeout: 200
+
+    # Redis configuration, used for caching and session state
+    redisUrl:
+      # value: "redis://rafiki-backend-redis:6379"
+      value: ""
+      secretKeyRef:
+        key: REDIS_URL
+
+    # PostgreSQL, provide configuration
+    databaseUrl: # DATABASE_URL
+      # value: "postgresql://rafiki-backend-postgresql:5432/rafiki-backend"
+      secretKeyRef:
+        key: DATABASE_URL
+
+    # This feature is experimental and may change in future versions.
+    walletAddressRedirectHtmlPage: ''
+
+    # Must be set to true when running Rafiki behind a proxy. When true, the
+    # X-Forwarded-Proto header is used to determine if connections are secure.
+    trustProxy: true
+
+    ilp:
+      # Maps to OPEN_PAYMENTS_URL - The public endpoint of your Open Payments resource server.
+      host: 'http://rafiki-backend:3000'
+      # Maps to ILP_ADDRESS - The ILP address of your Rafiki instance. Override this value.
+      address: test.rafiki-backend
+      # The ILP connector address where ILP packets are received.
+      connector: 'http://rafiki-backend:3002'
+      # The seed secret to generate shared STREAM secrets.
+      streamSecret:
+        value: ""
+        secretKeyRef:
+          key: STREAM_SECRET
+      # The accepted ILP rate fluctuation.
+
+    slippage: 0.01
+
+    key:
+      # Your Rafiki instance’s client key ID. Make this a unique identifier for your
+      # Rafiki instance.
+      id: rafiki-override-this-value
+      # The private key pem file used. Must be provided as base64 encoded version of
+      # the pem file. It will be stored in a secret. Chart will fail if not provided.
+      # Can be generated like this
+      #   openssl genpkey -algorithm Ed25519 -out private.pem
+      #   echo "pvk:"
+      #   echo -n "$(cat private.pem)" | base64 -w0
+      #
+      # Note that the public key can always be derived from the private key like this
+      # openssl pkey -in private.pem -pubout -out public.pem
+      #
+      # If empty string like this is provided, this chart will spawn a job to generate
+      # a new key pair and store it in a secret for you.
+      pvk: ''
+
+    # The secret to generate request header signatures for webhook event requests.
+    webhookSignatureSecret:
+      value: ""
+      secretKeyRef:
+        name: rafiki-backend
+        key: SIGNATURE_SECRET
+
+    # The delay in liquidity withdrawal processing.
+    # Unit ms
+    withdrawalThrottleDelay: ''
+
+    lifetime:
+      # The time, in milliseconds, the exchange rates you provide via the EXCHANGE_RATES_URL
+      # are valid.
+      exchangeRate: 15000
+      # The time, in milliseconds, an Open Payments quote is valid for.
+      quote: 300000
+      # The time, in milliseconds, that your Rafiki instance will wait for a 200 response
+      # from your webhook endpoint. If a 200 response is not received, Rafiki will time out
+      # and try to send the webhook event again.
+      webhook: 200
+
+    workers:
+      # The number of workers processing incoming payment requests.
+      incomingPayment: 1
+      # The number of workers processing outgoing payment requests.
+      outgoingPayment: 1
+      paymentPointer: 1
+      webhook: 1
+
+    # The time, in milliseconds, that WEBHOOK_WORKERS will wait until they check the
+    # empty webhook event queue again.
+    workerIdle: 200
+
+    idempotency:
+      # The TTL, in milliseconds, for idempotencyKey on GraphQL mutations on the Backend Admin API.
+      keyTTL: 86400000
+      # The TTL, in milliseconds, for idempotencyKey concurrency lock on GraphQL
+      # mutations on the Backend Admin API.
+      keyLock: 2000
+
+    telemetry:
+      # Enables the telemetry service on Rafiki.
+      enabled: false
+      livenet: false
+
+    autoPeering:
+      # Enables the auto-peering service on Rafiki.
+      enabled: false
+
+    pvk: '/mnt/keys/pvk.pem'
+
+    port:
+      admin: 3001
+      connector: 3002
+      openPayments: 3000
+      autoPeering: 3005
+
+deployments:
+  auth:
+    name: auth
+    enabled: true
+    replicaCount: 1
+    image:
+      name: rafiki-auth
+      # tag: "1.2.0"   # Use this to override the image tag for just this image
+    imagePullPolicy: IfNotPresent
+    args:
+      - "start"
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-auth'
+    ports:
+      - name: auth
+        containerPort: 3006
+        protocol: TCP
+      - name: admin
+        containerPort: 3003
+        protocol: TCP
+      - name: introspection
+        containerPort: 3007
+        protocol: TCP
+      - name: interaction
+        containerPort: 3009
+        protocol: TCP
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 500m
+      limits:
+        memory: 1024Mi
+        cpu: 2
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+
+  frontend:
+    name: frontend
+    enabled: true
+    replicaCount: 1
+    nodeSelector: {}
+    serviceAccount: {}
+    image:
+      name: rafiki-frontend
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-frontend'
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 1
+    ports:
+      - name: http
+        containerPort: 3010
+        protocol: TCP
+
+  backend:
+    name: backend
+    enabled: true
+    replicaCount: 1
+    image:
+      name: rafiki-backend
+    imagePullPolicy: IfNotPresent
+    args:
+      - "start"
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-backend'
+    autoscaling:
+      enabled: false
+    serviceAccount: {}
+    ports:
+      - name: open-payments
+        containerPort: 3000
+        protocol: TCP
+      - name: admin
+        containerPort: 3001
+        protocol: TCP
+      - name: connector
+        containerPort: 3002
+        protocol: TCP
+      - name: auto-peering
+        containerPort: 3005
+        protocol: TCP
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 1
+      limits:
+        memory: 2048Mi
+        cpu: 4
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3000
+    readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3      
+      httpGet:
+        path: /healthz
+        port: 3000
+    volumeMounts:
+      - name: keys
+        mountPath: /mnt/keys
+        readOnly: true
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    topologySpreadConstraints: []
+    # This chart support the generation of init containers using the convention
+    # below. In future versions migrations will be performed in a init container.
+    # initContainers:
+    # - name: backend-migrations
+    #   image:
+    #     repository: repository/org/some-image
+    #     name: SomeImageContainer
+    #     tag: v1.0
+    #     pullPolicy: Always
+    #   args:
+    #     - "run"
+    #   envFrom:
+    #     - configMapRef:
+    #         name: '{{ include "common.fullname" . }}-backend'
+    #   resources:
+    #     requests:
+    #       memory: 128Mi
+    #       cpu: 200m
+    #     limits:
+    #       memory: 512Mi
+    #       cpu: 400m
+    # Sidecars can be used to add additional containers to the Rafiki Backend deployment. This
+    # container definition will be added to the Rafiki Backend deployment as a sidecar container.
+    # sidecars:
+    #   - name: debugbox
+    #     image:
+    #       name: busybox
+    #       tag: latest
+    #       repository: docker.io
+    #     args:
+    #       - sleep
+    #       - "3600"
+
+services:
+  auth:
+    name: auth-service
+    enabled: true
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - port: 3006
+        targetPort: 3006
+        protocol: TCP
+        name: auth
+      - port: 3003
+        targetPort: 3003
+        protocol: TCP
+        name: admin
+      - port: 3007
+        targetPort: 3007
+        protocol: TCP
+        name: introspection
+      - port: 3009
+        targetPort: 3009
+        protocol: TCP
+        name: interaction
+  frontend:
+    name: frontend-service
+    enabled: true
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 3010
+        targetPort: 3010
+        protocol: TCP
+        name: http    
+  backend:
+    name: backend-service
+    enabled: true
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: open-payments
+      - port: 3001
+        targetPort: 3001
+        protocol: TCP
+        name: admin
+      - port: 3002
+        targetPort: 3002
+        protocol: TCP
+        name: connector
+      - port: 3005
+        targetPort: 3005
+        protocol: TCP
+        name: auto-peering
+
+# This section of the values file defines Kubernetes config maps that will be created
+# for each service (auth, backend, and frontend).
+# You can use this mechanism to add additional environment variables
+# to the relevant deployments.
+configMaps:
+  backend:
+    name: "backend"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.backend.logLevel
+      - key: ADMIN_PORT
+        valueRef: config.backend.port.admin
+      - key: CONNECTOR_PORT
+        valueRef: config.backend.port.connector
+      - key: OPEN_PAYMENTS_PORT
+        valueRef: config.backend.port.openPayments
+      - key: AUTO_PEERING_SERVER_PORT
+        valueRef: config.backend.port.autoPeering
+      - key: ENABLE_AUTO_PEERING
+        valueRef: config.backend.autoPeering.enabled
+      - key: USE_TIGERBEETLE
+        valueRef: config.backend.useTigerbeetle
+      - key: AUTH_SERVER_GRANT_URL
+        valueRef: config.backend.auth.grantUrl
+      - key: AUTH_SERVER_INTROSPECTION_URL
+        valueRef: config.backend.auth.introspectionUrl
+      - key: ILP_ADDRESS
+        valueRef: config.backend.ilp.address
+      - key: PUBLIC_HOST
+        valueRef: config.backend.ilp.host
+      - key: OPEN_PAYMENTS_URL
+        valueRef: config.backend.ilp.host
+      - key: WALLET_ADDRESS_URL
+        valueRef: config.backend.ilp.host
+      - key: WEBHOOK_URL
+        valueRef: config.backend.webhook.url
+      - key: WEBHOOK_TIMEOUT
+        valueRef: config.backend.webhook.timeout
+      - key: EXCHANGE_RATES_URL
+        valueRef: config.backend.rates.url
+      - key: ILP_CONNECTOR_URL
+        valueRef: config.backend.ilp.connector
+      - key: SLIPPAGE
+        valueRef: config.backend.slippage
+      - key: INSTANCE_NAME
+        valueRef: config.backend.instanceName
+      - key: ENABLE_TELEMETRY
+        valueRef: config.backend.telemetry.enabled
+      - key: ENABLE_AUTOPEERING
+        valueRef: config.backend.autoPeering.enabled
+      - key: KEY_ID
+        valueRef: config.backend.key.id
+      - key: TRUST_PROXY
+        valueRef: config.backend.trustProxy
+      - key: WALLET_ADDRESS_REDIRECT_HTML_PAGE
+        valueRef: config.backend.walletAddressRedirectHtmlPage
+      - key: NODE_ENV
+        valueRef: config.backend.nodeEnv
+      - key: PRIVATE_KEY_FILE
+        valueRef: config.backend.key.pvk
+      - key: LIVENET
+        valueRef: config.backend.telemetry.livenet }}"
+  frontend:
+    name: "frontend"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.frontend.logLevel
+      - key: NODE_ENV
+        valueRef: config.frontend.nodeEnv
+      - key: PORT
+        valueRef: config.frontend.port
+      - key: GRAPHQL_URL
+        valueRef: config.frontend.serviceUrls.GRAPHQL_URL
+      - key: OPEN_PAYMENTS_URL
+        valueRef: config.frontend.serviceUrls.OPEN_PAYMENTS_URL
+      - key: AUTH_ENABLED
+        valueRef: config.frontend.kratos.enabled
+
+  auth:
+    name: "auth"
+    contentMap:
+      - key: ACCESS_TOKEN_DELETION_DAYS
+        valueRef: config.auth.accessToken.deletionDays
+      - key: ACCESS_TOKEN_EXPIRY_SECONDS
+        valueRef: config.auth.accessToken.expirySeconds
+      - key: ADMIN_PORT
+        valueRef: config.auth.port.admin
+      - key: AUTH_PORT
+        valueRef: config.auth.port.auth
+      - key: AUTH_SERVER_URL
+        valueRef: config.auth.authServerUrl
+      - key: DATABASE_CLEANUP_WORKERS
+        valueRef: config.auth.workers.cleanup
+      - key: IDENTITY_SERVER_URL
+        valueRef: config.auth.identityServer.domain
+      - key: IDENTITY_SERVER_SECRET
+        valueRef: config.auth.identityServer.serverSecret
+      - key: INCOMING_PAYMENT_INTERACTION
+        valueRef: config.auth.interaction.incomingPayment
+      - key: QUOTE_INTERACTION
+        valueRef: config.auth.interaction.quote
+      - key: INTROSPECTION_PORT
+        valueRef: config.auth.port.introspection
+      - key: LOG_LEVEL
+        valueRef: config.auth.logLevel
+      - key: NODE_ENV
+        valueRef: config.auth.nodeEnv
+      - key: PORT
+        valueRef: config.auth.port.auth
+      - key: WAIT_SECONDS
+        valueRef: config.auth.grant.waitSeconds
+      - key: TRUST_PROXY
+        valueRef: config.auth.trustProxy
+      - key: INTERACTION_COOKIE_SAME_SITE
+        valueRef: config.auth.interaction.cookieSameSite
+
+# This section of the values file defines Kubernetes secrets that will be created
+# when the shouldCreateSecrets value is true for the relevant service (auth or backend).
+secretsMaps:
+  auth:
+    name: auth
+    contentMap:
+      - key: AUTH_DATABASE_URL
+        valueRef: config.auth.databaseUrl.value
+      - key: COOKIE_KEY
+        valueRef: config.auth.cookieKey.value
+      - key: IDENTITY_SERVER_SECRET
+        valueRef: config.auth.identityServer.serverSecret.value
+      - key: REDIS_URL
+        valueRef: config.auth.redisUrl.value
+
+  backend:
+    name: backend
+    contentMap:
+      - key: DATABASE_URL
+        valueRef: config.backend.databaseUrl.value
+      - key: REDIS_URL
+        valueRef: config.backend.redisUrl.value
+      - key: SIGNATURE_SECRET
+        valueRef: config.backend.webhookSignatureSecret.value
+      - key: STREAM_SECRET
+        valueRef: config.backend.ilp.streamSecret.value
+
+# This chart supports the creation of an Ingress resource using the common ingress
+# chart from the common chart. The examples below should be modified to suit your
+# specific deployment needs.
+ingress:
+  auth:
+    enabled: false
+    className: nginx
+    tls:
+      - secretName: interledger-test-dev-tls
+        hosts:
+          - auth.interledger-test.dev
+    hosts:
+      - host: auth.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-auth-service
+              port: 3006
+  backend:
+    enabled: false
+    className: nginx
+    # tls:
+    #   - secretName: interledger-test-dev-tls
+    #     hosts:
+    #       - backend.interledger-test.dev
+    hosts:
+      - host: backend.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-backend-service
+              port: 3000
+  frontend:
+    enabled: false
+    className: nginx
+    hosts:
+      - host: frontend.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-frontend-service
+              port: 3010
