@@ -261,6 +261,8 @@ deployments:
     envFrom:
       - configMapRef:
           name: '{{ include "common.fullname" . }}-auth'
+      - secretRef:
+          name: '{{ include "common.fullname" . }}-auth'
     ports:
       - name: auth
         containerPort: 3006
@@ -324,6 +326,8 @@ deployments:
     imagePullPolicy: IfNotPresent
     envFrom:
       - configMapRef:
+          name: '{{ include "common.fullname" . }}-backend'
+      - secretRef:
           name: '{{ include "common.fullname" . }}-backend'
     autoscaling:
       enabled: false
