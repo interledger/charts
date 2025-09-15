@@ -290,6 +290,8 @@ deployments:
       successThreshold: 1
       failureThreshold: 3
       httpGet:
+        path: /healthz
+        port: 3007        
 
   frontend:
     name: frontend
