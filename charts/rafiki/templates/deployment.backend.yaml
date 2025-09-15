@@ -7,6 +7,11 @@ spec:
     metadata:
       annotations:
         ilf-configmap-backend-sha256: {{ $dataHash | quote }}
+    spec:
+        volumes:
+        - name: keys
+          secret:
+            secretName: {{ include "common.fullname" $top }}-keys
 {{- end }}
 {{- if .Values.deployments.backend.enabled }}
 {{- include "common.deployment" (list . .Values.deployments.backend .Values.deployments.backend.autoscaling .Values.deployments.backend.serviceAccount "backend.deployment") }}
