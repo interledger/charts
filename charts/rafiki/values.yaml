@@ -258,8 +258,6 @@ deployments:
       name: rafiki-auth
       # tag: "1.2.0"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
-    args:
-      - "start"
     envFrom:
       - configMapRef:
           name: '{{ include "common.fullname" . }}-auth'
@@ -292,6 +290,7 @@ deployments:
       httpGet:
         path: /healthz
         port: 3007        
+    securityContext: {}
 
   frontend:
     name: frontend
@@ -323,8 +322,6 @@ deployments:
     image:
       name: rafiki-backend
     imagePullPolicy: IfNotPresent
-    args:
-      - "start"
     envFrom:
       - configMapRef:
           name: '{{ include "common.fullname" . }}-backend'
