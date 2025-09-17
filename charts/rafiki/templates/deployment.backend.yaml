@@ -11,7 +11,7 @@ spec:
         volumes:
         - name: keys
           secret:
-            secretName: {{ include "common.fullname" $top }}-keys
+            secretName: {{ include "common.fullname" $top }}-backend-keys
 {{- end }}
 {{- if .Values.deployments.backend.enabled }}
 {{- include "common.deployment" (list . .Values.deployments.backend .Values.deployments.backend.autoscaling .Values.deployments.backend.serviceAccount "backend.deployment") }}
