@@ -24,7 +24,7 @@ tests:
           value: openssl-generator
       - equal:
           path: spec.template.spec.containers[0].image
-          value: bitnami/kubectl:latest
+          value: bitnamilegacy/kubectl:latest
   - it: A ServiceAccount should be created for the job
     documentSelector:
       path: kind
