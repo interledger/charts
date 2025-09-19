@@ -1,6 +1,10 @@
 config:
+  shouldCreateSecrets: false
+  
   host: example.com
   
+  someSecret: ThisIsTopSecret
+
   databaseDsn: postgresql://user:password@postgres:5432/dbname
   redisUrl: redis://redis:63799
   logLevel: info
@@ -253,3 +257,11 @@ configMaps:
         valueRef: config.databaseDsn
       - key: LOG_LEVEL
         valueRef: config.logLevel
+
+
+secretsMaps:
+  backend:
+    name: backend
+    contentMap:
+      - key: MY_SECRET
+        valueRef: config.someSecret
