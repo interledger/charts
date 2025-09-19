@@ -292,7 +292,7 @@ secretsMaps:
 ingress:
   backend:
     enabled: false
-    className: false
+    className: nginx
     tls:
       - secretName: interledger-test-dev-tls
         hosts:

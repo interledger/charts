@@ -4,6 +4,11 @@ templates:
   - ingress.frontend.yaml
 set:
   fullnameOverride: test-rafiki-money
+  ingress:
+    backend:
+      enabled: true
+    frontend:
+      enabled: true
 release:
   name: test-rafiki-money
 tests:
