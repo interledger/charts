@@ -1,0 +1,48 @@
+suite: rafiki-money frontend - Frontend Deployment
+templates:
+  - deployment.frontend.yaml
+set:
+  fullnameOverride: test-rafiki-money
+release:
+  name: test-rafiki-money
+tests:
+  - it: 'deployment name should be test-rafiki-money-frontend'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-rafiki-money-frontend
+  - it: 'when overriding tag on the deployment, the container should use that tag'
+    template: deployment.frontend.yaml
+    set:
+      deployments:
+        frontend:
+          image:
+            tag: 2.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/test-wallet-frontend:2.0.0
+  - it: 'given that no tag is on the deployment definition, when overriding the tag globally, the container should use that tag'
+    template: deployment.frontend.yaml  
+    set:
+      imageOverride:
+        tag: 2.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/test-wallet-frontend:2.0.0
+  - it: 'should set correct environment variables'
+    template: deployment.frontend.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: PORT
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: "4003"
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: COOKIE_NAME
+      - equal:
+          path: spec.template.spec.containers[0].env[2].name
+          value: NEXT_PUBLIC_USE_TEST_KYC_DATA

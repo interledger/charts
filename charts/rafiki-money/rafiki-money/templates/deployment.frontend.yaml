@@ -1,0 +1,5 @@
+{{- define "frontend.deployment" -}}
+{{- end }}
+{{- if .Values.deployments.frontend.enabled }}
+{{- include "common.deployment" (list . .Values.deployments.frontend .Values.deployments.frontend.autoscaling .Values.deployments.frontend.serviceAccount "frontend.deployment") }}
+{{- end }}
