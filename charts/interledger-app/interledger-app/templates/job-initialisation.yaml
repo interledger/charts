@@ -1,0 +1,64 @@
+{{- if .Values.initialisation }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "common.fullname" . }}-initialisation
+  labels:
+    {{- include "common.labels" (list . .) | nindent 4 }}
+    app.kubernetes.io/component: initialisation
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "common.selectorLabels" (list . .) | nindent 8 }}
+        app.kubernetes.io/component: initialisation
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.initialisation.serviceAccountName }}
+      serviceAccountName: {{ .Values.initialisation.serviceAccountName }}
+      {{- else }}
+      serviceAccountName: default
+      {{- end }}
+      restartPolicy: Never
+      containers:
+        - name: initialisation
+          image: "{{ .Values.imageOverride.repository }}/backend:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.initialisation.imagePullPolicy }}
+          args:
+            - "migrate"
+          env:
+            - name: PGSSLMODE
+              value: disable
+            # Backend database migrations
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ include "common.fullname" . }}'
+                  key: "{{ .Values.initialisation.backend.urlSecretRef }}"
+            # Pacioli database migrations
+            - name: PACIOLI_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ include "common.fullname" . }}'
+                  key: "{{ .Values.initialisation.pacioli.urlSecretRef }}"
+            # Rafiki backend database migrations
+            - name: RAFIKI_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ include "common.fullname" . }}'
+                  key: "{{ .Values.initialisation.rafiki_backend.urlSecretRef }}"
+            # Rafiki auth database migrations
+            - name: RAFIKI_AUTH_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: '{{ include "common.fullname" . }}'
+                  key: "{{ .Values.initialisation.rafiki_auth.urlSecretRef }}"
+      backoffLimit: 3
+{{- end }}

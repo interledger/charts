@@ -1,0 +1,13 @@
+{{- define "admin.deployment" -}}
+{{- $top := first . }}
+{{- $cfgObj := ($top.Values.configMaps.admin.contentMap) -}}
+{{- $dataHash := $cfgObj | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-admin-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- if .Values.deployments.admin.enabled }}
+{{- include "common.deployment" (list . .Values.deployments.admin .Values.deployments.admin.autoscaling .Values.deployments.admin.serviceAccount "admin.deployment") }}
+{{- end }}

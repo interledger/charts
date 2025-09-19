@@ -1,0 +1,6 @@
+{{- range $configMapName, $configMap := .Values.configMaps }}
+{{- if $configMap.contentMap }}
+{{- include "common.configMapper" (list $ $configMap) }}
+---
+{{- end }}
+{{- end }}

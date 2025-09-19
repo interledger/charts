@@ -1,0 +1,3 @@
+{{- if .Values.services.frontend.enabled }}
+{{- include "common.svc" (list . .Values.services.frontend .Values.deployments.frontend) }}
+{{- end }}

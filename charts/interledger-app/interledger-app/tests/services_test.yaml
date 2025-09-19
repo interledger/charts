@@ -1,0 +1,105 @@
+suite: interledger-app services - Backend, Frontend, and Admin
+templates:
+  - service-backend.yaml
+  - service-frontend.yaml
+  - service-admin.yaml
+set:
+  fullnameOverride: test-interledger-app
+release:
+  name: test-interledger-app
+tests:
+  - it: 'backend gRPC service should be created when enabled'
+    template: service-backend.yaml
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: test-interledger-app-backend-service-grpc
+      - equal:
+          path: spec.selector['app.kubernetes.io/component']
+          value: backend-server
+          documentIndex: 0
+      - contains:
+          path: spec.ports
+          content:
+            port: 8448
+            targetPort: 8448
+            protocol: TCP
+            name: admin
+          documentIndex: 0
+      - contains:
+          path: spec.ports
+          content:
+            port: 8443
+            targetPort: 8443
+            protocol: TCP
+            name: grpc
+            appProtocol: HTTP2
+          documentIndex: 0
+
+  - it: 'backend HTTP service should be created when enabled'
+    template: service-backend.yaml
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: test-interledger-app-backend-service-http
+      - equal:
+          path: spec.selector['app.kubernetes.io/component']
+          value: backend-server
+          documentIndex: 1
+      - contains:
+          path: spec.ports
+          content:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          documentIndex: 1
+
+  - it: 'frontend service should be created when enabled'
+    template: service-frontend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-interledger-app-frontend-service
+      - equal:
+          path: spec.selector['app.kubernetes.io/component']
+          value: frontend
+      - contains:
+          path: spec.ports
+          content:
+            port: 3000
+            targetPort: 3000
+            protocol: TCP
+            name: http
+
+  - it: 'admin service should be created when enabled'
+    template: service-admin.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-interledger-app-admin-service
+      - equal:
+          path: spec.selector['app.kubernetes.io/component']
+          value: admin
+      - contains:
+          path: spec.ports
+          content:
+            port: 3000
+            targetPort: 3000
+            protocol: TCP
+            name: http
+
+  - it: 'backend services should not be created when disabled'
+    template: service-backend.yaml
+    set:
+      services:
+        backend:
+          grpc:
+            enabled: false
+          http:
+            enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

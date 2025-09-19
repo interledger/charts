@@ -1,0 +1,13 @@
+{{- define "backend-worker.deployment" -}}
+{{- $top := first . }}
+{{- $cfgObj := ($top.Values.configMaps.backend.contentMap) -}}
+{{- $dataHash := $cfgObj | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-backend-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- if .Values.deployments.backend.worker.enabled }}
+{{- include "common.deployment" (list . .Values.deployments.backend.worker .Values.deployments.backend.worker.autoscaling .Values.deployments.backend.worker.serviceAccount "backend-worker.deployment") }}
+{{- end }}

@@ -1,0 +1,86 @@
+suite: interledger-app initialisation - Database migration job
+templates:
+  - job-initialisation.yaml
+set:
+  fullnameOverride: test-interledger-app
+  imageOverride:
+    repository: test-registry
+  initialisation:
+    serviceAccountName: ""
+    imagePullPolicy: Always
+    backend:
+      urlSecretRef: "dbBackendMigrationsURL"
+    pacioli:
+      urlSecretRef: "dbPacioliMigrationsURL"
+    rafiki_backend:
+      urlSecretRef: "dbRafikiBackendURL"
+    rafiki_auth:
+      urlSecretRef: "dbRafikiAuthURL"
+release:
+  name: test-interledger-app
+tests:
+  - it: 'initialisation job should be created when specified'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-interledger-app-initialisation
+      - equal:
+          path: kind
+          value: Job
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: initialisation
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test-registry/backend:1.0.0
+      - equal:
+          path: spec.template.spec.containers[0].args[0]
+          value: migrate
+      - equal:
+          path: spec.template.spec.restartPolicy
+          value: Never
+      - equal:
+          path: spec.backoffLimit
+          value: 3
+
+  - it: 'initialisation job should have correct database environment variables'
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: test-interledger-app
+                key: dbBackendMigrationsURL
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PACIOLI_DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: test-interledger-app
+                key: dbPacioliMigrationsURL
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: RAFIKI_DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: test-interledger-app
+                key: dbRafikiBackendURL
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: RAFIKI_AUTH_DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: test-interledger-app
+                key: dbRafikiAuthURL
+
+  - it: 'initialisation job should not be created when not specified'
+    set:
+      initialisation: null
+    asserts:
+      - hasDocuments:
+          count: 0

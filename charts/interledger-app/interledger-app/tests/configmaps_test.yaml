@@ -1,0 +1,110 @@
+suite: interledger-app configmaps - Backend, Frontend, and Admin ConfigMaps
+templates:
+  - configmap.yaml
+set:
+  fullnameOverride: test-interledger-app
+  config:
+    environment: dev
+    log_level: info
+    usd_ledger_id: "1"
+    noop_equity_account_id: "00000000-0000-0000-0000-000000000000"
+    kratos:
+      url: "http://kratos.wallet:4433"
+      admin_url: "http://kratos.wallet:4434"
+    temporal:
+      url: "temporal:7233"
+    rafiki:
+      graphql:
+        auth_url: "http://rafiki-auth:3003/graphql"
+        backend_url: "http://rafiki-backend:3001/graphql"
+    frontend:
+      gate_signup: false
+      kratos_url: "http://kratos-public"
+      payment_pointer_base: "sandbox.ilp.link"
+      backend:
+        grpc:
+          url: "http://wallet-backend-service:8443"
+    admin:
+      backend:
+        grpcUrl: "wallet-backend-service:8448"
+  configMaps:
+    backend:
+      name: "backend"
+      contentMap:
+        - key: FYNBOS_ENV
+          valueRef: config.environment
+        - key: KRATOS_URL
+          valueRef: config.kratos.url
+        - key: KRATOS_ADMIN_URL
+          valueRef: config.kratos.admin_url
+        - key: LOG_LEVEL
+          valueRef: config.log_level
+    frontend:
+      name: "frontend"
+      contentMap:
+        - key: GATE_SIGNUP
+          valueRef: config.frontend.gate_signup
+        - key: KRATOS_URL
+          valueRef: config.frontend.kratos_url
+        - key: PAYMENT_POINTER_BASE
+          valueRef: config.frontend.payment_pointer_base
+    admin:
+      name: "admin"
+      contentMap:
+        - key: BACKEND_GRPC_URL
+          valueRef: config.admin.backend.grpcUrl
+release:
+  name: test-interledger-app
+tests:
+  - it: 'backend configmap should be created with correct data'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: test-interledger-app-backend
+      - equal:
+          path: data.FYNBOS_ENV
+          value: dev
+          documentIndex: 1
+      - equal:
+          path: data.KRATOS_URL
+          value: "http://kratos.wallet:4433"
+          documentIndex: 1
+      - equal:
+          path: data.KRATOS_ADMIN_URL
+          value: "http://kratos.wallet:4434"
+          documentIndex: 1
+      - equal:
+          path: data.LOG_LEVEL
+          value: info
+          documentIndex: 1
+
+  - it: 'frontend configmap should be created with correct data'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: test-interledger-app-frontend
+      - equal:
+          path: data.GATE_SIGNUP
+          value: "false"
+          documentIndex: 2
+      - equal:
+          path: data.KRATOS_URL
+          value: "http://kratos-public"
+          documentIndex: 2
+      - equal:
+          path: data.PAYMENT_POINTER_BASE
+          value: "sandbox.ilp.link"
+          documentIndex: 2
+
+  - it: 'admin configmap should be created with correct data'
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: test-interledger-app-admin
+      - equal:
+          path: data.BACKEND_GRPC_URL
+          value: "wallet-backend-service:8448"
+          documentIndex: 0

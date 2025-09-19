@@ -1,0 +1,627 @@
+# fullnameOverride: "interledger-app"
+
+# If true, the chart will create the secrets defined in the secretsMaps section.
+# If false, the chart will not create the secrets and it is assumed that they
+# already exist.
+shouldCreateSecrets: false
+
+# Configuration that will be used during the migrations.
+imageOverride:
+  repository: europe-west4-docker.pkg.dev/wallet-451208/interledger-app
+
+config:
+  environment: dev
+  log_level: "info"
+  usd_ledger_id: "1"
+  noop_equity_account_id: "00000000-0000-0000-0000-000000000000"
+  google_oauth2_client_id: "google_oauth"
+  authorisation_port: "8082"
+  open_payments_port: "8081"
+
+  admin:
+    policy_aud_ref: adminPortalCloudFlarePolicyAud
+    team_domain_ref: adminPortalCloudflareTeamDomain
+
+  twitter:
+    client:
+      id: "not_used"
+      secret: "not_used"
+      bearer: "not_used"
+      redirect: "not_used"
+
+  smarty:
+    auth:
+      id: "not_used"
+      token: "not_used"
+
+  # A comma separated list of region codes
+  region_blocking:
+    blocked_regions: ""
+    allowed_wallet_ids: ""
+
+  twilio:
+    account_sid_ref: twilioAccountSID
+    service_sid_ref: twilioServiceSID
+    account_token_ref: twilioAccountToken
+
+  zendesk:
+    user: "support@interledger-app.dev"
+    token_ref: "zendeskToken"
+
+  kratos:
+    url: "http://kratos.wallet:4433"
+    admin_url: "http://kratos.wallet:4434"
+
+  rafiki:
+    graphql:
+      auth_url: "http://rafiki-auth:3003/graphql"
+      backend_url: "http://rafiki-backend:3001/graphql"
+    auth:
+      endpoint: "http://rafiki-auth:3003/graphql"
+      secret_ref: rafikiAuthSecret
+
+  temporal:
+    url: "temporal:7233"
+
+  otel:
+    exporter_otlp_endpoint: "grpc://api.honeycomb.io:443"
+    exporter_otlp_headers_ref: "otelExporterHeaders"
+    service_name: "backend"
+
+  vault:
+    url: "http://vault:8200"
+    transit_engine_path: "transit/prod/backend"
+
+  astra:
+    client_id_ref: "astraClientID"
+    client_secret_ref: "astraClientSecret"
+    webhook_bearer_token_ref: "astraWebhookBearerToken"
+
+  gatehub:
+    app_id_ref: "gatehubAppID"
+    secret_ref: "gatehubSecret"
+    webhook_secret_ref: "gatehubWebhookSecret"
+
+  chimoney:
+    webhook_secret_ref: "chimoneyWebhookSecret"
+    token_ref: "chimoneyToken"
+
+  sendgrid:
+    api_key_ref: "sendgridApiKey"
+
+  pusher:
+    addr_ref: "pusherAddr"
+    app_key_ref: pusherAppKey
+    app_cluster_ref: pusherAppCluster
+
+  segment:
+    key_ref: "segmentKey"
+
+  slack:
+    client_id_ref: "slackClientID"
+    client_secret_ref: "slackClientSecret"
+    signing_secret_ref: "slackSigningSecret"
+    token_ref: "slackToken"
+
+  basis_theory:
+    api_key_ref: "basisTheoryApiKey"
+    token_ref: "basisTheoryToken"
+
+  persona:
+    token_ref: "personaToken"
+    webhook_token_ref: "personaWebhookToken"
+
+  cdn:
+    key_ref: "cdnKey"
+
+  xago:
+    api_secret_ref: "xagoApiSecret"
+    api_public_key_ref: "xagoApiPublicKey"
+
+  sentry:
+    dsn_ref: "sentryDSN"
+
+  pti: # FIANT configuration
+    jwk_ref: "ptiJwk"
+    client_id_ref: "ptiClientID"
+
+  # Frontend specific config
+  frontend:
+    backend:
+      grpc:
+        url: "http://wallet-backend-service:8443"
+    redis:
+      url_ref: redisURL
+    cookie_secrets_ref: cookieSecretsArrStr
+    gate_signup: false
+    kratos_url: http://kratos-public
+    payment_pointer_base: sandbox.ilp.link
+    bt_token_ref: basisTheoryToken
+    sentry_dsn_ref: sentryDSN
+    segment_api_key_ref: segmentAPIKey
+    cf_turnstile_site_key_ref: "turnstileSiteKey"
+    cf_turnstile_secret_key_ref: "turnstileSecret"
+
+  # Admin specific config
+  admin:
+    backend:
+      grpcUrl: "wallet-backend-service:8448"
+
+# Database configuration
+database:
+  host: "postgresql-host"
+  port: "5432"
+  backend:
+    urlSecretRef: "dbBackendURL"
+  pacioli:
+    urlSecretRef: "dbPacioliURL"
+  rafiki_backend:
+    urlSecretRef: "dbRafikiBackendURL"
+  rafiki_auth:
+    urlSecretRef: "dbRafikiAuthURL"
+
+# Initialization job configuration for migrations
+initialisation:
+  serviceAccountName: ""
+  backend:
+    urlSecretRef: "dbBackendMigrationsURL"
+  pacioli:
+    urlSecretRef: "dbPacioliMigrationsURL"
+  rafiki_backend:
+    urlSecretRef: "dbRafikiBackendURL"
+  rafiki_auth:
+    urlSecretRef: "dbRafikiAuthURL"
+  imagePullPolicy: Always
+
+deployments:
+  backend:
+    server:
+      name: server
+      enabled: true
+      component: backend-server
+      replicaCount: 2
+      image:
+        name: backend
+      imagePullPolicy: Always
+      livenessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8080
+      readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8080
+      args:
+        - "start"
+      envFrom:
+        - configMapRef:
+            name: '{{ include "common.fullname" . }}-backend'
+      env:
+        - name: PGSSLMODE
+          value: disable
+        # Database connections
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.backend.urlSecretRef }}"
+        - name: PACIOLI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.pacioli.urlSecretRef }}"
+        - name: RAFIKI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+        - name: RAFIKI_AUTH_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 50m
+        limits:
+          memory: 1000Mi
+          cpu: 1000m
+      ports:
+        - name: grpc
+          containerPort: 8443
+        - name: admin
+          containerPort: 8448
+        - name: http
+          containerPort: 8080
+      securityContext: {}
+      nodeSelector: {}
+      serviceAccount: {}
+      autoscaling:
+        enabled: false
+      podDisruptionBudget:
+        enabled: true
+        annotations: {}
+        minAvailable: 1
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+
+    worker:
+      name: worker
+      enabled: true
+      component: backend-worker
+      replicaCount: 2
+      image:
+        name: backend
+      imagePullPolicy: Always
+      args:
+        - "worker"
+      livenessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8081
+      readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8081
+      envFrom:
+        - configMapRef:
+            name: '{{ include "common.fullname" . }}-backend'
+      env:
+        - name: PGSSLMODE
+          value: disable
+        # Database connections (same as server)
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.backend.urlSecretRef }}"
+        - name: PACIOLI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.pacioli.urlSecretRef }}"
+        - name: RAFIKI_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.rafiki_backend.urlSecretRef }}"
+        - name: RAFIKI_AUTH_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: '{{ include "common.fullname" . }}'
+              key: "{{ .Values.database.rafiki_auth.urlSecretRef }}"
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 50m
+        limits:
+          memory: 1000Mi
+          cpu: 1000m
+      securityContext: {}
+      nodeSelector: {}
+      serviceAccount: {}
+      autoscaling:
+        enabled: false
+      podDisruptionBudget:
+        enabled: true
+        annotations: {}
+        minAvailable: 1
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+
+  frontend:
+    name: server
+    enabled: true
+    component: frontend
+    replicaCount: 2
+    image:
+      name: protea
+      tag: v1.1.0
+    imagePullPolicy: Always
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3000
+    readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3000
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-frontend'
+    env:
+      - name: COOKIE_SECRETS
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: '{{ .Values.config.frontend.cookie_secrets_ref }}'
+      - name: REDIS_URL
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: '{{ .Values.config.frontend.redis.url_ref }}'
+    ports:
+      - name: http
+        containerPort: 3000
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 80m
+      limits:
+        memory: 1024Mi
+        cpu: 1000m
+    securityContext: {}
+    nodeSelector: {}
+    serviceAccount: {}
+    autoscaling:
+      enabled: false
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+
+  admin:
+    name: server
+    enabled: true
+    component: admin
+    replicaCount: 2
+    image:
+      name: botanist
+    imagePullPolicy: Always
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3000
+    readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3000
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-admin'
+    ports:
+      - name: http
+        containerPort: 3000
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 50m
+      limits:
+        memory: 1024Mi
+        cpu: 1000m
+    securityContext: {}
+    nodeSelector: {}
+    serviceAccount:
+      create: false
+      annotations: {}
+      name: ""
+    autoscaling:
+      enabled: false
+    podDisruptionBudget:
+      enabled: true
+      annotations: {}
+      minAvailable: 1
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+
+services:
+  backend-grpc:
+    name: backend-service-grpc
+    enabled: true
+    component: backend-server
+    annotations:
+      traefik.ingress.kubernetes.io/service.serversscheme: h2c
+    type: ClusterIP
+    ports:
+      # Private gRPC Server (Used by the Admin Portal)
+      - port: 8448
+        targetPort: 8448
+        protocol: TCP
+        name: admin
+      # Public gRPC Server (Used by Mobile & External applications)
+      - port: 8443
+        targetPort: 8443
+        protocol: TCP
+        name: grpc
+        appProtocol: HTTP2
+
+  backend-http:
+    name: backend-service-http
+    enabled: true
+    component: backend-server
+    type: ClusterIP
+    ports:
+      # Handling of webhooks
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+        name: http
+
+  frontend:
+    name: frontend-service
+    enabled: true
+    component: frontend
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+  admin:
+    name: admin-service
+    enabled: true
+    component: admin
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+configMaps:
+  backend:
+    name: "backend"
+    contentMap:
+      - key: FYNBOS_ENV
+        valueRef: config.environment
+      - key: KRATOS_URL
+        valueRef: config.kratos.url
+      - key: KRATOS_ADMIN_URL
+        valueRef: config.kratos.admin_url
+      - key: LOG_LEVEL
+        valueRef: config.log_level
+      - key: USD_LEDGER_ID
+        valueRef: config.usd_ledger_id
+      - key: NOOP_EQUITY_ACCOUNT_ID
+        valueRef: config.noop_equity_account_id
+      - key: GOOGLE_OAUTH2_CLIENT_ID
+        valueRef: config.google_oauth2_client_id
+      - key: TEMPORAL_URL
+        valueRef: config.temporal.url
+      - key: ZENDESK_USER
+        valueRef: config.zendesk.user
+      - key: OTEL_EXPORTER_OTLP_ENDPOINT
+        valueRef: config.otel.exporter_otlp_endpoint
+      - key: OTEL_SERVICE_NAME
+        valueRef: config.otel.service_name
+      - key: AUTHORISATION_PORT
+        valueRef: config.authorisation_port
+      - key: OPEN_PAYMENTS_PORT
+        valueRef: config.open_payments_port
+      - key: VAULT_ADDR
+        valueRef: config.vault.url
+      - key: VAULT_TRANSIT_ENGINE_PATH
+        valueRef: config.vault.transit_engine_path
+      - key: RAFIKI_BACKEND_GRAPHQL_URL
+        valueRef: config.rafiki.graphql.backend_url
+      - key: RAFIKI_AUTH_GRAPHQL_URL
+        valueRef: config.rafiki.graphql.auth_url
+      - key: TWITTER_CLIENT_ID
+        valueRef: config.twitter.client.id
+      - key: TWITTER_CLIENT_SECRET
+        valueRef: config.twitter.client.secret
+      - key: TWITTER_BEARER_TOKEN
+        valueRef: config.twitter.client.bearer
+      - key: TWITTER_REDIRECT_URL
+        valueRef: config.twitter.client.redirect
+      - key: SMARTY_AUTH_ID
+        valueRef: config.smarty.auth.id
+      - key: SMARTY_AUTH_TOKEN
+        valueRef: config.smarty.auth.token
+      - key: BLOCKED_REGIONS
+        valueRef: config.region_blocking.blocked_regions
+      - key: ALLOWED_WALLET_IDS
+        valueRef: config.region_blocking.allowed_wallet_ids
+
+  frontend:
+    name: "frontend"
+    contentMap:
+      - key: OTEL_EXPORTER_OTLP_ENDPOINT
+        valueRef: config.otel.exporter_otlp_endpoint
+      - key: OTEL_SERVICE_NAME
+        valueRef: config.otel.service_name
+      - key: GATE_SIGNUP
+        valueRef: config.frontend.gate_signup
+      - key: KRATOS_URL
+        valueRef: config.frontend.kratos_url
+      - key: PAYMENT_POINTER_BASE
+        valueRef: config.frontend.payment_pointer_base
+      - key: RAFIKI_AUTH_ENDPOINT
+        valueRef: config.rafiki.auth.endpoint
+      - key: BACKEND_GRPC_URL
+        valueRef: config.frontend.backend.grpc.url
+      - key: FYNBOS_ENV
+        valueRef: config.environment
+
+  admin:
+    name: "admin"
+    contentMap:
+      - key: BACKEND_GRPC_URL
+        valueRef: config.admin.backend.grpcUrl
+
+# This section defines Kubernetes secrets that will be created when shouldCreateSecrets is true
+secretsMaps:
+  main:
+    name: ""  # Will use the full release name
+    contentMap:
+      # Database URLs
+      - key: dbBackendURL
+        valueRef: database.backend.urlSecretRef
+      - key: dbPacioliURL
+        valueRef: database.pacioli.urlSecretRef  
+      - key: dbRafikiBackendURL
+        valueRef: database.rafiki_backend.urlSecretRef
+      - key: dbRafikiAuthURL
+        valueRef: database.rafiki_auth.urlSecretRef
+      - key: dbBackendMigrationsURL
+        valueRef: initialisation.backend.urlSecretRef
+      - key: dbPacioliMigrationsURL
+        valueRef: initialisation.pacioli.urlSecretRef
+      # External service secrets referenced in config
+      - key: twilioAccountSID
+        valueRef: config.twilio.account_sid_ref
+      - key: twilioServiceSID
+        valueRef: config.twilio.service_sid_ref
+      - key: twilioAccountToken
+        valueRef: config.twilio.account_token_ref
+      - key: zendeskToken
+        valueRef: config.zendesk.token_ref
+      - key: otelExporterHeaders
+        valueRef: config.otel.exporter_otlp_headers_ref
+      - key: rafikiAuthSecret
+        valueRef: config.rafiki.auth.secret_ref
+      - key: redisURL
+        valueRef: config.frontend.redis.url_ref
+      - key: cookieSecretsArrStr
+        valueRef: config.frontend.cookie_secrets_ref

@@ -1,0 +1,4 @@
+{{- include "common.pdb" (list . .Values.deployments.backend.server) }}
+{{- include "common.pdb" (list . .Values.deployments.backend.worker) }}
+{{- include "common.pdb" (list . .Values.deployments.frontend) }}
+{{- include "common.pdb" (list . .Values.deployments.admin) }}

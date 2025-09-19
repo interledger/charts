@@ -1,0 +1,3 @@
+{{- define "interledger-app.Ingress" -}}
+{{- end }}
+{{- include "common.ingress" (list . . "interledger-app.Ingress") }}

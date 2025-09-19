@@ -1,0 +1,11 @@
+{{- if index .Values.services "backend-grpc" }}
+{{- if (index .Values.services "backend-grpc").enabled }}
+{{- include "common.svc" (list . (index .Values.services "backend-grpc") .Values.deployments.backend.server) }}
+{{- end }}
+{{- end }}
+---
+{{- if index .Values.services "backend-http" }}
+{{- if (index .Values.services "backend-http").enabled }}
+{{- include "common.svc" (list . (index .Values.services "backend-http") .Values.deployments.backend.server) }}
+{{- end }}
+{{- end }}

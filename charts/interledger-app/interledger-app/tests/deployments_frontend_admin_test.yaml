@@ -1,0 +1,84 @@
+suite: interledger-app deployments - Frontend and Admin
+templates:
+  - deployment-frontend.yaml
+  - deployment-admin.yaml
+set:
+  fullnameOverride: test-interledger-app
+  imageOverride:
+    repository: test-registry
+release:
+  name: test-interledger-app
+tests:
+  - it: 'frontend deployment should be created when enabled'
+    template: deployment-frontend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-interledger-app-frontend
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/component']
+          value: frontend
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: interledger-app-frontend
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test-registry/protea:v1.1.0
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: http
+            containerPort: 3000
+
+  - it: 'admin deployment should be created when enabled'
+    template: deployment-admin.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-interledger-app-admin
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/component']
+          value: admin
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: interledger-app-admin
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test-registry/botanist:1.0.0
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: http
+            containerPort: 3000
+
+  - it: 'frontend deployment should not be created when disabled'
+    template: deployment-frontend.yaml
+    set:
+      deployments:
+        frontend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: 'admin deployment should not be created when disabled'
+    template: deployment-admin.yaml
+    set:
+      deployments:
+        admin:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: 'frontend and admin should have topology spread constraints'
+    template: deployment-frontend.yaml
+    asserts:
+      - isNotEmpty:
+          path: spec.template.spec.topologySpreadConstraints
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].maxSkew
+          value: 1
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints[0].labelSelector.matchLabels['app.kubernetes.io/component']
+          value: frontend
