@@ -1,0 +1,51 @@
+suite: rafiki-money ingress - Ingress
+templates:
+  - ingress.backend.yaml
+  - ingress.frontend.yaml
+set:
+  fullnameOverride: test-rafiki-money
+release:
+  name: test-rafiki-money
+tests:
+  - it: 'backend ingress should be created when enabled'
+    template: ingress.backend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-rafiki-money-backend
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+      - equal:
+          path: spec.rules[0].host
+          value: api.interledger-test.dev
+  - it: 'frontend ingress should be created when enabled'
+    template: ingress.frontend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-rafiki-money-frontend
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+      - equal:
+          path: spec.rules[0].host
+          value: wallet.interledger-test.dev
+  - it: 'backend ingress should not be created when disabled'
+    template: ingress.backend.yaml
+    set:
+      ingress:
+        backend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'frontend ingress should not be created when disabled'
+    template: ingress.frontend.yaml
+    set:
+      ingress:
+        frontend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
