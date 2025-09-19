@@ -9,18 +9,9 @@ This Helm chart deploys [Rafiki](https://rafiki.dev), an open source software th
 
 **⚠️ Important**: Rafiki is intended to be run by account servicing entities only and should not be used in production by non-regulated entities.
 
-### Key Features
-
-- **Interledger Payments**: Send and receive payments using SPSP and Open Payments
-- **Third-Party Access**: Allow authorized third parties to initiate payments and access transaction data
-- **Admin APIs**: Manage peering relationships, assets, and wallet addresses
-- **Authorization Server**: Reference implementation of GNAP authorization server
-- **High Performance**: Built for production workloads with horizontal scaling support
-
 For more information about Rafiki, visit the [official documentation](https://rafiki.dev/overview/concepts/interledger/).
 
 ## Architecture
-
 Rafiki consists of three main components that can be deployed independently:
 
 - **Backend** (`rafiki-backend`): Core Interledger functionality, GraphQL Admin API, Open Payments API, and SPSP endpoint
