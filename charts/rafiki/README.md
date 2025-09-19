@@ -18,6 +18,12 @@ Rafiki consists of three main components that can be deployed independently:
 - **Auth** (`rafiki-auth`): GNAP authorization server for Open Payments access control
 - **Frontend** (`rafiki-frontend`): Web interface for managing Rafiki instances
 
+## Secrets management
+
+This chart has the capability of managing the secerets for you. But this is not recommended and for this reason `shouldCreateSecrets` will default to false. Consider using a formal secrets management solution to manage your secrets externally.
+
+For non-production deployments you can set `shouldCreateSecrets` to `true` which will allow you to configure all the secrets as values in your custom values files.
+
 ## Troubleshooting
 
 ### Common Issues
