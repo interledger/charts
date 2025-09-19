@@ -1,0 +1,48 @@
+suite: rafiki-boutique ingress - Ingress
+templates:
+  - ingress.backend.yaml
+  - ingress.frontend.yaml
+set:
+  fullnameOverride: test-rafiki-boutique
+release:
+  name: test-rafiki-boutique
+tests:
+  - it: 'backend ingress should be created when enabled'
+    template: ingress.backend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-rafiki-boutique-backend
+      - equal:
+          path: spec.rules[0].host
+          value: api.boutique.jopacc.golobit.ch
+  - it: 'frontend ingress should be created when enabled'
+    template: ingress.frontend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-rafiki-boutique-frontend
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+      - equal:
+          path: spec.rules[0].host
+          value: boutique.jopacc.golobit.ch
+  - it: 'backend ingress should not be created when disabled'
+    template: ingress.backend.yaml
+    set:
+      ingress:
+        backend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'frontend ingress should not be created when disabled'
+    template: ingress.frontend.yaml
+    set:
+      ingress:
+        frontend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
