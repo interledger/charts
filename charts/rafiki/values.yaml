@@ -562,8 +562,6 @@ configMaps:
         valueRef: config.auth.workers.cleanup
       - key: IDENTITY_SERVER_URL
         valueRef: config.auth.identityServer.domain
-      - key: IDENTITY_SERVER_SECRET
-        valueRef: config.auth.identityServer.serverSecret
       - key: INCOMING_PAYMENT_INTERACTION
         valueRef: config.auth.interaction.incomingPayment
       - key: QUOTE_INTERACTION
