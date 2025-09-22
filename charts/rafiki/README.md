@@ -39,7 +39,7 @@ For non-production deployments you can set `shouldCreateSecrets` to `true` which
 3. **Backend Won't Scale**
    - Backend service has locking limitations and cannot be horizontally scaled
    - Scale auth and frontend services instead
-   - Configure a Veritcal Pod Autoscaler
+   - Configure a Vertical Pod Autoscaler
 
 4. **Key Generation Failures**
    - Check ServiceAccount permissions if using auto-generation
