@@ -1,0 +1,111 @@
+suite: interledger-cards backend - deployment
+templates:
+  - deployment.backend.yaml
+set:
+  fullnameOverride: test-cards
+tests:
+  - it: 'Deployment should be created when backend is enabled'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-cards
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: test-cards
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: test-cards
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: test-cards
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: test-cards
+  - it: 'Deployment should not be created when backend is disabled'
+    set:
+      deployments:
+        backend:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'Container should use correct image when imageOverride is set'
+    set:
+      imageOverride:
+        repository: ghcr.io/interledger
+        tag: v0.0.1
+      deployments:
+        backend:
+          image:
+            name: interledger-cards
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/interledger-cards:v0.0.1
+  - it: 'Container should use correct ports'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 3000
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: server
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].protocol
+          value: TCP
+  - it: 'Container should have correct environment variables from secrets'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: DATABASE_URL
+      - equal:
+          path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.name
+          value: test-cards-backend
+      - equal:
+          path: spec.template.spec.containers[0].env[0].valueFrom.secretKeyRef.key
+          value: databaseUrlSecret
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: COOKIE_SECRET
+      - equal:
+          path: spec.template.spec.containers[0].env[1].valueFrom.secretKeyRef.name
+          value: test-cards-backend
+      - equal:
+          path: spec.template.spec.containers[0].env[1].valueFrom.secretKeyRef.key
+          value: cookieSecret
+  - it: 'Container should have resource requests and limits set'
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 64Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 256Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 400m
+  - it: 'Deployment should have correct replicas count'
+    set:
+      deployments:
+        backend:
+          replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+  - it: 'Deployment should have correct imagePullPolicy'
+    set:
+      deployments:
+        backend:
+          imagePullPolicy: Always
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+  - it: 'Pod template should have configmap annotation for rolling updates'
+    asserts:
+      - isNotEmpty:
+          path: spec.template.metadata.annotations["ilf-configmap-backend-sha256"]

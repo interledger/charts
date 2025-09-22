@@ -1,5 +1,3 @@
-{{- define "interledger-cards.backend.service" -}}
-{{- end }}
 {{- if .Values.services.backend.enabled }}
-{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend "interledger-cards.backend.service") }}
+{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend) }}
 {{- end }}

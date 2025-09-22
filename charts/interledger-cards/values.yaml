@@ -19,7 +19,7 @@ config:
 deployments:
   backend:
     enabled: true
-    replicas: 1
+    replicaCount: 1
     image:
       name: interledger-cards
     imagePullPolicy: IfNotPresent
@@ -89,6 +89,8 @@ secretsMaps:
 ingress:
   backend:
     enabled: true
+    annotations: []
+    className: nginx
     tls:
       - secretName: interledger-cards-tls
         hosts:

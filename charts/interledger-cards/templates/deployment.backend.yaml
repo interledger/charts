@@ -1,6 +1,6 @@
 {{- define "backend.deployment" -}}
 {{- $top := first . }}
-{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.backend "interledger-cards.backend.ConfigMap") | fromYaml -}}
+{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.backend) | fromYaml -}}
 {{- $dataHash := $cfgObj.data | toJson | sha256sum -}}
 spec:
   template:
