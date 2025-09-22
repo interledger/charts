@@ -12,6 +12,7 @@ config:
 
     logLevel: info
 
+    # postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&param2=value2]
     databaseUrlSecret: "postgresql://username:password@host:port/database?sslmode=disable"
     cookieSecret: "supersecretcookie"
 
@@ -22,16 +23,24 @@ deployments:
     image:
       name: interledger-cards
     imagePullPolicy: IfNotPresent
-    envFrom:
-      - secretRef:
-          name: '{{ include "common.fullname" . }}'
+    env:
+      - name: DATABASE_URL
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: databaseUrlSecret
+      - name: COOKIE_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: cookieSecret
     resources:
       requests:
-        memory: 128Mi
-        cpu: 50m
+        memory: 64Mi
+        cpu: 100m
       limits:
         memory: 256Mi
-        cpu: 800m
+        cpu: 400m
     securityContext: {}
     nodeSelector: {}
     serviceAccount: {}
@@ -72,15 +81,14 @@ secretsMaps:
   backend:
     name: backend
     contentMap:
-      - key: DATABASE_URL
+      - key: databaseUrlSecret
         valueRef: config.backend.databaseUrlSecret
-      - key: COOKIE_SECRET
+      - key: cookieSecret
         valueRef: config.backend.cookieSecret
 
 ingress:
   backend:
     enabled: true
-    className: nginx
     tls:
       - secretName: interledger-cards-tls
         hosts:
