@@ -291,7 +291,7 @@ secretsMaps:
 # specific deployment needs.
 ingress:
   backend:
-    enabled: true
+    enabled: false
     className: nginx
     tls:
       - secretName: interledger-test-dev-tls
@@ -307,7 +307,7 @@ ingress:
               port: 4003
 
   frontend:
-    enabled: true
+    enabled: false
     className: nginx
     tls:
       - secretName: interledger-test-dev-tls
