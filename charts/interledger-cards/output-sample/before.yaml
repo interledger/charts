@@ -1,0 +1,113 @@
+---
+# Source: interledger-cards/templates/secret.yaml
+apiVersion: v1
+data:
+  COOKIE_SECRET: ""
+  DATABASE_URL: cG9zdGdyZXNxbDovL2ludGVybGVkZ2VyLWNhcmRzOmludGVybGVkZ2VyLWNhcmRzQHBvc3RncmVzLWNhcmRzLXBvc3RncmVzcWwuY2FyZHM6NTQzMi9pbnRlcmxlZGdlci1jYXJkcw==
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-interledger-cards
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-interledger-cards
+    app.kubernetes.io/version: v0.0.3
+    helm.sh/chart: interledger-cards-0.0.3
+  name: release-name-interledger-cards
+type: Opaque
+---
+# Source: interledger-cards/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-interledger-cards-service
+  labels:
+    helm.sh/chart: interledger-cards-0.0.3
+    app.kubernetes.io/name: release-name-interledger-cards
+    app.kubernetes.io/instance: release-name-interledger-cards
+    app.kubernetes.io/version: "v0.0.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: server
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/name: release-name-interledger-cards
+    app.kubernetes.io/instance: release-name-interledger-cards
+---
+# Source: interledger-cards/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: release-name-interledger-cards
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-interledger-cards
+    app.kubernetes.io/version: v0.0.3
+    helm.sh/chart: interledger-cards-0.0.3
+  name: release-name-interledger-cards
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: release-name-interledger-cards
+      app.kubernetes.io/name: release-name-interledger-cards
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: release-name-interledger-cards
+        app.kubernetes.io/name: release-name-interledger-cards
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - envFrom:
+        - secretRef:
+            name: release-name
+        image: ghcr.io/interledger/interledger-cards:v0.0.3
+        imagePullPolicy: Always
+        name: server
+        ports:
+        - containerPort: 3000
+          name: server
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 400m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext: null
+      securityContext: null
+---
+# Source: interledger-cards/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app.kubernetes.io/instance: release-name-interledger-cards
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name-interledger-cards
+    app.kubernetes.io/version: v0.0.3
+    helm.sh/chart: interledger-cards-0.0.3
+  name: release-name-interledger-cards
+spec:
+  rules:
+  - host: interledger.cards
+    http:
+      paths:
+      - backend:
+          service:
+            name: interledger-cards-service
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - interledger.cards
+    secretName: interledger-cards-tls
