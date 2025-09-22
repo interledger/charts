@@ -1,7 +1,0 @@
-{{- include "common.ingress" (list . .Values.ingress "cards.ingress") }}
-
-{{- define "cards.ingress" -}}
-metadata:
-    annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /
-{{- end }}

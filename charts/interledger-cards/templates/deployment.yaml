@@ -1,4 +1,0 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "cards.deployment") }}
-
-{{- define "cards.deployment" -}}
-{{- end }}

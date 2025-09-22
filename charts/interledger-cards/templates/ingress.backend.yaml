@@ -1,0 +1,13 @@
+{{- define "interledger-cards-backend.ingress" -}}
+{{- $top := first . -}}
+metadata:
+  name: {{ include "common.fullname" $top }}-backend
+  annotations:
+    {{- if eq $top.Values.ingress.backend.className "nginx" }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    {{- end }}
+{{- end }}
+
+{{- if .Values.ingress.backend.enabled }}
+{{- include "common.ingress" (list . .Values.ingress.backend "interledger-cards-backend.ingress") }}
+{{- end }}

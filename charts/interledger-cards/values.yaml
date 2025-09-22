@@ -1,73 +1,95 @@
-replicaCount: 1
 
-nodeSelector: {}
 
-serviceAccount:
-  create: false
-  annotations: {}
-  name: ""
+imageOverride:
+  repository: ghcr.io/interledger
 
-autoscaling:
-  enabled: false
-  minReplicas: 2
-  maxReplicas: 1
-  cpuUtilizationPercentage: 80
-  memoryUtilizationPercentage: 80
+config:
+  backend:
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: true
 
-securityContext:
+    logLevel: info
 
-podSecurityContext:
+    databaseUrlSecret: "postgresql://username:password@host:port/database?sslmode=disable"
+    cookieSecret: "supersecretcookie"
 
-service:
-  - name: service
+deployments:
+  backend:
+    enabled: true
+    replicas: 1
+    image:
+      name: interledger-cards
+    imagePullPolicy: IfNotPresent
+    envFrom:
+      - secretRef:
+          name: '{{ include "common.fullname" . }}'
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 800m
+    securityContext: {}
+    nodeSelector: {}
+    serviceAccount: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      cpuUtilizationPercentage: 80
+      memoryUtilizationPercentage: 80
+    ports:
+      - name: server
+        containerPort: 3000
+        protocol: TCP
+    
+
+services:
+  backend:
+    name: service
+    enabled: true
     type: ClusterIP
+    annotations: {}
     ports:
       - port: 3000
         targetPort: 3000
         protocol: TCP
         name: server
 
-secrets:
-  - files/secret.yaml
+configMaps:
+  backend:
+    name: "backend"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.backend.logLevel
+
+# This section of the values file defines Kubernetes secrets that will be created
+# when the shouldCreateSecrets value is true for the backend service.
+secretsMaps:
+  backend:
+    name: backend
+    contentMap:
+      - key: DATABASE_URL
+        valueRef: config.backend.databaseUrlSecret
+      - key: COOKIE_SECRET
+        valueRef: config.backend.cookieSecret
 
 ingress:
-  enabled: true
-  tls:
-  - secretName: interledger-cards-tls
+  backend:
+    enabled: true
+    className: nginx
+    tls:
+      - secretName: interledger-cards-tls
+        hosts:
+          - interledger.cards
     hosts:
-      - interledger.cards
-  hosts:
-    - host: interledger.cards
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: interledger-cards-service
-            port: 3000
-
-containers:
-  - name: server
-    envFrom:
-      - secretRef:
-          name: "{{ .Release.Name }}"
-    resources:
-      requests:
-        memory: 64Mi
-        cpu: 100m
-      limits:
-        memory: 256Mi
-        cpu: 400m
-    ports:
-      - name: server
-        containerPort: 3000
-        protocol: TCP
-
-postgresql:
-  host: "postgres-cards-postgresql.cards"
-  port: "5432"
-  auth:
-    username: "interledger-cards"
-    database: "interledger-cards"
-    password: "interledger-cards"
-
-cookiSecret: 4b830249e41dd89c9d91ca6b974753ef
+      - host: interledger.cards
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: interledger-cards-service
+              port: 3000
