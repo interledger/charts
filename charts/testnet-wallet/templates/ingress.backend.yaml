@@ -1,4 +1,4 @@
-{{- define "rafiki-money-backend.ingress" -}}
+{{- define "testnet-wallet-backend.ingress" -}}
 {{- $top := first . -}}
 metadata:
   name: {{ include "common.fullname" $top }}-backend
@@ -9,5 +9,5 @@ metadata:
 {{- end }}
 
 {{- if .Values.ingress.backend.enabled }}
-{{- include "common.ingress" (list . .Values.ingress.backend "rafiki-money-backend.ingress") }}
+{{- include "common.ingress" (list . .Values.ingress.backend "testnet-wallet-backend.ingress") }}
 {{- end }}

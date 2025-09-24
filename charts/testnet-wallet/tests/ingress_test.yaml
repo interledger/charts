@@ -1,23 +1,23 @@
-suite: rafiki-money ingress - Ingress
+suite: testnet-wallet ingress - Ingress
 templates:
   - ingress.backend.yaml
   - ingress.frontend.yaml
 set:
-  fullnameOverride: test-rafiki-money
+  fullnameOverride: test-testnet-wallet
   ingress:
     backend:
       enabled: true
     frontend:
       enabled: true
 release:
-  name: test-rafiki-money
+  name: test-testnet-wallet
 tests:
   - it: 'backend ingress should be created when enabled'
     template: ingress.backend.yaml
     asserts:
       - equal:
           path: metadata.name
-          value: test-rafiki-money-backend
+          value: test-testnet-wallet-backend
       - equal:
           path: spec.ingressClassName
           value: nginx
@@ -29,7 +29,7 @@ tests:
     asserts:
       - equal:
           path: metadata.name
-          value: test-rafiki-money-frontend
+          value: test-testnet-wallet-frontend
       - equal:
           path: spec.ingressClassName
           value: nginx

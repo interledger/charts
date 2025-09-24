@@ -1,16 +1,16 @@
-suite: rafiki-money frontend - Frontend Deployment
+suite: testnet-wallet frontend - Frontend Deployment
 templates:
   - deployment.frontend.yaml
 set:
-  fullnameOverride: test-rafiki-money
+  fullnameOverride: test-testnet-wallet
 release:
-  name: test-rafiki-money
+  name: test-testnet-wallet
 tests:
-  - it: 'deployment name should be test-rafiki-money-frontend'
+  - it: 'deployment name should be test-testnet-wallet-frontend'
     asserts:
       - equal:
           path: metadata.name
-          value: test-rafiki-money-frontend
+          value: test-testnet-wallet-frontend
   - it: 'when overriding tag on the deployment, the container should use that tag'
     template: deployment.frontend.yaml
     set:
