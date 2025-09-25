@@ -1,3 +1,0 @@
-{{- define "rafiki-money.backend.ConfigMap" -}}
-{{- end }}
-{{- include "common.configMapper" (list . .Values.configMaps.backend "rafiki-money.backend.ConfigMap") }}

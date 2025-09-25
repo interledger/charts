@@ -1,4 +1,4 @@
-# fullnameOverride: "rafiki-money"
+# fullnameOverride: "testnet-wallet"
 
 imageOverride:
   repository: ghcr.io/interledger
@@ -303,7 +303,7 @@ ingress:
           - path: /
             pathType: Prefix
             service:
-              name: rafiki-money-backend-service
+              name: testnet-wallet-backend-service
               port: 4003
 
   frontend:
@@ -319,5 +319,5 @@ ingress:
           - path: /
             pathType: Prefix
             service:
-              name: rafiki-money-frontend-service
+              name: testnet-wallet-frontend-service
               port: 4003
