@@ -2,11 +2,11 @@
   "name": "github-scripts",
   "type": "module",
   "devDependencies": {
-    "@types/github-script": "github:actions/github-script"
+    "@types/github-script": "github:actions/github-script#v6.4.1"
   },
   "scripts": {
     "lint": "pnpm --package=typescript dlx tsc",
     "test": "node --test --test-reporter=spec tests"
   },
-  "packageManager": "pnpm@8.15.9"
+  "packageManager": "pnpm@10.17.1"
 }
