@@ -2,7 +2,7 @@
   "name": "github-scripts",
   "type": "module",
   "devDependencies": {
-    "@types/github-script": "github:actions/github-script"
+    "@types/github-script": "github:actions/github-script#v6.4.1"
   },
   "scripts": {
     "lint": "pnpm --package=typescript dlx tsc",
