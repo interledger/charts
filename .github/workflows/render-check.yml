@@ -15,7 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
         - name: Set up Helm
           run: |
             curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -34,7 +34,7 @@ jobs:
           charts: ${{ steps.find_charts.outputs.charts }}
       steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Find charts
         id: find_charts
         run: |
@@ -62,7 +62,7 @@ jobs:
               chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
         steps:
         - name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
         - name: Download artifact
           uses: actions/download-artifact@v4
           with:
