@@ -6,7 +6,7 @@
   },
   "scripts": {
     "lint": "pnpm --package=typescript dlx tsc",
-    "test": "node --test --test-reporter=spec tests"
+    "test": "node --test --test-reporter=spec tests/*.test.js"
   },
   "packageManager": "pnpm@10.17.1"
 }
