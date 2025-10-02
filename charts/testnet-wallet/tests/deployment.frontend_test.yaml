@@ -1,5 +1,6 @@
 suite: testnet-wallet frontend - Frontend Deployment
 templates:
+  - configMap.frontend.yaml
   - deployment.frontend.yaml
 set:
   fullnameOverride: test-testnet-wallet
@@ -31,18 +32,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: ghcr.io/interledger/test-wallet-frontend:2.0.0
-  - it: 'should set correct environment variables'
+  - it: 'should correctly envFrom for configMap'
     template: deployment.frontend.yaml
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].env[0].name
-          value: PORT
-      - equal:
-          path: spec.template.spec.containers[0].env[0].value
-          value: "4003"
-      - equal:
-          path: spec.template.spec.containers[0].env[1].name
-          value: COOKIE_NAME
-      - equal:
-          path: spec.template.spec.containers[0].env[2].name
-          value: NEXT_PUBLIC_USE_TEST_KYC_DATA
+          path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
+          value: test-testnet-wallet-frontend
