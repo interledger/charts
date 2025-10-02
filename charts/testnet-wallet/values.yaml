@@ -137,19 +137,9 @@ deployments:
       name: test-wallet-frontend
       # tag: "v0.1.66"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
-    env:
-      - name: PORT
-        value: "4003"
-      - name: COOKIE_NAME
-        value: "testnet.cookie"
-      - name: NEXT_PUBLIC_USE_TEST_KYC_DATA
-        value: "true"
-      - name: NEXT_PUBLIC_BACKEND_URL
-        value: "https://api.interledger-test.dev"
-      - name: NEXT_PUBLIC_OPEN_PAYMENTS_HOST
-        value: "https://ilp.interledger-test.dev"
-      - name: NEXT_PUBLIC_AUTH_HOST
-        value: "https://auth.interledger-test.dev"
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-frontend'
     ports:
       - name: http
         containerPort: 4003
@@ -197,6 +187,23 @@ services:
 # This section of the values file defines Kubernetes config maps that will be created
 # for each service (backend and frontend).
 configMaps:
+  frontend:
+    name: "frontend"
+    contentMap:
+      - key: NODE_ENV
+        valueRef: config.frontend.nodeEnv
+      - key: PORT
+        valueRef: config.frontend.port
+      - key: COOKIE_NAME
+        valueRef: config.frontend.cookie.name
+      - key: NEXT_PUBLIC_USE_TEST_KYC_DATA
+        valueRef: config.frontend.features.useTestKycData
+      - key: NEXT_PUBLIC_BACKEND_URL
+        valueRef: config.frontend.urls.backend
+      - key: NEXT_PUBLIC_OPEN_PAYMENTS_HOST
+        valueRef: config.frontend.urls.openPaymentsHost
+      - key: NEXT_PUBLIC_AUTH_HOST
+        valueRef: config.frontend.urls.authHost
   backend:
     name: "backend"
     contentMap:
@@ -256,6 +263,7 @@ configMaps:
         valueRef: config.backend.card.dataUrl
       - key: USE_STRIPE
         valueRef: config.backend.stripe.enabled
+
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the backend service.
