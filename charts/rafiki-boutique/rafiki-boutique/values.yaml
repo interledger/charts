@@ -38,10 +38,19 @@ deployments:
       name: test-boutique-backend
       # tag: "v0.1.65"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
+    env:
+      - name: DATABASE_URL
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: database.url
+      - name: PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: privateKey
     envFrom:
       - configMapRef:
-          name: '{{ include "common.fullname" . }}-backend'
-      - secretRef:
           name: '{{ include "common.fullname" . }}-backend'
     ports:
       - name: http
@@ -150,35 +159,8 @@ secretsMaps:
   backend:
     name: backend
     contentMap:
-      - key: DATABASE_URL
+      - key: database.url
         valueRef: config.backend.database.url
-      - key: PRIVATE_KEY
+      - key: privateKey
         valueRef: config.backend.privateKey
 
-# This chart supports the creation of an Ingress resource using the common ingress
-# chart from the common chart. The examples below should be modified to suit your
-# specific deployment needs.
-ingress:
-  backend:
-    enabled: true
-    className: ""
-    hosts:
-      - host: api.boutique.jopacc.golobit.ch
-        paths:
-          - path: /
-            pathType: Prefix
-            service:
-              name: rafiki-boutique-backend-service
-              port: 3004
-
-  frontend:
-    enabled: true
-    className: nginx
-    hosts:
-      - host: boutique.jopacc.golobit.ch
-        paths:
-          - path: /
-            pathType: Prefix
-            service:
-              name: rafiki-boutique-frontend-service
-              port: 4004
