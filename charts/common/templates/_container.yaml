@@ -50,8 +50,14 @@
   resources:
     {{- toYaml $container.resources | nindent 4 }}
 
-  {{- with $container.env }}
-  env: {{- tpl (toYaml . | nindent 4) $top }}
+  {{ if or $container.env $container.extraEnvs }}
+  env: 
+  {{- with $container.env }}  
+  {{- tpl (toYaml . | nindent 4) $top }}
+  {{- end }}
+  {{- with $container.extraEnvs }}  
+  {{- tpl (toYaml . | nindent 4) $top }}
+  {{- end }}  
   {{- end }}
 
   {{- if $container.envFrom }}
