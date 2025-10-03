@@ -106,8 +106,64 @@ deployments:
     envFrom:
       - configMapRef:
           name: '{{ include "common.fullname" . }}-backend'
-      - secretRef:
-          name: '{{ include "common.fullname" . }}-backend'
+
+    env:
+      - name: DATABASE_URL
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: databaseUrl
+      - name: COOKIE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: cookiePassword
+      - name: AUTH_IDENTITY_SERVER_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: identity.serverSecret
+      - name: REDIS_URL
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: redis.url
+      - name: RAFIKI_WEBHOOK_SIGNATURE_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: webhook.signatureSecret
+      - name: GATEHUB_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: gatehub.secretKey
+      - name: GATEHUB_WEBHOOK_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: gatehub.webhookSecret
+      - name: SENDGRID_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: email.sendgridKey
+      - name: RATE_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: rate.apiKey
+      - name: STRIPE_WEBHOOK_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: stripe.webhookSecret
+      - name: STRIPE_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: stripe.secretKey
+
     ports:
       - name: http
         containerPort: 4003
@@ -267,65 +323,30 @@ configMaps:
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the backend service.
+# If you are creating the secrets manually, you can infer the keys and values from here
 secretsMaps:
   backend:
     name: backend
     contentMap:
-      - key: DATABASE_URL
+      - key: databaseUrl
         valueRef: config.backend.database.url
-      - key: COOKIE_PASSWORD
+      - key: cookiePassword
         valueRef: config.backend.cookie.password
-      - key: AUTH_IDENTITY_SERVER_SECRET
+      - key: identity.serverSecret
         valueRef: config.backend.identity.serverSecret
-      - key: REDIS_URL
+      - key: redis.url
         valueRef: config.backend.redis.url
-      - key: RAFIKI_WEBHOOK_SIGNATURE_SECRET
+      - key: webhook.signatureSecret
         valueRef: config.backend.webhook.signatureSecret
-      - key: GATEHUB_SECRET_KEY
+      - key: gatehub.secretKey
         valueRef: config.backend.gatehub.secretKey
-      - key: GATEHUB_WEBHOOK_SECRET
+      - key: gatehub.webhookSecret
         valueRef: config.backend.gatehub.webhookSecret
-      - key: SENDGRID_API_KEY
+      - key: email.sendgridKey
         valueRef: config.backend.email.sendgridKey
-      - key: RATE_API_KEY
+      - key: rate.apiKey
         valueRef: config.backend.rate.apiKey
-      - key: STRIPE_WEBHOOK_SECRET
+      - key: stripe.webhookSecret
         valueRef: config.backend.stripe.webhookSecret
-      - key: STRIPE_SECRET_KEY
+      - key: stripe.secretKey
         valueRef: config.backend.stripe.secretKey
-
-# This chart supports the creation of an Ingress resource using the common ingress
-# chart from the common chart. The examples below should be modified to suit your
-# specific deployment needs.
-ingress:
-  backend:
-    enabled: false
-    className: nginx
-    tls:
-      - secretName: interledger-test-dev-tls
-        hosts:
-          - api.interledger-test.dev
-    hosts:
-      - host: api.interledger-test.dev
-        paths:
-          - path: /
-            pathType: Prefix
-            service:
-              name: testnet-wallet-backend-service
-              port: 4003
-
-  frontend:
-    enabled: false
-    className: nginx
-    tls:
-      - secretName: interledger-test-dev-tls
-        hosts:
-          - wallet.interledger-test.dev
-    hosts:
-      - host: wallet.interledger-test.dev
-        paths:
-          - path: /
-            pathType: Prefix
-            service:
-              name: testnet-wallet-frontend-service
-              port: 4003
