@@ -9,7 +9,7 @@ appVersion: "v0.1.66"
 
 dependencies:
   - name: common
-    version: 0.6.1
+    version: 0.7.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:
@@ -17,3 +17,5 @@ maintainers:
     email: tadej.golobic@gatehub.net
   - name: beniaminmunteanu
     email: beniamin@interledger.foundation
+  - name: Stephan Butler
+    email: stephan@interledger.foundation
