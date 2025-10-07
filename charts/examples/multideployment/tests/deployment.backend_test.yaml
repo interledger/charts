@@ -215,7 +215,7 @@ tests:
       - equal:
           path: spec.template.spec.topologySpreadConstraints[0].topologyKey
           value: topology.kubernetes.io/zone
-  - it: 'given extraEnvs in backend should be added to the main container env'
+  - it: 'given extraEnv in backend should be added to the main container env'
     set:
       backend:
         extraEnvs:
