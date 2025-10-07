@@ -218,7 +218,7 @@ tests:
   - it: 'given extraEnv in backend should be added to the main container env'
     set:
       backend:
-        extraEnvs:
+        extraEnv:
           - name: EXTRA_ENV_VAR2
             value: extra_value2
     asserts:
