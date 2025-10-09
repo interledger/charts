@@ -9,7 +9,6 @@ config:
   interledgerPayHost: http://pay.example.com
 
   redirectUrl: https://pay.example.com/finish
-    
   sessionCookieKeySecret: DATA
   
   stripe:
