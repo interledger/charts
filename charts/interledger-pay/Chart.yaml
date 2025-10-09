@@ -1,0 +1,17 @@
+apiVersion: v2
+name: interledger-pay
+description: Interledger Pay
+home: https://github.com/interledger/interledger-pay
+
+type: application
+version: 0.1.0
+appVersion: "v1.1.14"
+
+dependencies:
+  - name: common
+    version: 0.8.0
+    repository: https://interledger.github.io/charts/interledger
+
+maintainers:
+  - name: Stephan Butler
+    email: stephan@interledger.foundation
