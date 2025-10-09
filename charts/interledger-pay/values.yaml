@@ -1,0 +1,98 @@
+config:
+  shouldCreateSecrets: true
+  key:
+    # Uniquely identifies the key used, usually takes the form of a GUID
+    id: interledger-pay-key
+    privateKeySecret: interledger-pay-private-key-secret
+      
+  wallet_address: https://ilp.example.com
+
+  interledgerPayHost: http://pay.example.com
+
+  redirectUrl: https://pay.example.com/finish
+    
+  sessionCookieKeySecret: DATA
+  
+  stripe:
+    publishableKey: pk_test_51Hxxxxxx
+    secretKeySecret: sk_test_51Hxxxxxx
+
+deployments:
+  app:
+    enabled: true
+    service:
+      name: service
+      enabled: true
+      type: ClusterIP
+      annotations: {}
+      ports:
+        - port: 5005
+          targetPort: 5005
+          protocol: TCP
+          name: http
+    env:
+      - name: KEY_ID
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-config'
+            key: key.id
+      - name: PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-secret'
+            key: key.privateKey
+      - name: WALLET_ADDRESS
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-config'
+            key: wallet_address
+      - name: REDIRECT_URL
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-config'
+            key: redirectUrl
+      - name: INTERLEDGER_PAY_HOST
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-config'
+            key: interledgerPayHost
+      - name: SESSION_COOKIE_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-secret'
+            key: sessionCookieKey
+      - name: STRIPE_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-secret'
+            key: stripe.secretKey
+      - name: STRIPE_PUBLIC_KEY
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-config'
+            key: stripe.publishableKey
+
+configMaps:
+  name: config
+  contentMap:
+    - key: key.id
+      valueRef: config.key.id
+    - key: wallet_address
+      valueRef: config.wallet_address
+    - key: redirectUrl
+      valueRef: config.redirectUrl
+    - key: interledgerPayHost
+      valueRef: config.interledgerPayHost
+    - key: stripe.publishableKey
+      valueRef: config.stripe.publishableKey
+
+secretMaps:
+  name: secret
+  contentMap:
+    - key: key.privateKey
+      valueRef: config.key.privateKeySecret
+    - key: sessionCookieKey
+      valueRef: config.sessionCookieKeySecret
+    - key: stripe.secretKey
+      valueRef: config.stripe.secretKeySecret
+        

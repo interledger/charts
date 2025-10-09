@@ -1,0 +1,13 @@
+{{- define "app.deployment" -}}
+{{- $top := first . }}
+{{- if $top.Values.deployments.app.enabled }}
+{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps) | fromYaml -}}
+{{- $dataHash := $cfgObj.data | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-app-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- end }}
+{{- include "common.deployment" (list . .Values.deployments.app .Values.deployments.app.autoscaling .Values.deployments.app.serviceAccount "app.deployment") }}
