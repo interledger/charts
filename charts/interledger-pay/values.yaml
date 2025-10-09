@@ -69,6 +69,10 @@ deployments:
           configMapKeyRef:
             name: '{{ include "common.fullname" . }}-config'
             key: stripe.publishableKey
+      - name: PORT
+        value: "5005"
+      - name: NODE_ENV
+        value: production
 
 configMaps:
   name: config
