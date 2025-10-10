@@ -1,0 +1,3 @@
+{{- define "web-monetization-tools.frontend.ConfigMap" -}}
+{{- end }}
+{{- include "common.configMapper" (list . .Values.configMaps.frontend "web-monetization-tools.frontend.ConfigMap") }}
