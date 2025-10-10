@@ -5,13 +5,17 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "common"
-      ],
-      "updateTypes": [
-        "patch"
-      ],
-      "description": "Only allow patch updates for the common package"
+    "matchPaths": [
+      "charts/rafiki-money/**",
+      "charts/rafiki-auth/**",
+      "charts/rafiki-backend/**",
+      "charts/rafiki-frontend/**",
+      "charts/interledger-cards/backend/**",
+      "charts/interledger-cards/frontend/**",
+      "charts/rafiki-boutique/backend/**",
+      "charts/rafiki-boutique/frontend/**"
+    ],
+    "enabled": false
     }
   ]
 }
