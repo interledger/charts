@@ -8,5 +8,5 @@
     "lint": "pnpm --package=typescript dlx tsc",
     "test": "node --test --test-reporter=spec tests/*.test.js"
   },
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.18.2"
 }
