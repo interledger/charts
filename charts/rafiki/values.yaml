@@ -191,6 +191,8 @@ config:
       # a new key pair and store it in a secret for you.
       pvk: ''
 
+      mount: '/mnt/keys/pvk.pem'
+
     # The secret to generate request header signatures for webhook event requests.
     webhookSignatureSecret:
       value: ""
@@ -526,7 +528,7 @@ configMaps:
       - key: NODE_ENV
         valueRef: config.backend.nodeEnv
       - key: PRIVATE_KEY_FILE
-        valueRef: config.backend.key.pvk
+        valueRef: config.backend.key.mount
       - key: LIVENET
         valueRef: config.backend.telemetry.livenet }}"
   frontend:
