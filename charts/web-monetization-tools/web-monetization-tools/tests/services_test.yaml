@@ -1,0 +1,39 @@
+suite: web-monetization-tools - Services
+templates:
+  - service.backend.yaml
+  - service.frontend.yaml
+set:
+  fullnameOverride: test-web-monetization-tools
+release:
+  name: test-web-monetization-tools
+tests:
+  - it: 'backend service name should be test-web-monetization-tools-backend-service'
+    template: service.backend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-web-monetization-tools-backend-service
+      - equal:
+          path: spec.ports[0].port
+          value: 5101
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 5101
+      - equal:
+          path: spec.type
+          value: ClusterIP
+  - it: 'frontend service name should be test-web-monetization-tools-frontend-service'
+    template: service.frontend.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: test-web-monetization-tools-frontend-service
+      - equal:
+          path: spec.ports[0].port
+          value: 3000
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 3000
+      - equal:
+          path: spec.type
+          value: ClusterIP

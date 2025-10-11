@@ -1,0 +1,177 @@
+# fullnameOverride: "web-monetization-tools"
+
+imageOverride:
+  repository: ghcr.io/interledger
+
+config:
+  frontend:
+    nodeEnv: production
+    logLevel: debug
+    port: 3000
+
+    urls:
+      api: "https://your-backend-domain.example.com/"
+      frontend: "https://your-frontend-domain.example.com/"
+      interledgerPay: "https://interledgerpay.com/extension/"
+
+  backend:
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: true
+
+    nodeEnv: production
+    logLevel: debug
+    port: 5101
+
+    aws:
+      accessKeyId: "AKIA**************"
+      secretAccessKey: "REPLACE-WITH-ACTUAL-SECRET-KEY"
+      region: "us-east-1"
+      bucketName: "your-bucket-name"
+      retryMaxAttempts: 3
+      retryTimeout: 3000
+
+deployments:
+  backend:
+    name: backend
+    enabled: true
+    replicaCount: 1
+    image:
+      name: web-monetization-tools-backend
+      # tag: "v0.1.0"   # Use this to override the image tag for just this image
+    imagePullPolicy: IfNotPresent
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-backend'
+
+    env:
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.secretAccessKey
+
+    ports:
+      - name: http
+        containerPort: 5101
+        protocol: TCP
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 1
+    securityContext: {}
+    nodeSelector: {}
+    serviceAccount: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      cpuUtilizationPercentage: 80
+      memoryUtilizationPercentage: 80
+
+  frontend:
+    name: frontend
+    enabled: true
+    replicaCount: 1
+    image:
+      name: web-monetization-tools-frontend
+      # tag: "v0.1.0"   # Use this to override the image tag for just this image
+    imagePullPolicy: IfNotPresent
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-frontend'
+    ports:
+      - name: http
+        containerPort: 3000
+        protocol: TCP
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 100m
+      limits:
+        memory: 1024Mi
+        cpu: 2
+    securityContext: {}
+    nodeSelector: {}
+    serviceAccount: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      cpuUtilizationPercentage: 80
+      memoryUtilizationPercentage: 80
+
+services:
+  backend:
+    name: backend-service
+    enabled: true
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - port: 5101
+        targetPort: 5101
+        protocol: TCP
+        name: http
+
+  frontend:
+    name: frontend-service
+    enabled: true
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 3000
+        targetPort: 3000
+        protocol: TCP
+        name: http
+
+# This section of the values file defines Kubernetes config maps that will be created
+# for each service (backend and frontend).
+configMaps:
+  frontend:
+    name: "frontend"
+    contentMap:
+      - key: NODE_ENV
+        valueRef: config.frontend.nodeEnv
+      - key: LOG_LEVEL
+        valueRef: config.frontend.logLevel
+      - key: PORT
+        valueRef: config.frontend.port
+      - key: API_URL
+        valueRef: config.frontend.urls.api
+      - key: FRONTEND_URL
+        valueRef: config.frontend.urls.frontend
+      - key: ILPAY_URL
+        valueRef: config.frontend.urls.interledgerPay
+  backend:
+    name: "backend"
+    contentMap:
+      - key: NODE_ENV
+        valueRef: config.backend.nodeEnv
+      - key: LOG_LEVEL
+        valueRef: config.backend.logLevel
+      - key: PORT
+        valueRef: config.backend.port
+      - key: AWS_ACCESS_KEY_ID
+        valueRef: config.backend.aws.accessKeyId
+      - key: AWS_REGION
+        valueRef: config.backend.aws.region
+      - key: AWS_BUCKET_NAME
+        valueRef: config.backend.aws.bucketName
+      - key: AWS_RETRY_MAX_ATTEMPTS
+        valueRef: config.backend.aws.retryMaxAttempts
+      - key: AWS_RETRY_TIMEOUT
+        valueRef: config.backend.aws.retryTimeout
+
+# This section of the values file defines Kubernetes secrets that will be created
+# when the shouldCreateSecrets value is true for the backend service.
+# If you are creating the secrets manually, you can infer the keys and values from here
+secretsMaps:
+  backend:
+    name: backend
+    contentMap:
+      - key: aws.secretAccessKey
+        valueRef: config.backend.aws.secretAccessKey

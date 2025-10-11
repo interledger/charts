@@ -1,0 +1,5 @@
+{{- define "web-monetization-tools.backend.service" -}}
+{{- end }}
+{{- if .Values.services.backend.enabled }}
+{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend "web-monetization-tools.backend.service") }}
+{{- end }}
