@@ -53,3 +53,6 @@ tests:
       - equal:
           path: data.AWS_BUCKET_NAME
           value: "your-bucket-name"
+      - equal:
+          path: data.AWS_RETRY_MAX_ATTEMPTS
+          value: "3"
