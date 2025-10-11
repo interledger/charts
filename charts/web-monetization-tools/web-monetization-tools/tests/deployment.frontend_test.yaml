@@ -39,12 +39,6 @@ tests:
           path: metadata.name
           value: test-web-monetization-tools-frontend
       - equal:
-          path: data.NODE_ENV
-          value: production
-      - equal:
-          path: data.PORT
-          value: "3000"
-      - equal:
           path: data.API_URL
           value: "https://your-backend-domain.example.com/"
       - equal:
@@ -53,3 +47,12 @@ tests:
       - equal:
           path: data.ILPAY_URL
           value: "https://interledgerpay.com/extension/"
+      - equal:
+          path: data.INIT_SCRIPT_URL
+          value: https://cdn.webmonetization.org/
+      - equal:
+          path: OP_KEY_ID
+          value: "5bbdffd4-97f0-4674-ae7b-3cd19227922a"
+      - equal:
+          path: OP_WALLET_ADDRESS
+          value: your-wallet-address

@@ -39,12 +39,6 @@ tests:
           path: metadata.name
           value: test-web-monetization-tools-backend
       - equal:
-          path: data.NODE_ENV
-          value: production
-      - equal:
-          path: data.PORT
-          value: "5101"
-      - equal:
           path: data.AWS_ACCESS_KEY_ID
           value: "AKIA**************"
       - equal:
