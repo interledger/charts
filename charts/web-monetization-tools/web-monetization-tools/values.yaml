@@ -5,14 +5,21 @@ imageOverride:
 
 config:
   frontend:
-    nodeEnv: production
-    logLevel: debug
-    port: 3000
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: true
+
+    openpayments:
+      keyId: "00000000-0000-0000-0000-000000000000"
+      walletAddress: "your-wallet-address"
+      secretPrivateKey: "REPLACE-WITH-ACTUAL-PRIVATE-KEY"
 
     urls:
       api: "https://your-backend-domain.example.com/"
       frontend: "https://your-frontend-domain.example.com/"
       interledgerPay: "https://interledgerpay.com/extension/"
+      initScript: "https://cdn.webmonetization.org/"
 
   backend:
     # If true, the chart will create the secrets defined in the secretsMaps section.
@@ -20,17 +27,13 @@ config:
     # already exist.
     shouldCreateSecrets: true
 
-    nodeEnv: production
-    logLevel: debug
-    port: 5101
-
     aws:
       accessKeyId: "AKIA**************"
-      secretAccessKey: "REPLACE-WITH-ACTUAL-SECRET-KEY"
       region: "us-east-1"
       bucketName: "your-bucket-name"
       retryMaxAttempts: 3
       retryTimeout: 3000
+      secretAccessKey: "REPLACE-WITH-ACTUAL-SECRET-KEY"      
 
 deployments:
   backend:
@@ -41,17 +44,43 @@ deployments:
       name: web-monetization-tools-backend
       # tag: "v0.1.0"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
-    envFrom:
-      - configMapRef:
-          name: '{{ include "common.fullname" . }}-backend'
-
+    # Additional environment variables to set on the container
+    # extraEnv:
+    #   - name: EXAMPLE1
+    #     value: "value1"    
     env:
+      # From ConfigMap
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.accessKeyId
+      - name: AWS_BUCKET_NAME
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.bucketName            
+      - name: AWS_REGION
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.region
+      - name: AWS_RETRY_MAX_ATTEMPTS
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.retryMaxAttempts
+      - name: AWS_RETRY_TIMEOUT
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: aws.retryTimeout
+      # From Secrets
       - name: AWS_SECRET_ACCESS_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: aws.secretAccessKey
-
+            key: aws.secretAccessKey            
     ports:
       - name: http
         containerPort: 5101
@@ -59,7 +88,7 @@ deployments:
     resources:
       requests:
         memory: 128Mi
-        cpu: 100m
+        cpu: 10m
       limits:
         memory: 512Mi
         cpu: 1
@@ -81,9 +110,48 @@ deployments:
       name: web-monetization-tools-frontend
       # tag: "v0.1.0"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
-    envFrom:
-      - configMapRef:
-          name: '{{ include "common.fullname" . }}-frontend'
+    # Additional environment variables to set on the container
+    # extraEnv:
+    #   - name: EXAMPLE1
+    #     value: "value1"
+    env:
+      # From ConfigMap
+      - name: API_URL
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: urls.api
+      - name: FRONTEND_URL
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: urls.frontend
+      - name: ILPAY_URL
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: urls.interledgerPay
+      - name: INIT_SCRIPT_URL
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: urls.initScript
+      - name: OP_KEY_ID
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: openpayments.keyId
+      - name: OP_WALLET_ADDRESS
+        valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: openpayments.walletAddress
+      # From Secrets
+      - name: OP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-frontend'
+            key: openpayments.secretPrivateKey
     ports:
       - name: http
         containerPort: 3000
@@ -91,10 +159,10 @@ deployments:
     resources:
       requests:
         memory: 64Mi
-        cpu: 100m
+        cpu: 10m
       limits:
         memory: 1024Mi
-        cpu: 2
+        cpu: 1
     securityContext: {}
     nodeSelector: {}
     serviceAccount: {}
@@ -134,42 +202,42 @@ configMaps:
   frontend:
     name: "frontend"
     contentMap:
-      - key: NODE_ENV
-        valueRef: config.frontend.nodeEnv
-      - key: LOG_LEVEL
-        valueRef: config.frontend.logLevel
-      - key: PORT
-        valueRef: config.frontend.port
-      - key: API_URL
+      - key: urls.api
         valueRef: config.frontend.urls.api
-      - key: FRONTEND_URL
+      - key: urls.frontend
         valueRef: config.frontend.urls.frontend
-      - key: ILPAY_URL
+      - key: urls.interledgerPay
         valueRef: config.frontend.urls.interledgerPay
+      - key: urls.initScript
+        valueRef: config.frontend.urls.initScript
+      - key: openpayments.keyId
+        valueRef: config.frontend.openpayments.keyId
+      - key: openpayments.walletAddress
+        valueRef: config.frontend.openpayments.walletAddress
   backend:
     name: "backend"
     contentMap:
-      - key: NODE_ENV
-        valueRef: config.backend.nodeEnv
-      - key: LOG_LEVEL
-        valueRef: config.backend.logLevel
-      - key: PORT
-        valueRef: config.backend.port
-      - key: AWS_ACCESS_KEY_ID
+      - key: aws.accessKeyId
         valueRef: config.backend.aws.accessKeyId
-      - key: AWS_REGION
+      - key: aws.region
         valueRef: config.backend.aws.region
-      - key: AWS_BUCKET_NAME
+      - key: aws.bucketName
         valueRef: config.backend.aws.bucketName
-      - key: AWS_RETRY_MAX_ATTEMPTS
+      - key: aws.retryMaxAttempts
         valueRef: config.backend.aws.retryMaxAttempts
-      - key: AWS_RETRY_TIMEOUT
+      - key: aws.retryTimeout
         valueRef: config.backend.aws.retryTimeout
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the backend service.
 # If you are creating the secrets manually, you can infer the keys and values from here
 secretsMaps:
+  frontend:
+    name: frontend
+    contentMap:
+      - key: openpayments.secretPrivateKey
+        valueRef: config.frontend.openpayments.secretPrivateKey
+
   backend:
     name: backend
     contentMap:

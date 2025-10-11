@@ -39,17 +39,17 @@ tests:
           path: metadata.name
           value: test-web-monetization-tools-backend
       - equal:
-          path: data.NODE_ENV
-          value: production
-      - equal:
-          path: data.PORT
-          value: "5101"
-      - equal:
-          path: data.AWS_ACCESS_KEY_ID
+          path: data["aws.accessKeyId"]
           value: "AKIA**************"
       - equal:
-          path: data.AWS_REGION
+          path: data["aws.region"]
           value: "us-east-1"
       - equal:
-          path: data.AWS_BUCKET_NAME
+          path: data["aws.bucketName"]
           value: "your-bucket-name"
+      - equal:
+          path: data["aws.retryMaxAttempts"]
+          value: "3"
+      - equal:
+          path: data["aws.retryTimeout"]
+          value: "3000"
