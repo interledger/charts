@@ -56,3 +56,6 @@ tests:
       - equal:
           path: data.AWS_RETRY_MAX_ATTEMPTS
           value: "3"
+      - equal:
+          path: data.AWS_RETRY_TIMEOUT
+          value: "3000"
