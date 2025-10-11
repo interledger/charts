@@ -5,7 +5,7 @@ home: https://github.com/interledger/testnet
 
 type: application
 version: 1.0.0
-appVersion: "v0.1.0"
+appVersion: "v0.0.19"
 
 dependencies:
   - name: common
@@ -13,9 +13,5 @@ dependencies:
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:
-  - name: golobitch
-    email: tadej.golobic@gatehub.net
-  - name: beniaminmunteanu
-    email: beniamin@interledger.foundation
   - name: Stephan Butler
     email: stephan@interledger.foundation
