@@ -9,9 +9,9 @@ tests:
     set:
       config:
         backend:
-        key:
-          id: rafiki
-          pvk: 'SOME VALUE'
+          key:
+            id: rafiki
+            pvk: 'SOME VALUE'
     documentSelector:
       kind: Deployment
     template: deployment.backend.yaml
