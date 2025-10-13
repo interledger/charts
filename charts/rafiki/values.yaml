@@ -532,7 +532,7 @@ configMaps:
       - key: PRIVATE_KEY_FILE
         valueRef: config.backend.key.mount
       - key: LIVENET
-        valueRef: config.backend.telemetry.livenet }}"
+        valueRef: config.backend.telemetry.livenet
       # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
       # to automatically have the /.well-known/pay suffix
 
