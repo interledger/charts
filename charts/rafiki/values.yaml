@@ -155,10 +155,12 @@ config:
 
     # Must be set to true when running Rafiki behind a proxy. When true, the
     # X-Forwarded-Proto header is used to determine if connections are secure.
-    trustProxy: true
+    trustProxy: "true"
 
     ilp:
       # Maps to OPEN_PAYMENTS_URL - The public endpoint of your Open Payments resource server.
+      # WALLET_ADDRESS_URL will be $OPEN_PAYMENTS_URL/.well-known/pay
+      # PUBLIC_HOST will also get this value
       host: 'http://rafiki-backend:3000'
       # Maps to ILP_ADDRESS - The ILP address of your Rafiki instance. Override this value.
       address: test.rafiki-backend
@@ -187,10 +189,12 @@ config:
       # Note that the public key can always be derived from the private key like this
       # openssl pkey -in private.pem -pubout -out public.pem
       #
-      # If empty string like this is provided, this chart will spawn a job to generate
+      # If empty string is provided, this chart will spawn a job to generate
       # a new key pair and store it in a secret for you.
       pvk: ''
-
+      
+      # Where the process will look for the private key pem file. This file is mounted
+      # from a secret.
       mount: '/mnt/keys/pvk.pem'
 
     # The secret to generate request header signatures for webhook event requests.
@@ -236,12 +240,12 @@ config:
 
     telemetry:
       # Enables the telemetry service on Rafiki.
-      enabled: false
-      livenet: false
+      enabled: "false"
+      livenet: "false"
 
     autoPeering:
       # Enables the auto-peering service on Rafiki.
-      enabled: false
+      enabled: "false"
 
     pvk: '/mnt/keys/pvk.pem'
 
@@ -501,8 +505,6 @@ configMaps:
         valueRef: config.backend.ilp.host
       - key: OPEN_PAYMENTS_URL
         valueRef: config.backend.ilp.host
-      - key: WALLET_ADDRESS_URL
-        valueRef: config.backend.ilp.host
       - key: WEBHOOK_URL
         valueRef: config.backend.webhook.url
       - key: WEBHOOK_TIMEOUT
@@ -531,6 +533,9 @@ configMaps:
         valueRef: config.backend.key.mount
       - key: LIVENET
         valueRef: config.backend.telemetry.livenet }}"
+      # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
+      # to automatically have the /.well-known/pay suffix
+
   frontend:
     name: "frontend"
     contentMap:
