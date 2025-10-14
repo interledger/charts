@@ -29,3 +29,16 @@ tests:
       - equal:
           path: data.ALLOWED_WALLET_IDS
           value: "wallet1,wallet2"
+  - it: 'should contain GATEHUB_GATEWAY_ID and GATEHUB_PAYWISER_EURO_VAULT_ID in data'
+    set:
+      config:
+        gatehub:
+          gateway_id: "example1"
+          paywiser_euro_vault_id: "example2"
+    asserts:
+      - equal:
+          path: data.GATEHUB_GATEWAY_ID
+          value: "example1"
+      - equal:
+          path: data.GATEHUB_PAYWISER_EURO_VAULT_ID
+          value: "example2"
