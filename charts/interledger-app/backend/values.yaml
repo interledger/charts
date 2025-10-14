@@ -118,7 +118,7 @@ config:
     webhook_secret_ref: "gatehubWebhookSecret"
     # fallback_webhook_url: "https://example.com/gatehub/webhooks"
 
-    gatehub_gatehub_id: "example1"
+    gateway_id: "example1"
     paywiser_euro_vault_id: "example2"
 
   chimoney:
