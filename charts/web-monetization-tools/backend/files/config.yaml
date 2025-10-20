@@ -1,5 +1,0 @@
-AWS_ACCESS_KEY_ID: "{{ .Values.aws.accessKeyId }}"
-AWS_REGION: "{{ .Values.aws.region }}"
-AWS_BUCKET_NAME: "{{ .Values.aws.bucketName }}"
-AWS_RETRY_MAX_ATTEMPTS: "{{ .Values.aws.retryMaxAttempts }}"
-AWS_RETRY_TIMEOUT: "{{ .Values.aws.retryTimeout }}"
