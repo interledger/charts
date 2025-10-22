@@ -1,9 +1,0 @@
-{{- include "common.configMap" (list . "rafiki-boutique-frontend.configMap") }}
-
-{{- define "rafiki-boutique-frontend.configMap" -}}
-{{- $top := first . }}
-data:
-  {{- range $top.Values.configmap }}
-    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
-  {{- end }}
-{{- end }}

@@ -1,9 +1,0 @@
-{{- include "common.configMap" (list . "web-monetization-tools-frontend.configMap") }}
-
-{{- define "web-monetization-tools-frontend.configMap" -}}
-{{- $top := first . }}
-data:
-  {{- range $top.Values.configmap }}
-    {{- tpl ($top.Files.Get .) $top | nindent 6 -}}
-  {{- end }}
-{{- end }}

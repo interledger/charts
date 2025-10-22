@@ -1,3 +1,0 @@
-API_URL: "{{ .Values.url.api }}"
-FRONTEND_URL: "{{ .Values.url.frontend }}"
-ILPAY_URL: "{{ .Values.url.interledgerPay }}"

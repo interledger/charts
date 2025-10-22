@@ -1,14 +1,15 @@
 apiVersion: v2
-name: rafiki-boutique-frontend
-description: A Helm chart for Kubernetes
+name: rafiki-boutique
+description: Rafiki Boutique Helm chart for Kubernetes
+home: https://github.com/interledger/testnet
 
 type: application
-version: 0.1.16
+version: 0.2.3
 appVersion: "v0.1.65"
 
 dependencies:
   - name: common
-    version: 0.2.0
+    version: 0.8.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:
