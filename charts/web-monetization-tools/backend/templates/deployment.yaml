@@ -1,4 +1,0 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "web-monetization-tools-backend.deployment") }}
-
-{{- define "web-monetization-tools-backend.deployment" -}}
-{{- end }}
