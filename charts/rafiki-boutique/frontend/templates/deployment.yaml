@@ -1,4 +1,0 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "rafiki-boutique-frontend.deployment") }}
-
-{{- define "rafiki-boutique-frontend.deployment" -}}
-{{- end }}
