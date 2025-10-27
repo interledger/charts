@@ -396,7 +396,8 @@ deployments:
         path: /healthz
         port: 3000
     readinessProbe:
-      initialDelaySeconds: 10
+      # Makes initial longer to accomodate migrations from v1 to v2
+      initialDelaySeconds: 30
       periodSeconds: 5
       timeoutSeconds: 1
       successThreshold: 1
