@@ -565,6 +565,10 @@ configMaps:
         valueRef: config.backend.key.mount
       - key: LIVENET
         valueRef: config.backend.telemetry.livenet
+      - key: OPERATOR_TENANT_ID
+        valueRef: config.auth.tenancy.tenant_id
+      - key: ADMIN_SIGNATURE_VERSION
+        valueRef: config.auth.admin.signatureVersion        
       # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
       # to automatically have the /.well-known/pay suffix
 
@@ -619,7 +623,7 @@ configMaps:
         valueRef: config.auth.trustProxy
       - key: INTERACTION_COOKIE_SAME_SITE
         valueRef: config.auth.interaction.cookieSameSite
-      - key: TENANT_ID
+      - key: OPERATOR_TENANT_ID
         valueRef: config.auth.tenancy.tenant_id
       - key: ADMIN_SIGNATURE_VERSION
         valueRef: config.auth.admin.signatureVersion
