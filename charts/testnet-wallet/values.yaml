@@ -94,6 +94,10 @@ config:
 
     paymentPointer: ""
 
+    rafiki: # variables for rafiki configurations
+      operatorId: ""
+      apiSignatureVersion: "1"
+
 deployments:
   backend:
     name: backend
@@ -163,6 +167,11 @@ deployments:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
             key: stripe.secretKey
+      - name: ADMIN_API_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: rafiki.adminApiSecret
 
     ports:
       - name: http
@@ -319,6 +328,10 @@ configMaps:
         valueRef: config.backend.card.dataUrl
       - key: USE_STRIPE
         valueRef: config.backend.stripe.enabled
+      - key: OPERATOR_TENANT_ID
+        valueRef: config.backend.rafiki.operatorId
+      - key: ADMIN_SIGNATURE_VERSION
+        valueRef: config.backend.rafiki.apiSignatureVersion
 
 
 # This section of the values file defines Kubernetes secrets that will be created
@@ -350,3 +363,5 @@ secretsMaps:
         valueRef: config.backend.stripe.webhookSecret
       - key: stripe.secretKey
         valueRef: config.backend.stripe.secretKey
+      - key: rafiki.adminApiSecret
+        valueRef: config.backend.rafiki.adminApiSecret
