@@ -77,6 +77,7 @@ config:
       admin: 3003
       auth: 3006
       introspection: 3007
+      service: 3011
 
     grant:
       # The wait time, in seconds, included in a grant request response (grant.continue).
@@ -96,7 +97,18 @@ config:
 
     workers:
       # The number of workers processing expired or revoked access tokens.
-      cleanup: 1  
+      cleanup: 1
+
+    tenancy:
+      tenant_id: some-guid
+
+    admin:
+      apiSecret:
+        value: changeme-something-secret
+        apiSecretKeyRef:
+          key: ADMIN_API_SECRET
+      signatureVersion: "1"
+    
 
   backend:
     # ==========================================================
@@ -124,6 +136,8 @@ config:
       # The endpoint on your Open Payments authorization server to introspect an access
       # token.
       introspectionUrl: http://rafiki-auth.rafiki-auth:3007
+
+      serviceApiUrl: http://rafiki-auth.rafiki-auth:3011
 
     # TODO: Consider not specifying the rates url if it is not needed
     rates:
@@ -247,13 +261,24 @@ config:
       # Enables the auto-peering service on Rafiki.
       enabled: "false"
 
-    pvk: '/mnt/keys/pvk.pem'
+    tenancy:
+      tenant_id: some-guid
 
+    admin:
+      apiSecret:
+        value: changeme-something-secret
+        apiSecretKeyRef:
+          key: ADMIN_API_SECRET
+      signatureVersion: "1"
+
+    # meta config
+    pvk: '/mnt/keys/pvk.pem'
     port:
       admin: 3001
       connector: 3002
       openPayments: 3000
       autoPeering: 3005
+
 
 deployments:
   auth:
@@ -281,6 +306,9 @@ deployments:
         protocol: TCP
       - name: interaction
         containerPort: 3009
+        protocol: TCP
+      - name: serviceapi
+        containerPort: 3011
         protocol: TCP
     resources:
       requests:
@@ -440,6 +468,10 @@ services:
         targetPort: 3009
         protocol: TCP
         name: interaction
+      - port: 3011
+        targetPort: 3011
+        protocol: TCP
+        name: serviceapi
   frontend:
     name: frontend-service
     enabled: true
@@ -587,6 +619,10 @@ configMaps:
         valueRef: config.auth.trustProxy
       - key: INTERACTION_COOKIE_SAME_SITE
         valueRef: config.auth.interaction.cookieSameSite
+      - key: TENANT_ID
+        valueRef: config.auth.tenancy.tenant_id
+      - key: ADMIN_SIGNATURE_VERSION
+        valueRef: config.auth.admin.signatureVersion
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the relevant service (auth or backend).
@@ -602,6 +638,8 @@ secretsMaps:
         valueRef: config.auth.identityServer.serverSecret.value
       - key: REDIS_URL
         valueRef: config.auth.redisUrl.value
+      - key: ADMIN_API_SECRET
+        valueRef: config.auth.admin.apiSecret.value
 
   backend:
     name: backend
