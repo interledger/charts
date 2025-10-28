@@ -1,0 +1,140 @@
+imageOverride:
+  repository: ghcr.io/interledger
+  name: rafiki-point-of-sale
+
+config:
+  
+  # If true, the chart will create the secrets defined in the secretsMaps section.
+  # If false, the chart will not create the secrets and it is assumed that they
+  # already exist.
+  shouldCreateSecrets: true  
+
+  nodeEnv: production
+  log_level: info
+  trust_proxy: ""
+
+  ase:
+    graphqlUrl: "http://my-ase:3001/graphql"
+
+  openpayments:
+    webhook:
+      signatureVersion: "1"
+      secret:
+        value: "REPLACE-WITH-ACTUAL-SECRET"
+        # Or reference an existing Kubernetes secret like this:
+        # secretKeyRef:
+        #   key: openpayments.webhook.secret
+
+  tenant:
+    id: "00000000-0000-0000-0000-000000000000"
+    signatureVersion: "1"
+    secret:
+      # You can set the tenant secret directly here by uncommenting below
+      value: "REPLACE-WITH-ACTUAL-SECRET"
+      # Or reference an existing Kubernetes secret like this:
+      # secretKeyRef:
+      #   key: tenant.secret  
+
+
+services:
+  backend:
+    name: service
+    enabled: true
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - port: 4008
+        targetPort: 4008
+        protocol: TCP
+        name: posapi
+
+deployments:
+  backend:
+    name: backend
+    enabled: true
+    replicaCount: 1
+    imagePullPolicy: IfNotPresent
+    ports:
+      - name: posapi
+        containerPort: 4008
+    # Additional environment variables to set on the container
+    # extraEnv:
+    #   - name: EXAMPLE1
+    #     value: "value1"
+    env:
+    - name: NODE_ENV
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: nodeEnv
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: log_level
+    - name: GRAPHQL_URL
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: ase.graphqlUrl
+    - name: TENANT_ID
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: tenant.id
+    - name: TENANT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: '{{ include "common.fullname" . }}-secrets'
+          key: tenant.secret
+    - name: WEBHOOK_SIGNATURE_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: '{{ include "common.fullname" . }}-secrets'
+          key: openpayments.webhook.secret
+    - name: WEBHOOK_SIGNATURE_VERSION
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: openpayments.webhook.signatureVersion
+    - name: TRUST_PROXY
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: trust_proxy
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: posapi
+      initialDelaySeconds: 10
+      periodSeconds: 10
+
+configMaps:
+  backend:
+    name: config
+    contentMap:
+      - key: nodeEnv
+        valueRef: config.nodeEnv
+      - key: log_level
+        valueRef: config.log_level
+      - key: ase.graphqlUrl
+        valueRef: config.ase.graphqlUrl
+      - key: openpayments.webhook.signatureVersion
+        valueRef: config.openpayments.webhook.signatureVersion
+      - key: tenant.id
+        valueRef: config.tenant.id
+      - key: tenant.signatureVersion
+        valueRef: config.tenant.signatureVersion
+      - key: trust_proxy
+        valueRef: config.trust_proxy
+
+
+# This is only used if shouldCreateSecrets is true
+secretsMaps:
+  backend:
+    name: secrets
+    contentMap:
+      - key: tenant.secret
+        valueRef: config.tenant.secret.value
+      - key: openpayments.webhook.secret
+        valueRef: config.openpayments.webhook.secret.value

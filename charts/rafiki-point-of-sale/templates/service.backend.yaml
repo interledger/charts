@@ -1,5 +1,5 @@
-{{- define "rafiki-cards.backend.service" -}}
+{{- define "rafiki-point-of-sale.backend.service" -}}
 {{- end }}
 {{- if .Values.services.backend.enabled }}
-{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend "rafiki-cards.backend.service") }}
+{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend "rafiki-point-of-sale.backend.service") }}
 {{- end }}

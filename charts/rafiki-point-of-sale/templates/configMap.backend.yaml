@@ -1,3 +1,3 @@
-{{- define "rafiki-cards.backend.ConfigMap" -}}
+{{- define "rafiki-point-of-sale.backend.ConfigMap" -}}
 {{- end }}
-{{- include "common.configMapper" (list . .Values.configMaps.backend "rafiki-cards.backend.ConfigMap") }}
+{{- include "common.configMapper" (list . .Values.configMaps.backend "rafiki-point-of-sale.backend.ConfigMap") }}
