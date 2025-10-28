@@ -21,11 +21,10 @@ config:
     signatureVersion: "1"
     secret:
       # You can set the tenant secret directly here by uncommenting below
-      # value: "REPLACE-WITH-ACTUAL-SECRET"
+      value: "REPLACE-WITH-ACTUAL-SECRET"
       # Or reference an existing Kubernetes secret like this:
-      secretKeyRef:
-        name: rafiki-cards-tenant-secret
-        key: tenant.secret
+      # secretKeyRef:
+      #   key: tenant.secret
 
   trust_proxy: ""
 
