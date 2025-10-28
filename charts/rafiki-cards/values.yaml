@@ -1,0 +1,131 @@
+imageOverride:
+  repository: ghcr.io/interledger
+  name: rafiki-card-service
+
+config:
+  
+  # If true, the chart will create the secrets defined in the secretsMaps section.
+  # If false, the chart will not create the secrets and it is assumed that they
+  # already exist.
+  shouldCreateSecrets: true  
+
+  nodeEnv: production
+  instance_name: "rafiki-cards-instance-changeme"
+  log_level: info
+
+  ase:
+    graphqlUrl: "http://my-ase:3001/graphql"
+
+  tenant:
+    id: "00000000-0000-0000-0000-000000000000"
+    signatureVersion: "1"
+    secret:
+      # You can set the tenant secret directly here by uncommenting below
+      # value: "REPLACE-WITH-ACTUAL-SECRET"
+      # Or reference an existing Kubernetes secret like this:
+      secretKeyRef:
+        name: rafiki-cards-tenant-secret
+        key: tenant.secret
+
+  trust_proxy: ""
+
+services:
+  backend:
+    name: service
+    enabled: true
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - port: 3007
+        targetPort: 3007
+        protocol: TCP
+        name: cardsapi
+
+deployments:
+  backend:
+    name: backend
+    enabled: true
+    replicaCount: 1
+    imagePullPolicy: IfNotPresent
+    ports:
+      - name: cardsapi
+        containerPort: 3007
+    # Additional environment variables to set on the container
+    # extraEnv:
+    #   - name: EXAMPLE1
+    #     value: "value1"
+    env:
+    - name: NODE_ENV
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: nodeEnv
+    - name: INSTANCE_NAME
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: instance_name
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: log_level
+    - name: ASE_GRAPHQL_URL
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: ase.graphqlUrl
+    - name: TENANT_ID
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: tenant.id
+    - name: TENANT_SIGNATURE_VERSION
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: tenant.signatureVersion
+    - name: TENANT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: '{{ include "common.fullname" . }}-secrets'
+          key: tenant.secret
+    - name: TRUST_PROXY
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: trust_proxy
+    
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: cardsapi
+      initialDelaySeconds: 10
+      periodSeconds: 10
+
+configMaps:
+  backend:
+    name: config
+    contentMap:
+      - key: nodeEnv
+        valueRef: config.nodeEnv
+      - key: instance_name
+        valueRef: config.instance_name
+      - key: log_level
+        valueRef: config.log_level
+      - key: ase.graphqlUrl
+        valueRef: config.ase.graphqlUrl
+      - key: tenant.id
+        valueRef: config.tenant.id
+      - key: tenant.signatureVersion
+        valueRef: config.tenant.signatureVersion
+      - key: trust_proxy
+        valueRef: config.trust_proxy
+
+# This is only used if shouldCreateSecrets is true
+secretsMaps:
+  backend:
+    name: secrets
+    contentMap:
+      - key: tenant.secret
+        valueRef: config.tenant.secret.value
