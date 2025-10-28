@@ -69,7 +69,7 @@ deployments:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
           key: log_level
-    - name: ASE_GRAPHQL_URL
+    - name: GRAPHQL_URL
       valueFrom:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
