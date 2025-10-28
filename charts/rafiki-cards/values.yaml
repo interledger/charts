@@ -97,7 +97,7 @@ deployments:
     
     livenessProbe:
       httpGet:
-        path: /health
+        path: /healthz
         port: cardsapi
       initialDelaySeconds: 10
       periodSeconds: 10
