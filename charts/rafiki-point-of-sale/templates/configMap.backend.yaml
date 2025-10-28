@@ -1,0 +1,3 @@
+{{- define "rafiki-cards.backend.ConfigMap" -}}
+{{- end }}
+{{- include "common.configMapper" (list . .Values.configMaps.backend "rafiki-cards.backend.ConfigMap") }}

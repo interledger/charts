@@ -1,0 +1,5 @@
+{{- define "rafiki-cards.backend.service" -}}
+{{- end }}
+{{- if .Values.services.backend.enabled }}
+{{- include "common.svc" (list . .Values.services.backend .Values.deployments.backend "rafiki-cards.backend.service") }}
+{{- end }}

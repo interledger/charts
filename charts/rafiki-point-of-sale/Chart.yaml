@@ -1,0 +1,19 @@
+apiVersion: v2
+name: rafiki-point-of-sale
+description: Rafiki POS  Helm chart for Kubernetes
+home: https://github.com/interledger/rafiki/pkgs/container/rafiki-point-of-sale
+
+type: application
+version: 1.0.0
+appVersion: "pos-card-services"
+
+icon: https://interledger.github.io/charts/icons/ilf-pos.png
+
+dependencies:
+  - name: common
+    version: 0.8.0
+    repository: https://interledger.github.io/charts/interledger
+
+maintainers:
+  - name: Stephan Butler
+    email: stephan@interledger.foundation
