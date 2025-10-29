@@ -55,6 +55,7 @@ jobs:
             echo "Running unit tests for chart: ${{ matrix.chart }}"
             cd charts
             ls
+            helm plugin install https://github.com/helm-unittest/helm-unittest.git
             helm unittest ${{ matrix.chart }}
         - name: Run Kubeconform Validation
           run: |
