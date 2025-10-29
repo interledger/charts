@@ -9,6 +9,8 @@ config:
     logLevel: info
     nodeEnv: production
 
+    signatureVersion: "1"
+
     serviceUrls:
       GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
       OPEN_PAYMENTS_URL: https://rafiki-backend-service/
@@ -590,6 +592,8 @@ configMaps:
         valueRef: config.frontend.serviceUrls.OPEN_PAYMENTS_URL
       - key: AUTH_ENABLED
         valueRef: config.frontend.kratos.enabled
+      - key: SIGNATURE_VERSION
+        valueRef: config.frontend.signatureVersion
 
   auth:
     name: "auth"
