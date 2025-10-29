@@ -27,6 +27,7 @@ jobs:
 
     - name: Sync local main with remote
       run: |
+        git config --global --add safe.directory /__w/charts/charts      
         git fetch origin main
         git checkout -B main origin/main
         git reset --hard origin/main
