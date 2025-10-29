@@ -19,6 +19,12 @@ spec:
     {{- toYaml $deployment.strategy | nindent 4 }}
   {{- end }}
 
+  {{- if $deployment.minReadySeconds }}
+  minReadySeconds: {{ $deployment.minReadySeconds }}
+  {{- else }}
+  minReadySeconds: 3
+  {{- end }}
+
   {{- if not $autoscaling.enabled }}
   replicas: {{ $deployment.replicaCount | default 1 }}
   {{- end }}
