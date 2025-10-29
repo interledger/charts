@@ -9,8 +9,6 @@ config:
     nodeEnv: production
     port: 4003
 
-    signatureVersion: "1"
-
     urls:
       backend: "https://api.interledger-test.dev"
       openPaymentsHost: "https://ilp.interledger-test.dev"
@@ -263,8 +261,6 @@ configMaps:
         valueRef: config.frontend.port
       - key: COOKIE_NAME
         valueRef: config.frontend.cookie.name
-      - key: SIGNATURE_VERSION
-        valueRef: config.frontend.signatureVersion
       - key: NEXT_PUBLIC_USE_TEST_KYC_DATA
         valueRef: config.frontend.features.useTestKycData
       - key: NEXT_PUBLIC_BACKEND_URL
