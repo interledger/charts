@@ -17,6 +17,7 @@ jobs:
   version-on-merge:
     if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'chore/version-bump')
     runs-on: ubuntu-latest
+    container: ghcr.io/interledger/builders/chartvalidator:v0.3
     steps:
     - name: Checkout base branch (main)
       uses: actions/checkout@v5
@@ -29,11 +30,7 @@ jobs:
         git fetch origin main
         git checkout -B main origin/main
         git reset --hard origin/main
-    - name: Set up Helm
-      run: |
-        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-        chmod 700 get_helm.sh
-        ./get_helm.sh
+
     - name: Calculate and stage chart version bumps on main
       uses: actions/github-script@v8
       with:
