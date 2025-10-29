@@ -10,25 +10,8 @@ on:
       - "**"
 
 jobs:
-    download_helm:
-        name: Download Helm
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v5
-        - name: Set up Helm
-          run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-            chmod 700 get_helm.sh
-        - name: Upload get_helm.sh as artifact
-          uses: actions/upload-artifact@v5
-          with:
-            name: get_helm_script
-            path: get_helm.sh
-
     find_charts:
       name: Find Charts
-      needs: download_helm
       runs-on: ubuntu-latest
       outputs:
           charts: ${{ steps.find_charts.outputs.charts }}
@@ -57,20 +40,13 @@ jobs:
         name: Render Helm Chart
         needs: find_charts
         runs-on: ubuntu-latest
+        container: ghcr.io/interledger/builders/chartvalidator:v0.2        
         strategy:
             matrix:
               chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
         steps:
         - name: Checkout code
           uses: actions/checkout@v5
-        - name: Download artifact
-          uses: actions/download-artifact@v6
-          with:
-            name: get_helm_script
-        - name: Set up Helm
-          run: |
-            chmod 700 get_helm.sh
-            ./get_helm.sh
         - name: Render Helm Chart
           run: |
             cd charts
