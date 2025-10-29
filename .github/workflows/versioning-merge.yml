@@ -17,20 +17,23 @@ jobs:
   version-on-merge:
     if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'chore/version-bump')
     runs-on: ubuntu-latest
-    container: ghcr.io/interledger/builders/chartvalidator:v0.3
     steps:
     - name: Checkout base branch (main)
       uses: actions/checkout@v5
       with:
         ref: main
         fetch-depth: 0
-
-    - name: Sync local main with remote
+    - name: Set up environment
       run: |
-        git config --global --add safe.directory /__w/charts/charts      
         git fetch origin main
         git checkout -B main origin/main
         git reset --hard origin/main
+
+        curl -fsSL https://get.helm.sh/helm-v3.19.0-linux-amd64.tar.gz -o helm.tar.gz && \
+        tar -zxvf helm.tar.gz && \
+        mv linux-amd64/helm /usr/local/bin/helm && \
+        chmod +x /usr/local/bin/helm && \
+        rm helm.tar.gz        
 
     - name: Calculate and stage chart version bumps on main
       uses: actions/github-script@v8
