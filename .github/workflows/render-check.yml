@@ -40,7 +40,7 @@ jobs:
         name: Render Helm Chart
         needs: find_charts
         runs-on: ubuntu-latest
-        container: ghcr.io/interledger/builders/chartvalidator:v0.2        
+        container: ghcr.io/interledger/builders/chartvalidator:v0.3
         strategy:
             matrix:
               chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
