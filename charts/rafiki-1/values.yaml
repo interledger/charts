@@ -260,6 +260,7 @@ deployments:
     name: auth
     enabled: true
     replicaCount: 1
+    minReadySeconds: 10
     image:
       name: rafiki-auth
       # tag: "1.2.0"   # Use this to override the image tag for just this image
@@ -304,6 +305,7 @@ deployments:
     name: frontend
     enabled: true
     replicaCount: 1
+    minReadySeconds: 10
     nodeSelector: {}
     serviceAccount: {}
     image:
@@ -327,6 +329,7 @@ deployments:
     name: backend
     enabled: true
     replicaCount: 1
+    minReadySeconds: 10
     image:
       name: rafiki-backend
     imagePullPolicy: IfNotPresent
