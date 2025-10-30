@@ -1,4 +1,0 @@
-{{- include "common.deployment" (list . .Values .Values.autoscaling .Values.serviceAccount "rafiki-auth.deployment") }}
-
-{{- define "rafiki-auth.deployment" -}}
-{{- end }}

@@ -4,12 +4,12 @@ description: Interledger App Wallet backend service for the Interledger App netw
 home: https://github.com/interledger/interledger-app
 
 type: application
-version: 2.1.1
+version: 2.1.3
 appVersion: v1.2.16
 
 dependencies:
   - name: common
-    version: 0.8.0
+    version: 0.9.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:

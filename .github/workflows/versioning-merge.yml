@@ -23,17 +23,30 @@ jobs:
       with:
         ref: main
         fetch-depth: 0
-
-    - name: Sync local main with remote
+    - name: Set up environment
       run: |
         git fetch origin main
         git checkout -B main origin/main
         git reset --hard origin/main
-    - name: Set up Helm
+
+    - name: Cache Helm binary
+      id: cache-helm
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/helm
+        key: helm-v3.19.0-linux-amd64
+
+    - name: Download Helm
+      if: steps.cache-helm.outputs.cache-hit != 'true'
       run: |
-        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-        chmod 700 get_helm.sh
-        ./get_helm.sh
+        curl -fsSL https://get.helm.sh/helm-v3.19.0-linux-amd64.tar.gz -o helm.tar.gz
+        tar -zxvf helm.tar.gz
+        sudo mv linux-amd64/helm /usr/local/bin/helm
+        rm -rf helm.tar.gz linux-amd64
+
+    - name: Set Helm permissions
+      run: sudo chmod +x /usr/local/bin/helm
+
     - name: Calculate and stage chart version bumps on main
       uses: actions/github-script@v8
       with:
@@ -51,8 +64,6 @@ jobs:
           }
           const { default: runPRVersioning } = await import('${{ github.workspace }}/tooling/runner.js')
           await runPRVersioning({ github, core, context, pullRequestMode: false })
-    - name: Remove installer artifacts
-      run: rm -f get_helm.sh
 
     - name: Create version bump PR to main
       id: cpr
