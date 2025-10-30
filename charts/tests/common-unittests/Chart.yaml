@@ -4,12 +4,12 @@ description: chart for unittesting the common library
 home: https://github.com/interledger/interledger-app
 
 type: application
-version: 0.1.4
+version: 0.1.6
 appVersion: "v0.1.0"
 
 dependencies:
   - name: common
-    version: 0.8.0
+    version: 0.9.0
     repository: file://../../common
 
 maintainers:

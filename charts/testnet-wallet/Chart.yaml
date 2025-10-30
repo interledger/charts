@@ -4,12 +4,12 @@ description: TestNet Wallet Helm chart for Kubernetes
 home: https://github.com/interledger/testnet
 
 type: application
-version: 0.5.0
-appVersion: "v0.1.67"
+version: 0.5.3
+appVersion: "v0.1.68"
 
 dependencies:
   - name: common
-    version: 0.8.0
+    version: 0.9.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:

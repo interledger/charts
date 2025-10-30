@@ -20,11 +20,25 @@ jobs:
           with:
             ref: ${{ github.event.pull_request.head.sha }}
             token: ${{ secrets.GITHUB_TOKEN }}
-        - name: Set up Helm
+
+        - name: Cache Helm binary
+          id: cache-helm
+          uses: actions/cache@v4
+          with:
+            path: /usr/local/bin/helm
+            key: helm-v3.19.0-linux-amd64
+
+        - name: Download Helm
+          if: steps.cache-helm.outputs.cache-hit != 'true'
           run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-            chmod 700 get_helm.sh
-            ./get_helm.sh
+            curl -fsSL https://get.helm.sh/helm-v3.19.0-linux-amd64.tar.gz -o helm.tar.gz
+            tar -zxvf helm.tar.gz
+            sudo mv linux-amd64/helm /usr/local/bin/helm
+            rm -rf helm.tar.gz linux-amd64
+
+        - name: Set Helm permissions
+          run: sudo chmod +x /usr/local/bin/helm
+
         - name: Fail if docs/interledger was modified
           run: |
             if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^docs/interledger/'; then

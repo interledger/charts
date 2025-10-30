@@ -1,0 +1,6 @@
+{{- if .Values.config.backend.shouldCreateSecrets -}}
+# {{- required "Error: backend.redisUrl.value must be set" .Values.config.backend.redisUrl.value }}    
+# {{- required "Error: .backend.databaseUrl.value must be set" .Values.config.backend.databaseUrl.value }}
+# {{- required "Error: .backend.webhookSignatureSecret.value must be set" .Values.config.backend.webhookSignatureSecret.value }}
+# {{- required "Error: .backend.ilp.streamSecret.value must be set" .Values.config.backend.ilp.streamSecret.value }}
+{{- end -}}

@@ -228,3 +228,12 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[0].value
           value: extra_value2
+  - it: 'strategy provided in backend should be added to the deployment spec'
+    set:
+      backend:
+        strategy:
+          type: Recreate
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: Recreate

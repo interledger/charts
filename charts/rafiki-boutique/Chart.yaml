@@ -4,12 +4,12 @@ description: Rafiki Boutique Helm chart for Kubernetes
 home: https://github.com/interledger/testnet
 
 type: application
-version: 0.2.4
+version: 0.2.6
 appVersion: "v0.1.67"
 
 dependencies:
   - name: common
-    version: 0.8.0
+    version: 0.9.0
     repository: https://interledger.github.io/charts/interledger
 
 maintainers:

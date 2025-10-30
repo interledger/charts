@@ -1,0 +1,23 @@
+fullnameOverride: "rafiki"
+
+imageOverride:
+  repository: ghcr.io/interledger
+  name: zulu
+
+deployments:
+  auth:
+    image:
+      # Simulating an empty image name in the deployment definition
+      name: ""
+      # should now use image ghcr.io/interledger/zulu:3.3.3
+      tag: "3.3.3"
+  frontend:
+    image:
+      name: ""    
+      # should now use image ghcr.io/interledger/zulu:4.4.4
+      tag: "4.4.4"
+  backend:
+    image:
+      name: ""    
+      # should now use image ghcr.io/interledger/zulu:5.5.5    
+      tag: "5.5.5"
