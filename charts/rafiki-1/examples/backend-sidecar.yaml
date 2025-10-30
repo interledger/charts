@@ -1,0 +1,43 @@
+#
+# Example on how to deploy only the backend of Rafiki and have it create
+# its own secrets.
+#
+config:
+  backend:
+    shouldCreateSecrets: true
+    redisUrl:
+      value: "redis://rafiki-backend-redis:6379"
+    databaseUrl:
+      value: "postgresql://postgres:password@rafiki-backend-postgresql:5432/rafiki"
+    ilp:
+      streamSecret:
+        value: "test-stream-secret"
+    webhookSignatureSecret:
+      value: "cheese"
+
+deployments:
+  auth:
+    enabled: false
+  frontend:
+    enabled: false
+  backend:
+    enabled: true
+    sidecars:
+      - name: cloud-sql-proxy
+        image:
+          name: cloud-sql-connectors/cloud-sql-proxy
+          tag: 2.17.1
+          repository: gcr.io
+        args:
+          - "--private-ip"
+          - "--structured-logs"
+          - "my-project:europe-west4:my-database-reference"
+        securityContext:
+          runAsNonRoot: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi        
