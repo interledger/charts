@@ -1,7 +1,6 @@
 # Rafiki Helm Chart
 
-[![Helm Chart](https://img.shields.io/badge/Helm-Chart-blue)](https://github.com/interledger/rafiki)
-[![Version](https://img.shields.io/badge/version-0.2.7-green)](https://github.com/interledger/rafiki)
+**⚠️ Important**: This chart will be deprecated soon. It exists only so that we can maintain legacy deployments still running Rafiki Chart 1.x. Consumers should migrate to 2.x as soon as possible.
 
 ## Overview
 
