@@ -1,0 +1,47 @@
+suite: rafiki backend - Backend configmap checks
+templates:
+  - configMap.backend.yaml
+set:
+  fullnameOverride: rafiki
+release:
+  name: rafiki
+tests:
+  - it: LIVENET should be "false" by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.LIVENET
+          value: "false"
+  - it: ENABLE_TELEMETRY should be "false" by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.ENABLE_TELEMETRY
+          value: "false"
+  - it: can switch on telemetry
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          telemetry:
+            enabled: "true"
+            livenet: "true"
+    asserts:
+      - equal:
+          path: data.ENABLE_TELEMETRY
+          value: "true"
+      - equal:
+          path: data.LIVENET
+          value: "true"
+  - it: WALLET_ADDRESS_URL should have the /.well-known/pay suffix
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          ilp:
+            host: 'https://ilp.example.com'
+    asserts:
+      - equal:
+          path: data.WALLET_ADDRESS_URL
+          value: 'https://ilp.example.com/.well-known/pay'
+

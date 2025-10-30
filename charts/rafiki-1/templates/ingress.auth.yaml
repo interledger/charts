@@ -1,0 +1,12 @@
+{{- define "rafiki-auth.ingress" -}}
+{{- $top := first . -}}
+metadata:
+    annotations:
+       {{- if eq $top.Values.ingress.auth.className "nginx" }}
+        nginx.ingress.kubernetes.io/rewrite-target: /
+       {{- end }}
+{{- end }}
+
+{{- if .Values.ingress.auth.enabled }}
+{{- include "common.ingress" (list . .Values.ingress.auth "rafiki-auth.ingress") }}
+{{- end }}

@@ -1,0 +1,25 @@
+suite: Rafiki - key.pvk secret must be mounted into backend the deployment
+templates:
+  - configMap.backend.yaml
+  - deployment.backend.yaml
+release:
+  name: rafiki
+tests:
+  - it: given key.pvk secret should be mounted in the deployment
+    set:
+      config:
+        backend:
+          key:
+            id: rafiki
+            pvk: 'SOME VALUE'
+    documentSelector:
+      kind: Deployment
+    template: deployment.backend.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[0].secret.secretName
+          value: rafiki-backend-keys
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: keys
+      
