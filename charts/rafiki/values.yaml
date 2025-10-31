@@ -584,13 +584,13 @@ configMaps:
       - key: AUTH_SERVICE_API_URL
         valueRef: config.backend.auth.serviceApiUrl
       - key: CARD_SERVICE_URL
-        valueRef: config.cards.service
+        valueRef: config.backend.cards.service
       - key: CARD_WEBHOOK_SERVICE_URL
-        valueRef: config.cards.webhookService
+        valueRef: config.backend.cards.webhookService
       - key: POS_SERVICE_URL
-        valueRef: config.pos.service
+        valueRef: config.backend.pos.service
       - key: POS_WEBHOOK_SERVICE_URL
-        valueRef: config.pos.webhookService
+        valueRef: config.backend.pos.webhookService
     
       # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
       # to automatically have the /.well-known/pay suffix
