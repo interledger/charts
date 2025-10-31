@@ -71,8 +71,11 @@ config:
       env: "sandbox"
       accessKey: ""
       secretKey: "aergaregaerg"
+      accessSepaKey: ""
+      secretSepaKey: ""
       gatewayUuid: "9358542e-9bd1-48bc-b869-8661f1a1827c"
       organizationId: ""
+      sepaOrganizationId: ""
       webhookSecret: "aergaerg"
       settlementWalletAddress: ""
       vault:
@@ -142,6 +145,11 @@ deployments:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
             key: gatehub.secretKey
+      - name: GATEHUB_SEPA_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}-backend'
+            key: gatehub.secretSepaKey
       - name: GATEHUB_WEBHOOK_SECRET
         valueFrom:
           secretKeyRef:
@@ -300,6 +308,8 @@ configMaps:
         valueRef: config.backend.gatehub.env
       - key: GATEHUB_ACCESS_KEY
         valueRef: config.backend.gatehub.accessKey
+      - key: GATEHUB_SEPA_ACCESS_KEY
+        valueRef: config.backend.gatehub.accessSepaKey
       - key: GATEHUB_GATEWAY_UUID
         valueRef: config.backend.gatehub.gatewayUuid
       - key: GATEHUB_VAULT_UUID_EUR
@@ -308,6 +318,8 @@ configMaps:
         valueRef: config.backend.gatehub.vault.usd
       - key: GATEHUB_ORG_ID
         valueRef: config.backend.gatehub.organizationId
+      - key: GATEHUB_SEPA_ORG_ID
+        valueRef: config.backend.gatehub.sepaOrganizationId
       - key: GATEHUB_SETTLEMENT_WALLET_ADDRESS
         valueRef: config.backend.gatehub.settlementWalletAddress
       - key: GATEHUB_CARD_APP_ID
