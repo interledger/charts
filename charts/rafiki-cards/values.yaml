@@ -13,8 +13,9 @@ config:
   instance_name: "rafiki-cards-instance-changeme"
   log_level: info
 
-  ase:
-    graphqlUrl: "http://my-ase:3001/graphql"
+  # Points to Rafiki backend
+  backend:
+    graphqlUrl: "http://my-rafiki-backend:3001/graphql"
 
   tenant:
     id: "00000000-0000-0000-0000-000000000000"
@@ -76,7 +77,7 @@ deployments:
       valueFrom:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
-          key: ase.graphqlUrl
+          key: backend.graphqlUrl
     - name: TENANT_ID
       valueFrom:
         configMapKeyRef:
@@ -120,14 +121,16 @@ configMaps:
         valueRef: config.instance_name
       - key: log_level
         valueRef: config.log_level
-      - key: ase.graphqlUrl
-        valueRef: config.ase.graphqlUrl
+      - key: backend.graphqlUrl
+        valueRef: config.backend.graphqlUrl
       - key: tenant.id
         valueRef: config.tenant.id
       - key: tenant.signatureVersion
         valueRef: config.tenant.signatureVersion
       - key: trust_proxy
         valueRef: config.trust_proxy
+      - key: redis.url
+        valueRef: config.redis.url
 
 # This is only used if shouldCreateSecrets is true
 secretsMaps:
