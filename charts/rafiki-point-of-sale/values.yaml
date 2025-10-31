@@ -16,14 +16,14 @@ config:
   ase:
     graphqlUrl: "http://my-ase:3001/graphql"
 
-  openpayments:
+  backend:
     webhook:
       signatureVersion: "1"
       secret:
         value: "REPLACE-WITH-ACTUAL-SECRET"
         # Or reference an existing Kubernetes secret like this:
         # secretKeyRef:
-        #   key: openpayments.webhook.secret
+        #   key: backend.webhook.secret
 
   tenant:
     id: "00000000-0000-0000-0000-000000000000"
@@ -91,12 +91,12 @@ deployments:
       valueFrom:
         secretKeyRef:
           name: '{{ include "common.fullname" . }}-secrets'
-          key: openpayments.webhook.secret
+          key: backend.webhook.secret
     - name: WEBHOOK_SIGNATURE_VERSION
       valueFrom:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
-          key: openpayments.webhook.signatureVersion
+          key: backend.webhook.signatureVersion
     - name: TRUST_PROXY
       valueFrom:
         configMapKeyRef:
@@ -119,8 +119,8 @@ configMaps:
         valueRef: config.log_level
       - key: ase.graphqlUrl
         valueRef: config.ase.graphqlUrl
-      - key: openpayments.webhook.signatureVersion
-        valueRef: config.openpayments.webhook.signatureVersion
+      - key: backend.webhook.signatureVersion
+        valueRef: config.backend.webhook.signatureVersion
       - key: tenant.id
         valueRef: config.tenant.id
       - key: tenant.signatureVersion
@@ -136,5 +136,5 @@ secretsMaps:
     contentMap:
       - key: tenant.secret
         valueRef: config.tenant.secret.value
-      - key: openpayments.webhook.secret
-        valueRef: config.openpayments.webhook.secret.value
+      - key: backend.webhook.secret
+        valueRef: config.backend.webhook.secret.value
