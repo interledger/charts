@@ -41,8 +41,8 @@ services:
     type: ClusterIP
     annotations: {}
     ports:
-      - port: 4008
-        targetPort: 4008
+      - port: 3008
+        targetPort: 3008
         protocol: TCP
         name: posapi
 
@@ -54,7 +54,7 @@ deployments:
     imagePullPolicy: IfNotPresent
     ports:
       - name: posapi
-        containerPort: 4008
+        containerPort: 3008
     # Additional environment variables to set on the container
     # extraEnv:
     #   - name: EXAMPLE1
