@@ -14,7 +14,7 @@ config:
   trust_proxy: ""
 
   backend:
-    graphqlUrl: "http://my-ase:3001/graphql"  
+    graphqlUrl: "http://my-rafiki-backend:3001/graphql"  
     webhook:
       signatureVersion: "1"
       secret:
