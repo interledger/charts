@@ -26,6 +26,9 @@ config:
       # secretKeyRef:
       #   key: tenant.secret
 
+  redis:
+    url: "redis://my-redis"
+
   trust_proxy: ""
 
 services:
@@ -94,6 +97,11 @@ deployments:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
           key: trust_proxy
+    - name: REDIS_URL
+      valueFrom:
+        configMapKeyRef:
+          name: '{{ include "common.fullname" . }}-config'
+          key: redis.url
     
     livenessProbe:
       httpGet:
