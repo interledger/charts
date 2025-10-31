@@ -43,7 +43,7 @@ jobs:
         name: Run Helm Unit Tests
         needs: find_charts
         runs-on: ubuntu-latest
-        container: ghcr.io/interledger/builders/chartvalidator:v0.3
+        container: ghcr.io/interledger/builders/chartvalidator:v0.4
         strategy:
             matrix:
                 chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
