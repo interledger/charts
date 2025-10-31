@@ -3,7 +3,7 @@ templates:
   - configMap.backend.yaml
   - deployment.backend.yaml
 release:
-  name: rafiki
+  name: rafiki1
 tests:
   - it: given key.pvk secret should be mounted in the deployment
     set:
@@ -18,7 +18,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.volumes[0].secret.secretName
-          value: rafiki-backend-keys
+          value: rafiki1-backend-keys
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].name
           value: keys

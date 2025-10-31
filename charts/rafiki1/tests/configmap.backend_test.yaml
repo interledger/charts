@@ -2,7 +2,7 @@ suite: rafiki backend - Backend configmap checks
 templates:
   - configMap.backend.yaml
 set:
-  fullnameOverride: rafiki
+  fullnameOverride: rafiki1
 release:
   name: rafiki
 tests:
