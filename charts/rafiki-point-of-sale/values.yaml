@@ -13,10 +13,8 @@ config:
   log_level: info
   trust_proxy: ""
 
-  ase:
-    graphqlUrl: "http://my-ase:3001/graphql"
-
   backend:
+    graphqlUrl: "http://my-rafiki-backend:3001/graphql"  
     webhook:
       signatureVersion: "1"
       secret:
@@ -76,7 +74,7 @@ deployments:
       valueFrom:
         configMapKeyRef:
           name: '{{ include "common.fullname" . }}-config'
-          key: ase.graphqlUrl
+          key: backend.graphqlUrl
     - name: TENANT_ID
       valueFrom:
         configMapKeyRef:
@@ -117,8 +115,8 @@ configMaps:
         valueRef: config.nodeEnv
       - key: log_level
         valueRef: config.log_level
-      - key: ase.graphqlUrl
-        valueRef: config.ase.graphqlUrl
+      - key: backend.graphqlUrl
+        valueRef: config.backend.graphqlUrl
       - key: backend.webhook.signatureVersion
         valueRef: config.backend.webhook.signatureVersion
       - key: tenant.id
