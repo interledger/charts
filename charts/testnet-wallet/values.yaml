@@ -75,6 +75,7 @@ config:
       secretSepaKey: ""
       gatewayUuid: "9358542e-9bd1-48bc-b869-8661f1a1827c"
       organizationId: ""
+      sepaOrganizationId: ""
       webhookSecret: "aergaerg"
       settlementWalletAddress: ""
       vault:
@@ -317,6 +318,8 @@ configMaps:
         valueRef: config.backend.gatehub.vault.usd
       - key: GATEHUB_ORG_ID
         valueRef: config.backend.gatehub.organizationId
+      - key: GATEHUB_SEPA_ORG_ID
+        valueRef: config.backend.gatehub.sepaOrganizationId
       - key: GATEHUB_SETTLEMENT_WALLET_ADDRESS
         valueRef: config.backend.gatehub.settlementWalletAddress
       - key: GATEHUB_CARD_APP_ID
