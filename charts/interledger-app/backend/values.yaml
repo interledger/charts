@@ -158,11 +158,12 @@ config:
 
   sentry:
     dsn_ref: "sentryDSN"
-
   
   pti: # FIANT configuration
     jwk_ref: "ptiJwk"
     client_id_ref: "ptiClientID"
+
+  redis_url_ref: "redisURL"
 
 server:
   enabled: true
@@ -396,6 +397,11 @@ server:
           secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: "{{ .Values.config.admin.team_domain_ref }}"
+    -  name: REDIS_URL
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.redis_url_ref }}"
   resources:
     requests:
       memory: 128Mi
@@ -677,6 +683,11 @@ worker:
           secretKeyRef:
               name: '{{ include "common.fullname" . }}'
               key: "{{ .Values.config.admin.team_domain_ref }}"
+    -  name: REDIS_URL
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.redis_url_ref }}"
   resources:
     requests:
       memory: 128Mi
