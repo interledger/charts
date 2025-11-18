@@ -401,7 +401,7 @@ server:
        valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
-            key: "{{ .Values.redis_url_ref }}"
+            key: "{{ .Values.config.redis_url_ref }}"
   resources:
     requests:
       memory: 128Mi
@@ -687,7 +687,7 @@ worker:
        valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
-            key: "{{ .Values.redis_url_ref }}"
+            key: "{{ .Values.config.redis_url_ref }}"
   resources:
     requests:
       memory: 128Mi
