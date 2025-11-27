@@ -1,6 +1,6 @@
 # Interledger Charts repository
 
-The new location for all the Interledger related Helm charts. This repository also serves a Helm repository from the docs folder using Github pages.
+Repository for managing all the Interledger related Helm charts in a uniform manner. This Git repository also provides a mechanism to serve Helm assets as a formal Helm repository by using the Github pages mechanism.
 
 All charts heavily depend on the common interledger helm library which attempts to normalise the way in which we produce charts.
 
@@ -57,3 +57,17 @@ Notes and caveats
 Troubleshooting
 - “No chart versions to update”: Ensure at least one file under charts/... changed and the PR title is set. Non-Conventional Commit titles still trigger a patch bump.
 - “fatal: You are not currently on a branch”: This is handled by pushing to HEAD:refs/heads/<branch> in [JavaScript.commitAndPush()](tooling/runner.js:89).
+
+## Contribution guide
+
+### Contributing
+
+1. **Fork and branch**: Create a feature branch from `main`
+2. **Commit conventions**: Use [Conventional Commits](https://www.conventionalcommits.org/) format (e.g., `feat:`, `fix:`, `docs:`)
+3. **Testing**: Always that tests are provided for new features and passing tests are included in the contribution
+4. **Pull requests**: 
+  - Provide a clear description of changes
+  - Version bumps are automated unless you add the `manual-versioning` label
+  - Link related issues where applicable
+
+For detailed contribution guidelines, see the [Interledger Contributing Guide](https://github.com/interledger/rafiki) part of the Rafiki repository.

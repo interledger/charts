@@ -8,12 +8,12 @@ config:
     redisUrl:
       value: "redis://rafiki-backend-redis:6379"
     databaseUrl:
-      value: "postgresql://postgres:password@rafiki-backend-postgresql:5432/rafiki"
+      value: "postgresql://username:password@postgres-host:5432/database_name"
     ilp:
       streamSecret:
-        value: "test-stream-secret"
+        value: "your-stream-secret-here"
     webhookSignatureSecret:
-      value: "cheese"
+      value: "your-webhook-signature-secret-here"
 
 deployments:
   auth:
