@@ -9,11 +9,11 @@ config:
   interledgerPayHost: http://pay.example.com
 
   redirectUrl: https://pay.example.com/finish
-  sessionCookieKeySecret: DATA
+  sessionCookieKeySecret: "REPLACE_WITH_SECURE_RANDOM_STRING"
   
   stripe:
-    publishableKey: pk_test_51Hxxxxxx
-    secretKeySecret: sk_test_51Hxxxxxx
+    publishableKey: pk_test_XXXXXXXXXXXXXXXXXXXX
+    secretKeySecret: sk_test_XXXXXXXXXXXXXXXXXXXX
 
 deployments:
   app:

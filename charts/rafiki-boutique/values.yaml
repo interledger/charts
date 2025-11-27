@@ -25,9 +25,9 @@ config:
     paymentPointer: "https://ilp.rafiki.money/boutique"
     
     database:
-      url: "postgres://boutique_backend:boutique_backend@postgres/boutique_backend"
+      url: "postgres://username:password@postgres-host/database_name"
       
-    privateKey: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1DNENBUUF3QlFZREsyVndCQ0lFSUkyNmxkZVNaeVQzMlA4QWhNNHFPaXhqdjNhODU1QjFCMUdhVWtDNmU2SisKLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQ=="
+    privateKey: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1DNENBUUF3QlFZREsyVndCQ0lFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K"
 
 deployments:
   backend:
