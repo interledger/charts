@@ -49,8 +49,8 @@ config:
   backend:
     shouldCreateSecrets: true  # Whether to create Kubernetes secrets
     aws:
-      accessKeyId: "AKIA**************"  # Replace with actual AWS access key
-      secretAccessKey: "REPLACE-WITH-ACTUAL-SECRET-KEY"  # Replace with actual secret
+      accessKeyId: "AKIAIOSFODNN7EXAMPLE"  # Replace with actual AWS access key
+      secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"  # Replace with actual secret
       region: "us-east-1"
       bucketName: "your-bucket-name"
       # ... other AWS settings

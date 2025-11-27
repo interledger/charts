@@ -40,7 +40,7 @@ tests:
           value: test-web-monetization-tools-backend
       - equal:
           path: data["aws.accessKeyId"]
-          value: "AKIA**************"
+          value: "AKIAIOSFODNN7EXAMPLE"
       - equal:
           path: data["aws.region"]
           value: "us-east-1"

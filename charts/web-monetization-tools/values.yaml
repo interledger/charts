@@ -13,7 +13,7 @@ config:
     openpayments:
       keyId: "00000000-0000-0000-0000-000000000000"
       walletAddress: "your-wallet-address"
-      secretPrivateKey: "REPLACE-WITH-ACTUAL-PRIVATE-KEY"
+      secretPrivateKey: "your-base64-encoded-private-key-here"
 
     urls:
       api: "https://your-backend-domain.example.com/"
@@ -28,12 +28,12 @@ config:
     shouldCreateSecrets: true
 
     aws:
-      accessKeyId: "AKIA**************"
+      accessKeyId: "AKIAIOSFODNN7EXAMPLE"
       region: "us-east-1"
       bucketName: "your-bucket-name"
       retryMaxAttempts: 3
       retryTimeout: 3000
-      secretAccessKey: "REPLACE-WITH-ACTUAL-SECRET-KEY"      
+      secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"      
 
 deployments:
   backend:

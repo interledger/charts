@@ -32,7 +32,7 @@ config:
 
     cookie:
       name: "testnet.cookie"
-      password: "testnet.cookie.password.super.secret.ilp"
+      password: "REPLACE_WITH_SECURE_COOKIE_PASSWORD"
       ttl: 2630000
 
     hosts:
@@ -43,16 +43,16 @@ config:
       auth: "http://rafiki-auth-test-service.interledger-test:3009"
 
     database:
-      url: "postgres://test:test@postgres-test-postgresql/test"
+      url: "postgres://username:password@postgres-host/database_name"
 
     redis:
       url: "redis://redis-test.interledger-test:6379"
 
     identity:
-      serverSecret: "58ba1bdc-e625-42da-bc90-bcea29b4ab8b"
+      serverSecret: "00000000-0000-0000-0000-000000000000"
 
     webhook:
-      signatureSecret: "A3F44B29-56B2-4C7F-ACA7-1A111C4A6B05"
+      signatureSecret: "00000000-0000-0000-0000-000000000000"
 
     interaction:
       cookieSameSite: "lax"
@@ -70,13 +70,13 @@ config:
     gatehub:
       env: "sandbox"
       accessKey: ""
-      secretKey: "aergaregaerg"
+      secretKey: ""
       accessSepaKey: ""
       secretSepaKey: ""
       gatewayUuid: "9358542e-9bd1-48bc-b869-8661f1a1827c"
       organizationId: ""
       sepaOrganizationId: ""
-      webhookSecret: "aergaerg"
+      webhookSecret: ""
       settlementWalletAddress: ""
       vault:
         eur: "a09a0a2c-1a3a-44c5-a1b9-603a6eea9341"

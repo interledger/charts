@@ -19,4 +19,4 @@ tests:
     asserts:
       - equal:
           path: data.DATABASE_DSN
-          value: postgresql://user:password@postgres:5432/dbname
+          value: postgresql://username:password@postgres-host:5432/database_name

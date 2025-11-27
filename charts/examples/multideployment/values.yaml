@@ -3,9 +3,9 @@ config:
   
   host: example.com
   
-  someSecret: ThisIsTopSecret
+  someSecret: "your-secret-value-here"
 
-  databaseDsn: postgresql://user:password@postgres:5432/dbname
+  databaseDsn: postgresql://username:password@postgres-host:5432/database_name
   redisUrl: redis://redis:63799
   logLevel: info
 
