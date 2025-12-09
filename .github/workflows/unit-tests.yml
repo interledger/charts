@@ -20,7 +20,7 @@ jobs:
             charts: ${{ steps.find_charts.outputs.charts }}
         steps:
         - name: Checkout code
-          uses: actions/checkout@v5
+          uses: actions/checkout@v6
         - name: Find charts
           id: find_charts
           run: |
@@ -49,7 +49,7 @@ jobs:
                 chart: ${{ fromJson(needs.find_charts.outputs.charts) }}
         steps:
         - name: Checkout code
-          uses: actions/checkout@v5
+          uses: actions/checkout@v6
         - name: Run Helm Unit Tests
           run: |
             echo "Running unit tests for chart: ${{ matrix.chart }}"
