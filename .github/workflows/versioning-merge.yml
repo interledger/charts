@@ -31,7 +31,7 @@ jobs:
 
     - name: Cache Helm binary
       id: cache-helm
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: /usr/local/bin/helm
         key: helm-v3.19.0-linux-amd64
