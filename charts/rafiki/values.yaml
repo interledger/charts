@@ -681,6 +681,8 @@ secretsMaps:
         valueRef: config.backend.webhookSignatureSecret.value
       - key: STREAM_SECRET
         valueRef: config.backend.ilp.streamSecret.value
+      - key: ADMIN_API_SECRET
+        valueRef: config.backend.admin.apiSecret.value
 
 # This chart supports the creation of an Ingress resource using the common ingress
 # chart from the common chart. The examples below should be modified to suit your
