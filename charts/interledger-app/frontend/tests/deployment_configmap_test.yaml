@@ -1,0 +1,50 @@
+suite: Wallet Frontend - Check configmap
+templates:
+  - configMap.server.yaml
+set:
+  fullnameOverride: wallet-frontend
+release:
+  name: wallet-frontend
+tests:
+  - it: 'should contain LOG_LEVEL in data'
+    set:
+      config:
+        log_level: "debug"
+    asserts:
+      - equal:
+          path: data.LOG_LEVEL
+          value: "debug"
+  - it: 'should contain LOG_PRETTY in data'
+    set:
+      config:
+        log_pretty: true
+    asserts:
+      - equal:
+          path: data.LOG_PRETTY
+          value: "true"
+  - it: 'should contain default LOG_PRETTY as false'
+    set:
+      config:
+        log_pretty: false
+    asserts:
+      - equal:
+          path: data.LOG_PRETTY
+          value: "false"
+  - it: 'should contain FYNBOS_ENV in data'
+    set:
+      config:
+        environment: "production"
+    asserts:
+      - equal:
+          path: data.FYNBOS_ENV
+          value: "production"
+  - it: 'should contain BACKEND_GRPC_URL in data'
+    set:
+      config:
+        backend:
+          grpc:
+            url: "http://backend:8443"
+    asserts:
+      - equal:
+          path: data.BACKEND_GRPC_URL
+          value: "http://backend:8443"

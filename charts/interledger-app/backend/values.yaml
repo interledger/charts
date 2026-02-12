@@ -49,6 +49,7 @@ database:
 config:
   environment: dev
   log_level: "info"
+  port: "8080"
   usd_ledger_id: "1"
   noop_equity_account_id: "00000000-0000-0000-0000-000000000000"
   google_oauth2_client_id: "google_oauth"
@@ -113,6 +114,10 @@ config:
     # note: what about account number etc?
 
   gatehub:
+    # Base URL for Gatehub API; must be set explicitly per environment.
+    # Example (local/mock): "http://mockgatehub:8080"
+    api_base_url: ""
+    widget_base_url: "https://mockgatehub.interledger.test"
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
     webhook_secret_ref: "gatehubWebhookSecret"
@@ -120,6 +125,8 @@ config:
 
     gateway_id_ref: "gatehubGatewayId"
     paywiser_euro_vault_id_ref: "gatehubPaywiserEuroVaultId"
+    card_app_id_ref: "gatehubCardAppID"
+    card_account_product_code: "PWSR_DEBP_2404"
 
   chimoney:
     webhook_secret_ref: "chimoneyWebhookSecret"
@@ -160,7 +167,9 @@ config:
     dsn_ref: "sentryDSN"
   
   pti: # FIANT configuration
+    base_url: "https://pti-base-url.com"
     jwk_ref: "ptiJwk"
+    public_key_jwk_ref: "ptiPublicKeyJwk"
     client_id_ref: "ptiClientID"
 
   redis_url_ref: "redisURL"
@@ -362,6 +371,11 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.gatehub.paywiser_euro_vault_id_ref }}"
+    -  name: GATEHUB_CARD_APP_ID
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.gatehub.card_app_id_ref }}"
     -  name: CHIMONEY_WEBHOOK_SECRET
        valueFrom:
           secretKeyRef:
@@ -382,6 +396,11 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.pti.client_id_ref }}"
+    -  name: PTI_PUBLIC_KEY_JWK
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.pti.public_key_jwk_ref }}"
     -  name: OTEL_EXPORTER_OTLP_HEADERS
        valueFrom:
           secretKeyRef:
@@ -648,6 +667,11 @@ worker:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.gatehub.paywiser_euro_vault_id_ref }}"            
+    -  name: GATEHUB_CARD_APP_ID
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.gatehub.card_app_id_ref }}"
     -  name: CHIMONEY_WEBHOOK_SECRET
        valueFrom:
           secretKeyRef:
@@ -668,6 +692,11 @@ worker:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.pti.client_id_ref }}"
+    -  name: PTI_PUBLIC_KEY_JWK
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.pti.public_key_jwk_ref }}"
     -  name: OTEL_EXPORTER_OTLP_HEADERS
        valueFrom:
           secretKeyRef:
@@ -762,3 +791,13 @@ configMaps:
         valueRef: config.region_blocking.allowed_wallet_ids
       - key: GATEHUB_FALLBACK_WEBHOOK_URL
         valueRef: config.gatehub.fallback_webhook_url
+      - key: GATEHUB_API_BASE_URL
+        valueRef: config.gatehub.api_base_url
+      - key: GATEHUB_WIDGET_BASE_URL
+        valueRef: config.gatehub.widget_base_url
+      - key: GATEHUB_CARD_ACCOUNT_PRODUCT_CODE
+        valueRef: config.gatehub.card_account_product_code
+      - key: PTI_BASE_URL
+        valueRef: config.pti.base_url
+      - key: PORT
+        valueRef: config.port
