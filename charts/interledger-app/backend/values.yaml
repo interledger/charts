@@ -114,7 +114,9 @@ config:
     # note: what about account number etc?
 
   gatehub:
-    api_base_url: "http://mockgatehub:8080"
+    # Base URL for Gatehub API; must be set explicitly per environment.
+    # Example (local/mock): "http://mockgatehub:8080"
+    api_base_url: ""
     widget_base_url: "https://mockgatehub.interledger.test"
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
