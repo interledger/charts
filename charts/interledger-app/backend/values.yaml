@@ -114,14 +114,16 @@ config:
     # note: what about account number etc?
 
   gatehub:
-    # Base URL for Gatehub API; must be set explicitly per environment.
+    # Base URLs for Gatehub APIs; must be set explicitly per environment.
+    # Example (sandbox): "https://api.sandbox.gatehub.net"
     # Example (local/mock): "http://mockgatehub:8080"
     api_base_url: ""
-    widget_base_url: "https://mockgatehub.interledger.test"
+    onboarding_base_url: ""
+    on_off_ramp_base_url: ""
+    fallback_webhook_url: ""
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
     webhook_secret_ref: "gatehubWebhookSecret"
-    # fallback_webhook_url: "https://example.com/gatehub/webhooks"
 
     gateway_id_ref: "gatehubGatewayId"
     paywiser_euro_vault_id_ref: "gatehubPaywiserEuroVaultId"
@@ -800,12 +802,14 @@ configMaps:
         valueRef: config.region_blocking.blocked_regions
       - key: ALLOWED_WALLET_IDS
         valueRef: config.region_blocking.allowed_wallet_ids
-      - key: GATEHUB_FALLBACK_WEBHOOK_URL
-        valueRef: config.gatehub.fallback_webhook_url
       - key: GATEHUB_API_BASE_URL
         valueRef: config.gatehub.api_base_url
-      - key: GATEHUB_WIDGET_BASE_URL
-        valueRef: config.gatehub.widget_base_url
+      - key: GATEHUB_ONBOARDING_BASE_URL
+        valueRef: config.gatehub.onboarding_base_url
+      - key: GATEHUB_ON_OFF_RAMP_BASE_URL
+        valueRef: config.gatehub.on_off_ramp_base_url
+      - key: GATEHUB_FALLBACK_WEBHOOK_URL
+        valueRef: config.gatehub.fallback_webhook_url
       - key: GATEHUB_CARD_ACCOUNT_PRODUCT_CODE
         valueRef: config.gatehub.card_account_product_code
       - key: PTI_BASE_URL

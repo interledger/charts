@@ -38,15 +38,24 @@ tests:
       - equal:
           path: data.GATEHUB_API_BASE_URL
           value: "http://mockgatehub:8080"
-  - it: 'should contain GATEHUB_WIDGET_BASE_URL in data'
+  - it: 'should contain GATEHUB_ONBOARDING_BASE_URL in data'
     set:
       config:
         gatehub:
-          widget_base_url: "https://mockgatehub.interledger.test"
+          onboarding_base_url: "https://onboarding.sandbox.gatehub.net"
     asserts:
       - equal:
-          path: data.GATEHUB_WIDGET_BASE_URL
-          value: "https://mockgatehub.interledger.test"
+          path: data.GATEHUB_ONBOARDING_BASE_URL
+          value: "https://onboarding.sandbox.gatehub.net"
+  - it: 'should contain GATEHUB_ON_OFF_RAMP_BASE_URL in data'
+    set:
+      config:
+        gatehub:
+          on_off_ramp_base_url: "https://managed-ramp.sandbox.gatehub.net"
+    asserts:
+      - equal:
+          path: data.GATEHUB_ON_OFF_RAMP_BASE_URL
+          value: "https://managed-ramp.sandbox.gatehub.net"
   - it: 'should contain GATEHUB_CARD_ACCOUNT_PRODUCT_CODE in data'
     set:
       config:
