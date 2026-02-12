@@ -8,6 +8,9 @@ imageOverride:
   tag: v1.1.0
 
 config:
+  log_level: "info"
+  log_pretty: false
+  
   backend:
     grpc:
       url: "http://wallet-backend-service:8443"
@@ -37,6 +40,8 @@ config:
   sentry_dsn_ref: sentryDSN
 
   segment_api_key_ref: segmentAPIKey
+
+  dato_api_token_ref: datoApiToken
 
   rafiki:
     auth:
@@ -141,6 +146,11 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: '{{ .Values.config.redis.url_ref }}'
+    - name: DATO_API_TOKEN
+      valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: '{{ .Values.config.dato_api_token_ref }}'
   ports:
     - name: http
       containerPort: 3000
@@ -177,3 +187,7 @@ configMaps:
         valueRef: config.backend.grpc.url
       - key: FYNBOS_ENV
         valueRef: config.environment
+      - key: LOG_LEVEL
+        valueRef: config.log_level
+      - key: LOG_PRETTY
+        valueRef: config.log_pretty
