@@ -29,3 +29,47 @@ tests:
       - equal:
           path: data.ALLOWED_WALLET_IDS
           value: "wallet1,wallet2"
+  - it: 'should contain GATEHUB_API_BASE_URL in data'
+    set:
+      config:
+        gatehub:
+          api_base_url: "http://mockgatehub:8080"
+    asserts:
+      - equal:
+          path: data.GATEHUB_API_BASE_URL
+          value: "http://mockgatehub:8080"
+  - it: 'should contain GATEHUB_WIDGET_BASE_URL in data'
+    set:
+      config:
+        gatehub:
+          widget_base_url: "https://mockgatehub.interledger.test"
+    asserts:
+      - equal:
+          path: data.GATEHUB_WIDGET_BASE_URL
+          value: "https://mockgatehub.interledger.test"
+  - it: 'should contain GATEHUB_CARD_ACCOUNT_PRODUCT_CODE in data'
+    set:
+      config:
+        gatehub:
+          card_account_product_code: "PWSR_DEBP_2404"
+    asserts:
+      - equal:
+          path: data.GATEHUB_CARD_ACCOUNT_PRODUCT_CODE
+          value: "PWSR_DEBP_2404"
+  - it: 'should contain PTI_BASE_URL in data'
+    set:
+      config:
+        pti:
+          base_url: "https://pti-base-url.com"
+    asserts:
+      - equal:
+          path: data.PTI_BASE_URL
+          value: "https://pti-base-url.com"
+  - it: 'should contain PORT in data'
+    set:
+      config:
+        port: "8080"
+    asserts:
+      - equal:
+          path: data.PORT
+          value: "8080"
