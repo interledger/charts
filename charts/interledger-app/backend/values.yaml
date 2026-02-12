@@ -121,6 +121,10 @@ config:
     onboarding_base_url: ""
     on_off_ramp_base_url: ""
     fallback_webhook_url: ""
+    # Gatehub client IDs for sandbox (can be overridden per environment)
+    on_off_ramp_client_id: ""
+    onboarding_client_id: ""
+    exchange_client_id: ""
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
     webhook_secret_ref: "gatehubWebhookSecret"
@@ -808,6 +812,12 @@ configMaps:
         valueRef: config.gatehub.onboarding_base_url
       - key: GATEHUB_ON_OFF_RAMP_BASE_URL
         valueRef: config.gatehub.on_off_ramp_base_url
+      - key: GATEHUB_ON_OFF_RAMP_CLIENT_ID
+        valueRef: config.gatehub.on_off_ramp_client_id
+      - key: GATEHUB_ONBOARDING_CLIENT_ID
+        valueRef: config.gatehub.onboarding_client_id
+      - key: GATEHUB_EXCHANGE_CLIENT_ID
+        valueRef: config.gatehub.exchange_client_id
       - key: GATEHUB_FALLBACK_WEBHOOK_URL
         valueRef: config.gatehub.fallback_webhook_url
       - key: GATEHUB_CARD_ACCOUNT_PRODUCT_CODE
