@@ -56,6 +56,33 @@ tests:
       - equal:
           path: data.GATEHUB_ON_OFF_RAMP_BASE_URL
           value: "https://managed-ramp.sandbox.gatehub.net"
+  - it: 'should contain GATEHUB_ON_OFF_RAMP_CLIENT_ID in data'
+    set:
+      config:
+        gatehub:
+          on_off_ramp_client_id: "f8119dfd-e563-44ee-9ae2-1e60a4fce74f"
+    asserts:
+      - equal:
+          path: data.GATEHUB_ON_OFF_RAMP_CLIENT_ID
+          value: "f8119dfd-e563-44ee-9ae2-1e60a4fce74f"
+  - it: 'should contain GATEHUB_ONBOARDING_CLIENT_ID in data'
+    set:
+      config:
+        gatehub:
+          onboarding_client_id: "4df24d1b-5796-4eec-951b-21699d61b970"
+    asserts:
+      - equal:
+          path: data.GATEHUB_ONBOARDING_CLIENT_ID
+          value: "4df24d1b-5796-4eec-951b-21699d61b970"
+  - it: 'should contain GATEHUB_EXCHANGE_CLIENT_ID in data'
+    set:
+      config:
+        gatehub:
+          exchange_client_id: "4e28d4df-22d7-414c-97a3-d71956df29ba"
+    asserts:
+      - equal:
+          path: data.GATEHUB_EXCHANGE_CLIENT_ID
+          value: "4e28d4df-22d7-414c-97a3-d71956df29ba"
   - it: 'should contain GATEHUB_CARD_ACCOUNT_PRODUCT_CODE in data'
     set:
       config:
