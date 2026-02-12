@@ -125,7 +125,7 @@ config:
 
     gateway_id_ref: "gatehubGatewayId"
     paywiser_euro_vault_id_ref: "gatehubPaywiserEuroVaultId"
-    card_app_id_ref: "gatehubCardAppID"
+    card_app_id_ref: "gatehubCardAppId"
     card_account_product_code: "PWSR_DEBP_2404"
 
   chimoney:
@@ -168,6 +168,7 @@ config:
   
   pti: # FIANT configuration
     base_url: "https://pti-base-url.com"
+    base_url_ref: "ptiBaseURL"
     jwk_ref: "ptiJwk"
     public_key_jwk_ref: "ptiPublicKeyJwk"
     client_id_ref: "ptiClientID"
@@ -386,6 +387,11 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.chimoney.token_ref }}"
+    -  name: PTI_BASE_URL
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.pti.base_url_ref }}"
     -  name: PTI_JWK
        valueFrom:
           secretKeyRef:
@@ -682,6 +688,11 @@ worker:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.chimoney.token_ref }}"
+    -  name: PTI_BASE_URL
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.pti.base_url_ref }}"
     -  name: PTI_JWK
        valueFrom:
           secretKeyRef:
