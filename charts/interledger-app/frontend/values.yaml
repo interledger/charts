@@ -151,6 +151,17 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: '{{ .Values.config.dato_api_token_ref }}'
+    - name: LOG_LEVEL
+      valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-server'
+            key: LOG_LEVEL
+    - name: LOG_PRETTY
+      valueFrom:
+          configMapKeyRef:
+            name: '{{ include "common.fullname" . }}-server'
+            key: LOG_PRETTY
+      
   ports:
     - name: http
       containerPort: 3000
