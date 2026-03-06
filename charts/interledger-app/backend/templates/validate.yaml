@@ -1,0 +1,24 @@
+{{- if .Values.config.gatehub.enabled -}}
+	{{- $requiredGatehubFields := list
+		(dict "path" "config.gatehub.api_base_url" "value" .Values.config.gatehub.api_base_url)
+		(dict "path" "config.gatehub.onboarding_base_url" "value" .Values.config.gatehub.onboarding_base_url)
+		(dict "path" "config.gatehub.on_off_ramp_base_url" "value" .Values.config.gatehub.on_off_ramp_base_url)
+		(dict "path" "config.gatehub.fallback_webhook_url" "value" .Values.config.gatehub.fallback_webhook_url)
+		(dict "path" "config.gatehub.organization_id" "value" .Values.config.gatehub.organization_id)
+		(dict "path" "config.gatehub.on_off_ramp_client_id" "value" .Values.config.gatehub.on_off_ramp_client_id)
+		(dict "path" "config.gatehub.onboarding_client_id" "value" .Values.config.gatehub.onboarding_client_id)
+		(dict "path" "config.gatehub.exchange_client_id" "value" .Values.config.gatehub.exchange_client_id)
+		(dict "path" "config.gatehub.card_account_product_code" "value" .Values.config.gatehub.card_account_product_code)
+	-}}
+
+	{{- $missingFields := list -}}
+	{{- range $requiredGatehubFields -}}
+		{{- if eq (trim (default "" .value)) "" -}}
+			{{- $missingFields = append $missingFields .path -}}
+		{{- end -}}
+	{{- end -}}
+
+	{{- if gt (len $missingFields) 0 -}}
+		{{- fail (printf "config.gatehub.enabled is true, but the following required values are empty: %s" (join ", " $missingFields)) -}}
+	{{- end -}}
+{{- end -}}
