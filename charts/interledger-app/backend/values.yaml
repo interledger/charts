@@ -114,7 +114,7 @@ config:
     # note: what about account number etc?
 
   gatehub:
-    enabled: true
+    enabled: true # controls helm validation of gatehub configuration
 
     # Base URLs for Gatehub APIs; must be set explicitly per environment.
     # Example (sandbox): "https://api.sandbox.gatehub.net"
