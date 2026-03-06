@@ -1,0 +1,47 @@
+suite: Interledger App - Gatehub validation
+templates:
+  - validate.yaml
+set:
+  fullnameOverride: wallet-backend
+release:
+  name: wallet-backend
+# NOTE: Helm-unittest can only test successful template rendering.
+# Failure cases (template errors when required fields are empty) are tested
+# separately using manual helm template commands. See scripts in the repo for
+# comprehensive validation testing that includes both success and failure scenarios.
+tests:
+  - it: 'should succeed when gatehub is enabled with all required fields populated'
+    set:
+      config:
+        gatehub:
+          enabled: true
+          api_base_url: "https://api.gatehub.net"
+          onboarding_base_url: "https://onboarding.gatehub.net"
+          on_off_ramp_base_url: "https://ramp.gatehub.net"
+          fallback_webhook_url: "https://webhook.example.com"
+          organization_id: "org-123"
+          on_off_ramp_client_id: "client-1"
+          onboarding_client_id: "client-2"
+          exchange_client_id: "client-3"
+          card_account_product_code: "CARD-001"
+    asserts:
+      - isNull:
+          path: spec
+
+  - it: 'should succeed when gatehub is disabled regardless of empty fields'
+    set:
+      config:
+        gatehub:
+          enabled: false
+          api_base_url: ""
+          onboarding_base_url: ""
+          on_off_ramp_base_url: ""
+          fallback_webhook_url: ""
+          organization_id: ""
+          on_off_ramp_client_id: ""
+          onboarding_client_id: ""
+          exchange_client_id: ""
+          card_account_product_code: ""
+    asserts:
+      - isNull:
+          path: spec
