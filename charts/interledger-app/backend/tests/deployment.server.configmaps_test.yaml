@@ -109,3 +109,12 @@ tests:
       - equal:
           path: data.PORT
           value: "8080"
+  - it: 'should contain GATEHUB_ORGANIZATION_ID in data'
+    set:
+      config:
+        gatehub:
+          organization_id: "SOME ORG ID"
+    asserts:
+      - equal:
+          path: data.GATEHUB_ORGANIZATION_ID
+          value: "SOME ORG ID"

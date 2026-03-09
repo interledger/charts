@@ -114,6 +114,8 @@ config:
     # note: what about account number etc?
 
   gatehub:
+    enabled: true # controls helm validation of gatehub configuration
+
     # Base URLs for Gatehub APIs; must be set explicitly per environment.
     # Example (sandbox): "https://api.sandbox.gatehub.net"
     # Example (local/mock): "http://mockgatehub:8080"
@@ -121,18 +123,20 @@ config:
     onboarding_base_url: ""
     on_off_ramp_base_url: ""
     fallback_webhook_url: ""
-    # Gatehub client IDs for sandbox (can be overridden per environment)
+
+    organization_id: ""
     on_off_ramp_client_id: ""
     onboarding_client_id: ""
     exchange_client_id: ""
+    card_account_product_code: ""
+
+    # References to Kubernetes secrets where sensitive Gatehub configuration values are stored
     app_id_ref: "gatehubAppID"
     secret_ref: "gatehubSecret"
     webhook_secret_ref: "gatehubWebhookSecret"
-
     gateway_id_ref: "gatehubGatewayId"
     paywiser_euro_vault_id_ref: "gatehubPaywiserEuroVaultId"
     card_app_id_ref: "gatehubCardAppId"
-    card_account_product_code: "PWSR_DEBP_2404"
 
   chimoney:
     webhook_secret_ref: "chimoneyWebhookSecret"
@@ -822,6 +826,8 @@ configMaps:
         valueRef: config.gatehub.fallback_webhook_url
       - key: GATEHUB_CARD_ACCOUNT_PRODUCT_CODE
         valueRef: config.gatehub.card_account_product_code
+      - key: GATEHUB_ORGANIZATION_ID
+        valueRef: config.gatehub.organization_id
       - key: PTI_BASE_URL
         valueRef: config.pti.base_url
       - key: PORT
