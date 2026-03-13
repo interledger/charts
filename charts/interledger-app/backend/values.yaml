@@ -55,6 +55,9 @@ config:
   google_oauth2_client_id: "google_oauth"
   authorisation_port: "8082"
   open_payments_port: "8081"
+  apple_app_id: ""
+  android_package_name: ""
+  android_sha256: ""
   
   admin:
     policy_aud_ref: adminPortalCloudFlarePolicyAud
@@ -125,6 +128,10 @@ config:
     fallback_webhook_url: ""
 
     organization_id: ""
+    sending_user_id: ""
+    sending_user_address: ""
+    eur_ops_account: ""
+    eur_ops_ledger_id: ""
     on_off_ramp_client_id: ""
     onboarding_client_id: ""
     exchange_client_id: ""
@@ -170,6 +177,9 @@ config:
     key_ref: "cdnKey"
   
   xago:
+    api_base_url: ""
+    identity_base_url: ""
+    policy_id: ""
     api_secret_ref: "xagoApiSecret"
     api_public_key_ref: "xagoApiPublicKey"
 
@@ -177,6 +187,7 @@ config:
     dsn_ref: "sentryDSN"
   
   pti: # FIANT configuration
+    enabled: false
     base_url: "https://pti-base-url.com"
     base_url_ref: "ptiBaseURL"
     jwk_ref: "ptiJwk"
@@ -828,6 +839,28 @@ configMaps:
         valueRef: config.gatehub.card_account_product_code
       - key: GATEHUB_ORGANIZATION_ID
         valueRef: config.gatehub.organization_id
+      - key: GATEHUB_SENDING_USER_ID
+        valueRef: config.gatehub.sending_user_id
+      - key: GATEHUB_SENDING_USER_ADDRESS
+        valueRef: config.gatehub.sending_user_address
+      - key: GATEHUB_EUR_OPS_ACCOUNT
+        valueRef: config.gatehub.eur_ops_account
+      - key: GATEHUB_EUR_OPS_LEDGER_ID
+        valueRef: config.gatehub.eur_ops_ledger_id
+      - key: XAGO_API_BASE_URL
+        valueRef: config.xago.api_base_url
+      - key: XAGO_IDENTITY_BASE_URL
+        valueRef: config.xago.identity_base_url
+      - key: XAGO_POLICY_ID
+        valueRef: config.xago.policy_id
+      - key: PTI_ENABLED
+        valueRef: config.pti.enabled
+      - key: APPLE_APP_ID
+        valueRef: config.apple_app_id
+      - key: ANDROID_PACKAGE_NAME
+        valueRef: config.android_package_name
+      - key: ANDROID_SHA256
+        valueRef: config.android_sha256
       - key: PTI_BASE_URL
         valueRef: config.pti.base_url
       - key: PORT

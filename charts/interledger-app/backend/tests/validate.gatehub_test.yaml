@@ -10,9 +10,19 @@ release:
 # separately using manual helm template commands. See scripts in the repo for
 # comprehensive validation testing that includes both success and failure scenarios.
 tests:
-  - it: 'should succeed when gatehub is enabled with all required fields populated'
+  - it: 'should succeed when gatehub and pti are enabled with all required fields populated'
     set:
       config:
+        apple_app_id: "123456789"
+        android_package_name: "network.interledger.wallet"
+        android_sha256: "AA:BB:CC:DD"
+        xago:
+          api_base_url: "https://api.xago.io"
+          identity_base_url: "https://identity.xago.io"
+          policy_id: "policy-1"
+        pti:
+          enabled: true
+          base_url: "https://pti-base-url.com"
         gatehub:
           enabled: true
           api_base_url: "https://api.gatehub.net"
@@ -20,6 +30,10 @@ tests:
           on_off_ramp_base_url: "https://ramp.gatehub.net"
           fallback_webhook_url: "https://webhook.example.com"
           organization_id: "org-123"
+          sending_user_id: "user-123"
+          sending_user_address: "$rafiki.example/user-123"
+          eur_ops_account: "ops-account-1"
+          eur_ops_ledger_id: "42"
           on_off_ramp_client_id: "client-1"
           onboarding_client_id: "client-2"
           exchange_client_id: "client-3"
@@ -28,9 +42,19 @@ tests:
       - isNull:
           path: spec
 
-  - it: 'should succeed when gatehub is disabled regardless of empty fields'
+  - it: 'should succeed when gatehub and pti are disabled with gatehub/pti fields empty'
     set:
       config:
+        apple_app_id: "123456789"
+        android_package_name: "network.interledger.wallet"
+        android_sha256: "AA:BB:CC:DD"
+        xago:
+          api_base_url: "https://api.xago.io"
+          identity_base_url: "https://identity.xago.io"
+          policy_id: "policy-1"
+        pti:
+          enabled: false
+          base_url: ""
         gatehub:
           enabled: false
           api_base_url: ""
@@ -38,6 +62,10 @@ tests:
           on_off_ramp_base_url: ""
           fallback_webhook_url: ""
           organization_id: ""
+          sending_user_id: ""
+          sending_user_address: ""
+          eur_ops_account: ""
+          eur_ops_ledger_id: ""
           on_off_ramp_client_id: ""
           onboarding_client_id: ""
           exchange_client_id: ""
