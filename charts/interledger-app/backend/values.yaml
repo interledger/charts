@@ -134,9 +134,9 @@ config:
 
     # Gatehub organization UUID used for org-level configuration updates.
     organization_id: ""
-    # Managed Gatehub user UUID used for specific backfill/payment operations.
+    # Managed Gatehub user UUID used for specific backfill/payment operations. Used for "backfilling".
     sending_user_id: ""
-    # Sending wallet address tied to the managed Gatehub sending user.
+    # Sending wallet address tied to the managed Gatehub sending user. Used for "backfilling".
     sending_user_address: ""
     # Internal EUR operations account ID used in wallet ledger movements.
     eur_ops_account: ""
