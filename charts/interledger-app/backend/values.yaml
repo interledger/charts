@@ -117,32 +117,52 @@ config:
     # note: what about account number etc?
 
   gatehub:
+    # Toggle Gatehub-specific validation and runtime config requirements.
     enabled: true # controls helm validation of gatehub configuration
 
     # Base URLs for Gatehub APIs; must be set explicitly per environment.
     # Example (sandbox): "https://api.sandbox.gatehub.net"
     # Example (local/mock): "http://mockgatehub:8080"
+    # Base API URL used for Gatehub auth/core/id API calls.
     api_base_url: ""
+    # Frontend widget URL used to build onboarding links for users.
     onboarding_base_url: ""
+    # Frontend widget URL used to build deposit/withdraw on-off-ramp links.
     on_off_ramp_base_url: ""
+    # Secondary webhook endpoint for unknown Gatehub users (cards fallback).
     fallback_webhook_url: ""
 
+    # Gatehub organization UUID used for org-level configuration updates.
     organization_id: ""
+    # Managed Gatehub user UUID used for specific backfill/payment operations.
     sending_user_id: ""
+    # Sending wallet address tied to the managed Gatehub sending user.
     sending_user_address: ""
+    # Internal EUR operations account ID used in wallet ledger movements.
     eur_ops_account: ""
+    # Internal EUR ledger ID used for Gatehub reserve/assign posting.
     eur_ops_ledger_id: ""
+    # OAuth client ID for Gatehub on-off-ramp token issuance.
     on_off_ramp_client_id: ""
+    # OAuth client ID for Gatehub onboarding token issuance.
     onboarding_client_id: ""
+    # OAuth client ID for Gatehub exchange token issuance.
     exchange_client_id: ""
+    # Gatehub card product code applied when creating card accounts/cards.
     card_account_product_code: ""
 
     # References to Kubernetes secrets where sensitive Gatehub configuration values are stored
+    # Secret key containing Gatehub app ID header value.
     app_id_ref: "gatehubAppID"
+    # Secret key containing Gatehub API signing secret.
     secret_ref: "gatehubSecret"
+    # Secret key containing hex webhook signing secret for validation.
     webhook_secret_ref: "gatehubWebhookSecret"
+    # Secret key containing Gatehub gateway UUID for user-hub linking.
     gateway_id_ref: "gatehubGatewayId"
+    # Secret key containing EUR vault UUID used in hosted transactions.
     paywiser_euro_vault_id_ref: "gatehubPaywiserEuroVaultId"
+    # Secret key containing Gatehub card app ID header value.
     card_app_id_ref: "gatehubCardAppId"
 
   chimoney:
@@ -177,21 +197,32 @@ config:
     key_ref: "cdnKey"
   
   xago:
+    # Base URL for Xago business API endpoints.
     api_base_url: ""
+    # Base URL for Xago identity/login endpoint.
     identity_base_url: ""
+    # Xago login policy ID used to request access tokens.
     policy_id: ""
+    # Secret key containing Xago API secret key credential.
     api_secret_ref: "xagoApiSecret"
+    # Secret key containing Xago API public key credential.
     api_public_key_ref: "xagoApiPublicKey"
 
   sentry:
     dsn_ref: "sentryDSN"
   
   pti: # FIANT configuration
+    # Enables PTI runtime integrations and strict PTI env checks.
     enabled: false
+    # Non-secret PTI API base URL fallback for configmap-driven setups.
     base_url: "https://pti-base-url.com"
+    # Secret key containing PTI API base URL (preferred runtime source).
     base_url_ref: "ptiBaseURL"
+    # Secret key containing PTI private JWK used for request/webhook crypto.
     jwk_ref: "ptiJwk"
+    # Secret key containing PTI public JWK used for webhook signature checks.
     public_key_jwk_ref: "ptiPublicKeyJwk"
+    # Secret key containing PTI client UUID for API/webhook validation.
     client_id_ref: "ptiClientID"
 
   redis_url_ref: "redisURL"
