@@ -1,0 +1,35 @@
+suite: Wallet Admin - ConfigMap generation
+templates:
+  - configMap.yaml
+set:
+  fullnameOverride: wallet-admin
+release:
+  name: wallet-admin
+tests:
+- it: 'Should create a configMap with the correct name'
+  template: configMap.yaml
+  documentSelector:
+    path: kind
+    value: ConfigMap
+  asserts:
+    - equal:
+        path: metadata.name
+        value: wallet-admin-config
+- it: 'Should include BACKEND_GRPC_URL in the configMap data'
+  set:
+    config:
+      backend:
+        grpcUrl: "http://backend-grpc:50051"
+  asserts:
+    - equal:
+        path: data.BACKEND_GRPC_URL
+        value: "http://backend-grpc:50051"
+- it: 'Should include KRATOS_ADMIN_URL in the configMap data'
+  set:
+    config:
+      kratos:
+        adminUrl: "http://kratos-admin:4433"
+  asserts:
+    - equal:
+        path: data.KRATOS_ADMIN_URL
+        value: "http://kratos-admin:4433"

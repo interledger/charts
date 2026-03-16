@@ -9,13 +9,20 @@ imageOverride::
 config:
   environment: prod
 
+  kratos:
+    # URL for the Kratos Admin API, used by the admin portal to manage users. Should
+    # be set to the internal URL of the Kratos Admin API service.
+    adminUrl: ""
+
   backend:
-    grpcUrl: "wallet-backend-service:8448"
+    # typically wallet-backend-service:8448
+    grpcUrl: ""
 
 server:
   name: server
   enabled: true
-  imagePullPolicy: Always  
+  imagePullPolicy: Always
+  minReadySeconds: 10
   replicaCount: 2
   serviceAccount:
     create: false
@@ -75,3 +82,5 @@ configMaps:
     contentMap:
       - key: BACKEND_GRPC_URL
         valueRef: config.backend.grpcUrl
+      - key: KRATOS_ADMIN_URL
+        valueRef: config.kratos.adminUrl
