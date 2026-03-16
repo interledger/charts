@@ -229,6 +229,7 @@ config:
 
 server:
   enabled: true
+  minReadySeconds: 10
   replicaCount: 2
   name: server
   imagePullPolicy: Always
@@ -532,6 +533,7 @@ server:
 worker:
   enabled: true
   replicaCount: 2
+  minReadySeconds: 10
   name: worker
   imagePullPolicy: Always
   args:
