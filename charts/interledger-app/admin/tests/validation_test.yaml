@@ -1,0 +1,51 @@
+suite: Wallet Admin - Required field validation
+templates:
+  - validation.yaml
+set:
+  fullnameOverride: wallet-admin
+release:
+  name: wallet-admin
+tests:
+  - it: 'should succeed when all required fields are populated'
+    set:
+      config:
+        kratos:
+          adminUrl: "http://kratos-admin:4434"
+        backend:
+          grpcUrl: "wallet-backend-service:8448"
+    asserts:
+      - isNull:
+          path: spec
+
+  - it: 'should fail when config.kratos.adminUrl is empty'
+    set:
+      config:
+        kratos:
+          adminUrl: ""
+        backend:
+          grpcUrl: "wallet-backend-service:8448"
+    asserts:
+      - failedTemplate:
+          errorMessage: "The following required values are empty: config.kratos.adminUrl"
+
+  - it: 'should fail when config.backend.grpcUrl is empty'
+    set:
+      config:
+        kratos:
+          adminUrl: "http://kratos-admin:4434"
+        backend:
+          grpcUrl: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "The following required values are empty: config.backend.grpcUrl"
+
+  - it: 'should fail when all required fields are empty'
+    set:
+      config:
+        kratos:
+          adminUrl: ""
+        backend:
+          grpcUrl: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "The following required values are empty: config.kratos.adminUrl, config.backend.grpcUrl"

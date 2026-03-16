@@ -1,0 +1,15 @@
+{{- $requiredFields := list
+  (dict "path" "config.kratos.adminUrl" "value" .Values.config.kratos.adminUrl)
+  (dict "path" "config.backend.grpcUrl" "value" .Values.config.backend.grpcUrl)
+-}}
+
+{{- $missingFields := list -}}
+{{- range $requiredFields -}}
+  {{- if eq (trim (default "" .value)) "" -}}
+    {{- $missingFields = append $missingFields .path -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $missingFields) 0 -}}
+  {{- fail (printf "The following required values are empty: %s" (join ", " $missingFields)) -}}
+{{- end -}}
