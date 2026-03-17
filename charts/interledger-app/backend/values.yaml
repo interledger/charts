@@ -130,6 +130,7 @@ config:
     # Frontend widget URL used to build deposit/withdraw on-off-ramp links.
     on_off_ramp_base_url: ""
     # Secondary webhook endpoint for unknown Gatehub users (cards fallback).
+    # This field is optional.
     fallback_webhook_url: ""
 
     # Gatehub organization UUID used for org-level configuration updates.
