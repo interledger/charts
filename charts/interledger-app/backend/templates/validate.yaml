@@ -12,7 +12,6 @@
 		(dict "path" "config.gatehub.api_base_url" "value" .Values.config.gatehub.api_base_url)
 		(dict "path" "config.gatehub.onboarding_base_url" "value" .Values.config.gatehub.onboarding_base_url)
 		(dict "path" "config.gatehub.on_off_ramp_base_url" "value" .Values.config.gatehub.on_off_ramp_base_url)
-		(dict "path" "config.gatehub.fallback_webhook_url" "value" .Values.config.gatehub.fallback_webhook_url)
 		(dict "path" "config.gatehub.organization_id" "value" .Values.config.gatehub.organization_id)
 		(dict "path" "config.gatehub.sending_user_id" "value" .Values.config.gatehub.sending_user_id)
 		(dict "path" "config.gatehub.sending_user_address" "value" .Values.config.gatehub.sending_user_address)
