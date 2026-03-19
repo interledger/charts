@@ -21,10 +21,10 @@ tests:
           identity_base_url: "https://identity.xago.io"
           policy_id: "policy-1"
         pti:
-          enabled: true
+          enabled: "true"
           base_url: "https://pti-base-url.com"
         gatehub:
-          enabled: true
+          enabled: "true"
           api_base_url: "https://api.gatehub.net"
           onboarding_base_url: "https://onboarding.gatehub.net"
           on_off_ramp_base_url: "https://ramp.gatehub.net"
@@ -52,10 +52,10 @@ tests:
           identity_base_url: "https://identity.xago.io"
           policy_id: "policy-1"
         pti:
-          enabled: false
+          enabled: "false"
           base_url: ""
         gatehub:
-          enabled: false
+          enabled: "false"
           api_base_url: ""
           onboarding_base_url: ""
           on_off_ramp_base_url: ""

@@ -118,7 +118,7 @@ config:
 
   gatehub:
     # Toggle Gatehub-specific validation and runtime config requirements.
-    enabled: true # controls helm validation of gatehub configuration
+    enabled: "true" # controls helm validation of gatehub configuration
 
     # Base URLs for Gatehub APIs; must be set explicitly per environment.
     # Example (sandbox): "https://api.sandbox.gatehub.net"
@@ -214,7 +214,7 @@ config:
   
   pti: # FIANT configuration
     # Enables PTI runtime integrations and strict PTI env checks.
-    enabled: false
+    enabled: "false"
     # Non-secret PTI API base URL fallback for configmap-driven setups.
     base_url: "https://pti-base-url.com"
     # Secret key containing PTI private JWK used for request/webhook crypto.
