@@ -7,7 +7,7 @@
 	(dict "path" "config.android_sha256" "value" .Values.config.android_sha256)
 -}}
 
-{{- if .Values.config.gatehub.enabled -}}
+{{- if eq .Values.config.gatehub.enabled "true" -}}
 	{{- $requiredFields = concat $requiredFields (list
 		(dict "path" "config.gatehub.api_base_url" "value" .Values.config.gatehub.api_base_url)
 		(dict "path" "config.gatehub.onboarding_base_url" "value" .Values.config.gatehub.onboarding_base_url)
@@ -24,7 +24,7 @@
 	) -}}
 {{- end -}}
 
-{{- if .Values.config.pti.enabled -}}
+{{- if eq .Values.config.pti.enabled "true" -}}
 	{{- $requiredFields = concat $requiredFields (list
 		(dict "path" "config.pti.base_url" "value" .Values.config.pti.base_url)
 	) -}}
