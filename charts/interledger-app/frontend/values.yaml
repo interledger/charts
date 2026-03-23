@@ -41,8 +41,6 @@ config:
 
   segment_api_key_ref: segmentAPIKey
 
-  dato_api_token_ref: datoApiToken
-
   rafiki:
     auth:
       endpoint: http://rafiki-auth:3003/graphql
@@ -146,11 +144,6 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: '{{ .Values.config.redis.url_ref }}'
-    - name: DATO_API_TOKEN
-      valueFrom:
-          secretKeyRef:
-            name: '{{ include "common.fullname" . }}'
-            key: '{{ .Values.config.dato_api_token_ref }}'
     - name: LOG_LEVEL
       valueFrom:
           configMapKeyRef:
