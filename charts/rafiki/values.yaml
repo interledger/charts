@@ -6,19 +6,22 @@ imageOverride:
 
 config:
   frontend:
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
     logLevel: info
+    # The type of node environment: development, test, or production.
     nodeEnv: production
 
+    # The signature version number to be included in outgoing HTTP Signatures sent in requests to the Admin API.
     signatureVersion: "1"
 
     serviceUrls:
+      # The URL of the Admin Graphql API to use.
       GRAPHQL_URL: http://rafiki-backend-service.rafiki:3001/graphql
+      # The Open Payments endpoint to use when creating Open Payments resources.
       OPEN_PAYMENTS_URL: https://rafiki-backend-service/
 
+    # The port the frontend service will run on.
     port: 3010
-
-    kratos:
-      enabled: false    
 
   auth:
     # If true, the chart will create the secrets defined in the secretsMaps section.
@@ -33,6 +36,8 @@ config:
       secretKeyRef:
         key: REDIS_URL
 
+    # Must be set to true when running Rafiki behind a proxy. When true, the
+    # X-Forwarded-Proto header is used to determine if connections are secure. 
     trustProxy: true
 
     # Configuration for the PostgreSQL database used by Rafiki Auth.
@@ -70,6 +75,8 @@ config:
       # When true, incoming Open Payments grant requests are interactive  
       # Note that this is a string
       incomingPayment: "false"
+      # The time, in seconds, before an interaction expires.
+      expirySeconds: 600
 
 
     # Defines the ports on which the container will listen for incoming requests. It
@@ -79,6 +86,7 @@ config:
       admin: 3003
       auth: 3006
       introspection: 3007
+      interaction: 3009
       service: 3011
 
     grant:
@@ -101,16 +109,22 @@ config:
       # The number of workers processing expired or revoked access tokens.
       cleanup: 1
 
+    # The uuid of the "operator" tenant.
+    # Should be the same as the value used for config.backend.tenancy.tenantId.
+    # See https://rafiki.dev/overview/concepts/multi-tenancy/
     tenancy:
-      tenant_id: some-guid
+      tenantId: some-guid
 
     admin:
+      # The secret that incoming HTTP signatures are validated against.
       apiSecret:
         value: changeme-something-secret
         apiSecretKeyRef:
           key: ADMIN_API_SECRET
+      # The version that incoming HTTP signatures are expected to be set to.
       signatureVersion: "1"
-    
+      # The time in seconds that an incoming HTTP signature is valid.
+      signatureTtlSeconds: 30    
 
   backend:
     # ==========================================================
@@ -122,7 +136,9 @@ config:
     # already exist.
     shouldCreateSecrets: false
 
+    # The type of node environment: development, test, or production.
     nodeEnv: production
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
     logLevel: info
 
     # Your Rafiki instance’s name used to communicate for auto-peering and/or
@@ -138,7 +154,8 @@ config:
       # The endpoint on your Open Payments authorization server to introspect an access
       # token.
       introspectionUrl: http://rafiki-auth.rafiki-auth:3007
-
+      # The endpoint on your Open Payment authorization server that is used for inter-service communication with other
+      # Rafiki services.
       serviceApiUrl: http://rafiki-auth.rafiki-auth:3011
 
     # TODO: Consider not specifying the rates url if it is not needed
@@ -188,8 +205,7 @@ config:
         secretKeyRef:
           key: STREAM_SECRET
       # The accepted ILP rate fluctuation.
-
-    slippage: 0.01
+      slippage: 0.01
 
     key:
       # Your Rafiki instance’s client key ID. Make this a unique identifier for your
@@ -240,7 +256,7 @@ config:
       incomingPayment: 1
       # The number of workers processing outgoing payment requests.
       outgoingPayment: 1
-      paymentPointer: 1
+      walletAddress: 1
       webhook: 1
 
     # The time, in milliseconds, that WEBHOOK_WORKERS will wait until they check the
@@ -263,22 +279,33 @@ config:
       # Enables the auto-peering service on Rafiki.
       enabled: "false"
 
+    # The uuid of the "operator" tenant.
+    # Should be the same as the value used for config.backend.tenancy.tenantId.
+    # See https://rafiki.dev/overview/concepts/multi-tenancy/
     tenancy:
-      tenant_id: some-guid
+      tenantId: some-guid
 
     admin:
+      # The secret that incoming HTTP signatures are validated against.
       apiSecret:
         value: changeme-something-secret
         apiSecretKeyRef:
           key: ADMIN_API_SECRET
+      # The version that incoming HTTP signatures are expected to be set to.
       signatureVersion: "1"
+      # The time in seconds that an incoming HTTP signature is valid.
+      signatureTtlSeconds: 30
 
     cards:
+      # The service URL of the Card Service.
       service: 'http://rafiki-card-service:3007'
+      # The card service url to send relevant webhooks to.
       webhookService: 'http://rafiki-card-service:3007/webhook'
 
     pos:
+      # The service URL of the Point of Sale Service.
       service: 'http://rafiki-pos-service:4008'
+      # The point of sale service url to send relevant webhooks to.
       webhookService: 'http://rafiki-pos-service:4008/webhook'
 
 
@@ -563,7 +590,7 @@ configMaps:
         valueRef: config.backend.instanceName
       - key: ENABLE_TELEMETRY
         valueRef: config.backend.telemetry.enabled
-      - key: ENABLE_AUTOPEERING
+      - key: ENABLE_AUTO_PEERING
         valueRef: config.backend.autoPeering.enabled
       - key: KEY_ID
         valueRef: config.backend.key.id
@@ -578,9 +605,11 @@ configMaps:
       - key: LIVENET
         valueRef: config.backend.telemetry.livenet
       - key: OPERATOR_TENANT_ID
-        valueRef: config.backend.tenancy.tenant_id
-      - key: ADMIN_SIGNATURE_VERSION
-        valueRef: config.backend.admin.signatureVersion      
+        valueRef: config.backend.tenancy.tenantId
+      - key: ADMIN_API_SIGNATURE_VERSION
+        valueRef: config.backend.admin.signatureVersion  
+      - key: ADMIN_API_SIGNATURE_TTL_SECONDS   
+        valueRef: config.backend.admin.signatureTtlSeconds 
       - key: AUTH_SERVICE_API_URL
         valueRef: config.backend.auth.serviceApiUrl
       - key: CARD_SERVICE_URL
@@ -640,7 +669,7 @@ configMaps:
         valueRef: config.auth.logLevel
       - key: NODE_ENV
         valueRef: config.auth.nodeEnv
-      - key: PORT
+      - key: AUTH_PORT
         valueRef: config.auth.port.auth
       - key: WAIT_SECONDS
         valueRef: config.auth.grant.waitSeconds
@@ -649,9 +678,15 @@ configMaps:
       - key: INTERACTION_COOKIE_SAME_SITE
         valueRef: config.auth.interaction.cookieSameSite
       - key: OPERATOR_TENANT_ID
-        valueRef: config.auth.tenancy.tenant_id
-      - key: ADMIN_SIGNATURE_VERSION
+        valueRef: config.auth.tenancy.tenantId
+      - key: ADMIN_API_SIGNATURE_VERSION
         valueRef: config.auth.admin.signatureVersion
+      - key: INTERACTION_PORT
+        valueRef: config.auth.port.interaction
+      - key: ADMIN_API_SIGNATURE_TTL_SECONDS
+        valueRef: config.auth.admin.signatureTtl
+      - key: INTERACTION_EXPIRY_SECONDS
+        valueRef: config.auth.interaction.expirySeconds
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the relevant service (auth or backend).
