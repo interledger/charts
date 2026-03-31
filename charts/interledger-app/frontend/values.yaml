@@ -10,7 +10,9 @@ imageOverride:
 config:
   log_level: "info"
   log_pretty: false
-  
+  node_env: "production"
+  environment: prod
+
   backend:
     grpc:
       url: "http://wallet-backend-service:8443"
@@ -50,7 +52,7 @@ config:
   cf_turnstile_site_key_ref: "turnstileSiteKey"
   cf_turnstile_secret_key_ref: "turnstileSecret"
 
-  environment: dev
+
 
 server:
   name: server
@@ -94,6 +96,8 @@ server:
     - configMapRef:
         name: '{{ include "common.fullname" . }}-server'
   env:
+    - name: NODE_ENV
+      value: '{{ .Values.config.node_env }}'
     - name: COOKIE_SECRETS
       valueFrom:
           secretKeyRef:
