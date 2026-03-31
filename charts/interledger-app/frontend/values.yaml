@@ -96,8 +96,6 @@ server:
     - configMapRef:
         name: '{{ include "common.fullname" . }}-server'
   env:
-    - name: NODE_ENV
-      value: '{{ .Values.config.node_env }}'
     - name: COOKIE_SECRETS
       valueFrom:
           secretKeyRef:
@@ -158,6 +156,8 @@ server:
           configMapKeyRef:
             name: '{{ include "common.fullname" . }}-server'
             key: LOG_PRETTY
+    - name: NODE_ENV
+      value: '{{ .Values.config.node_env }}'
       
   ports:
     - name: http
