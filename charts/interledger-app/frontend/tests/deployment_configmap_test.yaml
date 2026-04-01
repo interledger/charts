@@ -48,3 +48,30 @@ tests:
       - equal:
           path: data.BACKEND_GRPC_URL
           value: "http://backend:8443"
+  - it: 'should contain PTI_CLIENT_ID in data'
+    set:
+      config:
+        pti:
+          client_id: "04d3e1b5-96d4-47e4-9eaa-13e9b4b0f219"
+    asserts:
+      - equal:
+          path: data.PTI_CLIENT_ID
+          value: "04d3e1b5-96d4-47e4-9eaa-13e9b4b0f219"
+  - it: 'should contain PTI_SDK_URL in data'
+    set:
+      config:
+        pti:
+          sdk_url: "https://sdk.staging.fiant.io/latest/index.js"
+    asserts:
+      - equal:
+          path: data.PTI_SDK_URL
+          value: "https://sdk.staging.fiant.io/latest/index.js"
+  - it: 'should contain PTI_FORMS_URL in data'
+    set:
+      config:
+        pti:
+          forms_url: "https://forms.staging.fiant.io"
+    asserts:
+      - equal:
+          path: data.PTI_FORMS_URL
+          value: "https://forms.staging.fiant.io"
