@@ -41,6 +41,14 @@ config:
 
   segment_api_key_ref: segmentAPIKey
 
+  pti:
+    # PTI client UUID used by frontend payment widget initialization.
+    client_id: ""
+    # PTI widget script URL override; defaults to staging endpoint.
+    sdk_url: "https://sdk.staging.fiant.io/latest/index.js"
+    # PTI widget forms host URL override; defaults to staging endpoint.
+    forms_url: "https://forms.staging.fiant.io"
+
   rafiki:
     auth:
       endpoint: http://rafiki-auth:3003/graphql
@@ -186,3 +194,9 @@ configMaps:
         valueRef: config.log_level
       - key: LOG_PRETTY
         valueRef: config.log_pretty
+      - key: PTI_CLIENT_ID
+        valueRef: config.pti.client_id
+      - key: PTI_SDK_URL
+        valueRef: config.pti.sdk_url
+      - key: PTI_FORMS_URL
+        valueRef: config.pti.forms_url
