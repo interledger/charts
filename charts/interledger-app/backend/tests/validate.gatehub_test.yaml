@@ -23,6 +23,8 @@ tests:
         pti:
           enabled: "true"
           base_url: "https://pti-base-url.com"
+          sdk_url: "https://sdk.staging.fiant.io/latest/index.js"
+          forms_url: "https://forms.staging.fiant.io"
         gatehub:
           enabled: "true"
           api_base_url: "https://api.gatehub.net"
@@ -54,6 +56,8 @@ tests:
         pti:
           enabled: "false"
           base_url: ""
+          sdk_url: ""
+          forms_url: ""
         gatehub:
           enabled: "false"
           api_base_url: ""
