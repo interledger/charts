@@ -27,6 +27,8 @@
 {{- if eq .Values.config.pti.enabled "true" -}}
 	{{- $requiredFields = concat $requiredFields (list
 		(dict "path" "config.pti.base_url" "value" .Values.config.pti.base_url)
+		(dict "path" "config.pti.sdk_url" "value" .Values.config.pti.sdk_url)
+		(dict "path" "config.pti.forms_url" "value" .Values.config.pti.forms_url)
 	) -}}
 {{- end -}}
 

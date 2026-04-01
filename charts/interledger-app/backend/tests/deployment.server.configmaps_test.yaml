@@ -101,6 +101,24 @@ tests:
       - equal:
           path: data.PTI_BASE_URL
           value: "https://pti-base-url.com"
+  - it: 'should contain PTI_SDK_URL in data'
+    set:
+      config:
+        pti:
+          sdk_url: "https://sdk.staging.fiant.io/latest/index.js"
+    asserts:
+      - equal:
+          path: data.PTI_SDK_URL
+          value: "https://sdk.staging.fiant.io/latest/index.js"
+  - it: 'should contain PTI_FORMS_URL in data'
+    set:
+      config:
+        pti:
+          forms_url: "https://forms.staging.fiant.io"
+    asserts:
+      - equal:
+          path: data.PTI_FORMS_URL
+          value: "https://forms.staging.fiant.io"
   - it: 'should contain PORT in data'
     set:
       config:
