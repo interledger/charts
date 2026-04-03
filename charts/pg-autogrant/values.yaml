@@ -21,7 +21,10 @@ serviceAccountName: ""
 
 # Reference to a K8s Secret containing PostgreSQL admin credentials.
 # The secret must have 'user_name' and 'password' keys.
-credentialsSecret: ""
+credentialsSecret:
+  name: "setup-db-credentials"
+  userKey: "user_name"
+  passwordKey: "password"
 
 # Cloud SQL Auth Proxy sidecar configuration.
 # Set enabled=false when the database is reachable directly (e.g. local/dev).

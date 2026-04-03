@@ -40,13 +40,13 @@ spec:
                 - name: PGUSER
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.credentialsSecret }}
-                      key: user_name
+                      name: {{ .Values.credentialsSecret.name }}
+                      key: {{ .Values.credentialsSecret.userKey }}
                 - name: PGPASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.credentialsSecret }}
-                      key: password
+                      name: {{ .Values.credentialsSecret.name }}
+                      key: {{ .Values.credentialsSecret.passwordKey }}
                 - name: PGSSLMODE
                   value: {{ .Values.connection.sslmode | quote }}
               command: ["/config/entrypoint.sh"]
