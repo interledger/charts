@@ -1,0 +1,124 @@
+suite: CronJob — Cloud SQL Proxy sidecar
+templates:
+  - cronjob.yaml
+release:
+  name: pg-autogrant
+set:
+  credentialsSecret: pg-credentials
+tests:
+  - it: includes cloud-sql-proxy container when enabled
+    set:
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "project:region:instance"
+        privateIp: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[1].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[1].image
+          value: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.17.1"
+
+  - it: omits cloud-sql-proxy container when disabled
+    set:
+      cloudSqlProxy:
+        enabled: false
+    asserts:
+      - lengthEqual:
+          path: spec.jobTemplate.spec.template.spec.containers
+          count: 1
+
+  - it: passes instance connection name as argument
+    set:
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "my-project:europe-west4:my-instance"
+        privateIp: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.containers[1].args
+          content: "my-project:europe-west4:my-instance"
+
+  - it: includes --private-ip when privateIp is true
+    set:
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "p:r:i"
+        privateIp: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.containers[1].args
+          content: "--private-ip"
+
+  - it: omits --private-ip when privateIp is false
+    set:
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "p:r:i"
+        privateIp: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - notContains:
+          path: spec.jobTemplate.spec.template.spec.containers[1].args
+          content: "--private-ip"
+
+  - it: sets runAsNonRoot security context
+    set:
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "p:r:i"
+        privateIp: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[1].securityContext.runAsNonRoot
+          value: true

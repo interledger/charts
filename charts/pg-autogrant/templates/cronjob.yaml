@@ -1,0 +1,76 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "pg-autogrant.fullname" . }}
+  {{- include "common.metadata" (list .) | nindent 2 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        {{- include "pg-autogrant.selectorLabels" . | nindent 8 }}
+    spec:
+      backoffLimit: {{ .Values.backoffLimit }}
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
+      template:
+        metadata:
+          labels:
+            {{- include "pg-autogrant.selectorLabels" . | nindent 12 }}
+        spec:
+          {{- with .Values.serviceAccountName }}
+          serviceAccountName: {{ . }}
+          {{- end }}
+          restartPolicy: OnFailure
+          volumes:
+            - name: config
+              configMap:
+                name: {{ include "pg-autogrant.fullname" . }}
+                defaultMode: 0555
+          containers:
+            - name: grants
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              env:
+                - name: PGHOST
+                  value: {{ .Values.connection.host | quote }}
+                - name: PGPORT
+                  value: {{ .Values.connection.port | quote }}
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.credentialsSecret }}
+                      key: user_name
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.credentialsSecret }}
+                      key: password
+                - name: PGSSLMODE
+                  value: {{ .Values.connection.sslmode | quote }}
+              command: ["/config/entrypoint.sh"]
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+            {{- if .Values.cloudSqlProxy.enabled }}
+            - name: cloud-sql-proxy
+              image: "{{ .Values.cloudSqlProxy.image.repository }}:{{ .Values.cloudSqlProxy.image.tag }}"
+              args:
+                {{- if .Values.cloudSqlProxy.privateIp }}
+                - "--private-ip"
+                {{- end }}
+                - "--structured-logs"
+                - "--quitquitquit"
+                - "--http-address=0.0.0.0"
+                - {{ .Values.cloudSqlProxy.instanceConnectionName | quote }}
+              ports:
+                - containerPort: 9091
+              securityContext:
+                runAsNonRoot: true
+              resources:
+                {{- toYaml .Values.cloudSqlProxy.resources | nindent 16 }}
+            {{- end }}

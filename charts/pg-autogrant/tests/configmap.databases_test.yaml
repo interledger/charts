@@ -1,0 +1,81 @@
+suite: ConfigMap — database owner grants
+templates:
+  - configmap.yaml
+release:
+  name: pg-autogrant
+set:
+  credentialsSecret: pg-credentials
+tests:
+  - it: grants CONNECT, CREATE, TEMPORARY to the owner role
+    set:
+      roles: []
+      databases:
+        - name: mydb
+          owner: mydb_owner
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: 'GRANT CONNECT, CREATE, TEMPORARY ON DATABASE "mydb" TO "mydb_owner"'
+
+  - it: grants admin user the owner role
+    set:
+      roles: []
+      databases:
+        - name: mydb
+          owner: mydb_owner
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: 'GRANT "mydb_owner" TO :"admin_user"'
+
+  - it: uses owner field not database name
+    set:
+      roles: []
+      databases:
+        - name: feature42_backend
+          owner: custom_owner
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: 'GRANT CONNECT, CREATE, TEMPORARY ON DATABASE "feature42_backend" TO "custom_owner"'
+
+  - it: renders owner schema grants in per-database SQL
+    set:
+      roles: []
+      databases:
+        - name: mydb
+          owner: mydb_owner
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants-mydb.sql"]
+          pattern: 'GRANT USAGE, CREATE ON SCHEMA public TO "mydb_owner"'
+      - matchRegex:
+          path: data["grants-mydb.sql"]
+          pattern: 'GRANT ALL ON ALL TABLES IN SCHEMA public TO "mydb_owner"'
+      - matchRegex:
+          path: data["grants-mydb.sql"]
+          pattern: 'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "mydb_owner"'
+
+  - it: creates a per-database SQL file for each database
+    set:
+      roles: []
+      databases:
+        - name: db_one
+          owner: owner_one
+        - name: db_two
+          owner: owner_two
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - exists:
+          path: data["grants-db_one.sql"]
+      - exists:
+          path: data["grants-db_two.sql"]
