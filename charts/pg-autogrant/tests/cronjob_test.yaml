@@ -1,0 +1,92 @@
+suite: CronJob structure
+templates:
+  - cronjob.yaml
+release:
+  name: pg-autogrant
+set:
+  credentialsSecret: pg-credentials
+tests:
+  - it: sets the schedule from values
+    set:
+      schedule: "30 3 * * *"
+    asserts:
+      - equal:
+          path: spec.schedule
+          value: "30 3 * * *"
+
+  - it: uses default schedule
+    asserts:
+      - equal:
+          path: spec.schedule
+          value: "0 6 * * *"
+
+  - it: sets history limits
+    set:
+      failedJobsHistoryLimit: 5
+      successfulJobsHistoryLimit: 2
+    asserts:
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 5
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 2
+
+  - it: sets concurrencyPolicy to Forbid
+    asserts:
+      - equal:
+          path: spec.concurrencyPolicy
+          value: Forbid
+
+  - it: sets backoffLimit and activeDeadlineSeconds
+    set:
+      backoffLimit: 5
+      activeDeadlineSeconds: 600
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.backoffLimit
+          value: 5
+      - equal:
+          path: spec.jobTemplate.spec.activeDeadlineSeconds
+          value: 600
+
+  - it: sets serviceAccountName when provided
+    set:
+      serviceAccountName: my-sa
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.serviceAccountName
+          value: my-sa
+
+  - it: omits serviceAccountName when empty
+    set:
+      serviceAccountName: ""
+    asserts:
+      - notExists:
+          path: spec.jobTemplate.spec.template.spec.serviceAccountName
+
+  - it: references the credentials secret
+    set:
+      credentialsSecret: my-pg-secret
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].valueFrom.secretKeyRef.name
+          value: my-pg-secret
+
+  - it: mounts configmap as volume
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0].configMap.name
+          value: pg-autogrant
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0].configMap.defaultMode
+          value: 365
+
+  - it: runs entrypoint from configmap
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].command
+          value: ["/config/entrypoint.sh"]
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /config

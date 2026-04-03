@@ -1,0 +1,64 @@
+suite: ConfigMap — role creation SQL
+templates:
+  - configmap.yaml
+release:
+  name: pg-autogrant
+set:
+  credentialsSecret: pg-credentials
+tests:
+  - it: renders LOGIN for login roles
+    set:
+      roles:
+        - name: app_user
+          login: true
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: "CREATE ROLE app_user LOGIN"
+
+  - it: renders NOLOGIN for non-login roles
+    set:
+      roles:
+        - name: readonly_group
+          login: false
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: "CREATE ROLE readonly_group NOLOGIN"
+
+  - it: renders multiple roles
+    set:
+      roles:
+        - name: role_a
+          login: true
+        - name: role_b
+          login: false
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: "CREATE ROLE role_a LOGIN"
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: "CREATE ROLE role_b NOLOGIN"
+
+  - it: uses IF NOT EXISTS for idempotent role creation
+    set:
+      roles:
+        - name: test_role
+          login: true
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["grants.sql"]
+          pattern: "IF NOT EXISTS.*test_role"
