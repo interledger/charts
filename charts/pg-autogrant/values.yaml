@@ -29,7 +29,7 @@ cloudSqlProxy:
   enabled: true
   image:
     repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
-    tag: "2.17.1"
+    tag: "2.21.2"
   # Full instance connection name: project:region:instance
   instanceConnectionName: ""
   privateIp: true
