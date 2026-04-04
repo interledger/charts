@@ -20,7 +20,6 @@ image:
 serviceAccountName: ""
 
 # Reference to a K8s Secret containing PostgreSQL admin credentials.
-# The secret must have 'user_name' and 'password' keys.
 credentialsSecret:
   name: "setup-db-credentials"
   userKey: "user_name"
