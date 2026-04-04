@@ -1,4 +1,9 @@
-# pg-autogrant default values
+# pg-autogrant chart defaults
+#
+# This file intentionally contains project-agnostic defaults.
+# No roles, databases, or grants are configured by default.
+#
+# See values.example.yaml for a complete fictional example.
 
 # CronJob schedule (default: 6:00 AM UTC daily)
 schedule: "0 6 * * *"
@@ -18,20 +23,21 @@ image:
   repository: postgres
   tag: "18-alpine"
 
-# Kubernetes service account used by the Job pod.
-# Must have Cloud SQL Client IAM binding for the proxy sidecar.
+# Optional Kubernetes service account for the Job pod.
+# Example: "db-admin"
 serviceAccountName: ""
 
-# Reference to a K8s Secret containing PostgreSQL admin credentials.
+# Reference to a Kubernetes Secret containing PostgreSQL admin credentials.
+# You should override this to match your own secret name/keys.
 credentialsSecret:
-  name: "setup-db-credentials"
-  userKey: "user_name"
+  name: "pg-admin-credentials"
+  userKey: "username"
   passwordKey: "password"
 
 # Cloud SQL Auth Proxy sidecar configuration.
-# Set enabled=false when the database is reachable directly (e.g. local/dev).
+# Set enabled=true only when using Cloud SQL with the proxy sidecar.
 cloudSqlProxy:
-  enabled: true
+  enabled: false
   image:
     repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
     tag: "2.21.2"
@@ -47,193 +53,61 @@ cloudSqlProxy:
       memory: 256Mi
 
 # PostgreSQL connection settings (target host for psql).
-# When cloudSqlProxy.enabled=true the proxy listens on localhost and handles TLS.
-# When cloudSqlProxy.enabled=false these point directly at the database;
-# set sslmode to "require" or stricter to avoid plaintext credentials on the wire.
+# When cloudSqlProxy.enabled=true the proxy usually listens on localhost.
 connection:
   host: "localhost"
   port: "5432"
   sslmode: "disable"
 
-# Roles to create (idempotently) before applying grants.
-roles:
-  - name: rafiki_auth
-    login: true
-  - name: rafiki_backend
-    login: true
-  - name: wallet_kratos
-    login: true
-  - name: wallet_backend
-    login: true
-  - name: temporal
-    login: true
-  - name: temporal_visibility
-    login: true
-  - name: pacioli
-    login: true
-  - name: firefighter
-    login: true
-  - name: support_ro
-    login: true
+# Runtime logging controls.
+logging:
+  # When true, psql echoes each SQL statement as it executes.
+  verboseSql: false
 
+# Roles to create (idempotently) before grants are applied.
+# Example:
+# roles:
+#   - name: app_user
+#     login: true
+roles: []
 
-# Databases to manage. For each database the chart will assigned the following grants to the database owner role:
-# - CONNECT on the database
-# - USAGE on the public schema
-# - CREATE on the public schema
-# - TEMP on the database
-# - ALL on all tables/sequences/functions in the public schema
-databases:
-  - name: rafiki_auth
-    owner: rafiki_auth
-  - name: rafiki_backend
-    owner: rafiki_backend
-  - name: wallet_kratos
-    owner: wallet_kratos
-  - name: wallet_backend
-    owner: wallet_backend
-  - name: temporal
-    owner: temporal
-  - name: temporal_visibility
-    owner: temporal_visibility
-  - name: pacioli
-    owner: pacioli
+# Databases to manage. For each database owner, pg-autogrant applies:
+# - CONNECT, CREATE, TEMPORARY on database
+# - USAGE, CREATE on public schema
+# - ALL on existing tables/sequences/functions in public
+# - ALTER DEFAULT PRIVILEGES for future objects in public
+# Example:
+# databases:
+#   - name: app_db
+#     owner: app_user
+databases: []
 
-# Extra role memberships beyond the per-database defaults.
-# Example: wallet_backend needs the pacioli role for cross-database access.
-crossGrants:
-  - role: wallet_backend
-    memberOf: [pacioli]
-  - role: firefighter
-    memberOf: [rafiki_auth, rafiki_backend, wallet_kratos, wallet_backend, temporal, temporal_visibility, pacioli]
+# Extra role memberships beyond per-database defaults.
+# Example:
+# crossGrants:
+#   - role: support_ro
+#     memberOf: [app_user]
+crossGrants: []
 
 # Specific grants with explicit level control.
-# Each entry must specify a 'level' that determines the SQL generated:
-#
-#   level: database  → GRANT {privileges} ON DATABASE "{database}" TO {role};
-#   level: schema    → GRANT {privileges} ON SCHEMA {schema} TO {role};  (connected to {database})
-#   level: object    → GRANT {privileges} ON ALL {objectType}S IN SCHEMA {schema} TO {role};
-#                      + ALTER DEFAULT PRIVILEGES IN SCHEMA {schema} GRANT {privileges} ON {objectType}S TO {role};
-#
-specificGrants:
-  # --- rafiki_auth ---
-  - role: support_ro
-    level: database
-    database: rafiki_auth
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: rafiki_auth
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: rafiki_auth
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
+# level: database  -> GRANT {privileges} ON DATABASE "{database}" TO "{role}"
+# level: schema    -> GRANT {privileges} ON SCHEMA "{schema}" TO "{role}"
+# level: object    -> GRANT {privileges} ON ALL {objectType}S IN SCHEMA "{schema}" TO "{role}"
+#                    + ALTER DEFAULT PRIVILEGES ...
+# Example:
+# specificGrants:
+#   - role: support_ro
+#     level: database
+#     database: app_db
+#     privileges: [CONNECT]
+#   - role: support_ro
+#     level: object
+#     database: app_db
+#     schema: public
+#     objectType: [TABLE]
+#     privileges: [SELECT]
+specificGrants: []
 
-  # --- rafiki_backend ---
-  - role: support_ro
-    level: database
-    database: rafiki_backend
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: rafiki_backend
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: rafiki_backend
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
-
-  # --- wallet_kratos ---
-  - role: support_ro
-    level: database
-    database: wallet_kratos
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: wallet_kratos
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: wallet_kratos
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
-
-  # --- wallet_backend ---
-  - role: support_ro
-    level: database
-    database: wallet_backend
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: wallet_backend
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: wallet_backend
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
-
-  # --- temporal ---
-  - role: support_ro
-    level: database
-    database: temporal
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: temporal
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: temporal
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
-
-  # --- temporal_visibility ---
-  - role: support_ro
-    level: database
-    database: temporal_visibility
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: temporal_visibility
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: temporal_visibility
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
-
-  # --- pacioli ---
-  - role: support_ro
-    level: database
-    database: pacioli
-    privileges: [CONNECT]
-  - role: support_ro
-    level: schema
-    database: pacioli
-    schema: public
-    privileges: [USAGE]
-  - role: support_ro
-    level: object
-    database: pacioli
-    schema: public
-    objectType: [TABLE]
-    privileges: [SELECT]
 resources:
   requests:
     memory: 32Mi
