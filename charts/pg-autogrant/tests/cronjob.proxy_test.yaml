@@ -4,7 +4,10 @@ templates:
 release:
   name: pg-autogrant
 set:
-  credentialsSecret: pg-credentials
+  credentialsSecret:
+    name: setup-db-credentials
+    userKey: user_name
+    passwordKey: password
 tests:
   - it: includes cloud-sql-proxy container when enabled
     set:

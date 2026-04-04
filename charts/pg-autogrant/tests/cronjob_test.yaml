@@ -4,7 +4,10 @@ templates:
 release:
   name: pg-autogrant
 set:
-  credentialsSecret: pg-credentials
+  credentialsSecret:
+    name: setup-db-credentials
+    userKey: user_name
+    passwordKey: password
 tests:
   - it: sets the schedule from values
     set:
@@ -65,13 +68,22 @@ tests:
       - notExists:
           path: spec.jobTemplate.spec.template.spec.serviceAccountName
 
-  - it: references the credentials secret
+  - it: references the credentials secret name
     set:
-      credentialsSecret: my-pg-secret
+      credentialsSecret:
+        name: my-pg-secret
+        userKey: admin
+        passwordKey: pass
     asserts:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].valueFrom.secretKeyRef.name
           value: my-pg-secret
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].valueFrom.secretKeyRef.key
+          value: admin
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].valueFrom.secretKeyRef.key
+          value: pass
 
   - it: mounts configmap as volume
     asserts:
@@ -90,3 +102,29 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /config
+
+  - it: sets securityContext on grants container
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.runAsUser
+          value: 70
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation
+          value: false
+
+  - it: sets ttlSecondsAfterFinished from values
+    set:
+      ttlSecondsAfterFinished: 300
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.ttlSecondsAfterFinished
+          value: 300
+
+  - it: uses default ttlSecondsAfterFinished
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.ttlSecondsAfterFinished
+          value: 600

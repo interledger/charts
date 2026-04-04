@@ -4,7 +4,10 @@ templates:
 release:
   name: pg-autogrant
 set:
-  credentialsSecret: pg-credentials
+  credentialsSecret:
+    name: setup-db-credentials
+    userKey: user_name
+    passwordKey: password
 tests:
   - it: renders LOGIN for login roles
     set:
@@ -17,7 +20,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "CREATE ROLE app_user LOGIN"
+          pattern: 'CREATE ROLE "app_user" LOGIN'
 
   - it: renders NOLOGIN for non-login roles
     set:
@@ -30,7 +33,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "CREATE ROLE readonly_group NOLOGIN"
+          pattern: 'CREATE ROLE "readonly_group" NOLOGIN'
 
   - it: renders multiple roles
     set:
@@ -45,10 +48,10 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "CREATE ROLE role_a LOGIN"
+          pattern: 'CREATE ROLE "role_a" LOGIN'
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "CREATE ROLE role_b NOLOGIN"
+          pattern: 'CREATE ROLE "role_b" NOLOGIN'
 
   - it: uses IF NOT EXISTS for idempotent role creation
     set:

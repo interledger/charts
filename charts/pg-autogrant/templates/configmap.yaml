@@ -22,7 +22,7 @@ data:
     DO $$
     BEGIN
       IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '{{ .name }}') THEN
-        CREATE ROLE {{ .name }} {{ if .login }}LOGIN{{ else }}NOLOGIN{{ end }};
+        CREATE ROLE "{{ .name }}" {{ if .login }}LOGIN{{ else }}NOLOGIN{{ end }};
         RAISE NOTICE 'Created role {{ .name }}';
       END IF;
     END
@@ -45,7 +45,7 @@ data:
     {{- range .Values.crossGrants }}
     {{- $role := .role }}
     {{- range .memberOf }}
-    GRANT {{ . }} TO {{ $role }};
+    GRANT "{{ . }}" TO "{{ $role }}";
     {{- end }}
     {{- end }}
 
@@ -54,7 +54,7 @@ data:
     -----------------------------------------------------------
     {{- range .Values.specificGrants }}
     {{- if eq .level "database" }}
-    GRANT {{ join ", " .privileges }} ON DATABASE "{{ .database }}" TO {{ .role }};
+    GRANT {{ join ", " .privileges }} ON DATABASE "{{ .database }}" TO "{{ .role }}";
     {{- end }}
     {{- end }}
 
@@ -83,7 +83,7 @@ data:
     {{- if and (eq .level "schema") (eq .database $dbName) }}
 
     -- Schema grant: {{ .role }}
-    GRANT {{ join ", " .privileges }} ON SCHEMA {{ .schema }} TO {{ .role }};
+    GRANT {{ join ", " .privileges }} ON SCHEMA "{{ .schema }}" TO "{{ .role }}";
     {{- end }}
     {{- if and (eq .level "object") (eq .database $dbName) }}
     {{- $grantRole := .role }}
@@ -92,8 +92,8 @@ data:
     {{- range .objectType }}
 
     -- Object grant: {{ $grantRole }} on {{ . }}S
-    GRANT {{ join ", " $grantPrivileges }} ON ALL {{ . }}S IN SCHEMA {{ $grantSchema }} TO {{ $grantRole }};
-    ALTER DEFAULT PRIVILEGES IN SCHEMA {{ $grantSchema }} GRANT {{ join ", " $grantPrivileges }} ON {{ . }}S TO {{ $grantRole }};
+    GRANT {{ join ", " $grantPrivileges }} ON ALL {{ . }}S IN SCHEMA "{{ $grantSchema }}" TO "{{ $grantRole }}";
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "{{ $grantSchema }}" GRANT {{ join ", " $grantPrivileges }} ON {{ . }}S TO "{{ $grantRole }}";
     {{- end }}
     {{- end }}
     {{- end }}
