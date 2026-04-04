@@ -11,6 +11,9 @@ successfulJobsHistoryLimit: 1
 activeDeadlineSeconds: 300
 backoffLimit: 3
 
+# Seconds to keep finished Job pods before automatic cleanup
+ttlSecondsAfterFinished: 600
+
 image:
   repository: postgres
   tag: "18-alpine"
@@ -43,7 +46,10 @@ cloudSqlProxy:
       cpu: 200m
       memory: 256Mi
 
-# PostgreSQL connection settings (used when cloudSqlProxy.enabled=false)
+# PostgreSQL connection settings (target host for psql).
+# When cloudSqlProxy.enabled=true the proxy listens on localhost and handles TLS.
+# When cloudSqlProxy.enabled=false these point directly at the database;
+# set sslmode to "require" or stricter to avoid plaintext credentials on the wire.
 connection:
   host: "localhost"
   port: "5432"

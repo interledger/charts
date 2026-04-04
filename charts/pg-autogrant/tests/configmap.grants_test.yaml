@@ -20,7 +20,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "GRANT pacioli TO wallet_backend"
+          pattern: 'GRANT "pacioli" TO "wallet_backend"'
 
   - it: expands multiple memberOf entries
     set:
@@ -33,13 +33,13 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "GRANT db_a TO firefighter"
+          pattern: 'GRANT "db_a" TO "firefighter"'
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "GRANT db_b TO firefighter"
+          pattern: 'GRANT "db_b" TO "firefighter"'
       - matchRegex:
           path: data["grants.sql"]
-          pattern: "GRANT db_c TO firefighter"
+          pattern: 'GRANT "db_c" TO "firefighter"'
 
   - it: renders database-level specific grants in cluster SQL
     set:
@@ -56,7 +56,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants.sql"]
-          pattern: 'GRANT CONNECT ON DATABASE "mydb" TO support_ro'
+          pattern: 'GRANT CONNECT ON DATABASE "mydb" TO "support_ro"'
 
   - it: renders schema-level specific grants in per-database SQL
     set:
@@ -74,7 +74,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants-mydb.sql"]
-          pattern: "GRANT USAGE ON SCHEMA public TO support_ro"
+          pattern: 'GRANT USAGE ON SCHEMA "public" TO "support_ro"'
 
   - it: renders object-level grants with ALTER DEFAULT PRIVILEGES
     set:
@@ -93,10 +93,10 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants-mydb.sql"]
-          pattern: "GRANT SELECT ON ALL TABLES IN SCHEMA public TO support_ro"
+          pattern: 'GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO "support_ro"'
       - matchRegex:
           path: data["grants-mydb.sql"]
-          pattern: "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO support_ro"
+          pattern: 'ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO "support_ro"'
 
   - it: does not render grants for other databases in per-database SQL
     set:
@@ -116,10 +116,10 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants-db_a.sql"]
-          pattern: "GRANT USAGE ON SCHEMA public TO support_ro"
+          pattern: 'GRANT USAGE ON SCHEMA "public" TO "support_ro"'
       - notMatchRegex:
           path: data["grants-db_b.sql"]
-          pattern: "GRANT USAGE ON SCHEMA public TO support_ro"
+          pattern: 'GRANT USAGE ON SCHEMA "public" TO "support_ro"'
 
   - it: renders multiple object types
     set:
@@ -138,7 +138,7 @@ tests:
     asserts:
       - matchRegex:
           path: data["grants-mydb.sql"]
-          pattern: "GRANT SELECT ON ALL TABLES IN SCHEMA public TO auditor"
+          pattern: 'GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO "auditor"'
       - matchRegex:
           path: data["grants-mydb.sql"]
-          pattern: "GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO auditor"
+          pattern: 'GRANT SELECT ON ALL SEQUENCES IN SCHEMA "public" TO "auditor"'

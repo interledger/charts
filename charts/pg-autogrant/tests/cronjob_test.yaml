@@ -102,3 +102,29 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /config
+
+  - it: sets securityContext on grants container
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.runAsUser
+          value: 70
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation
+          value: false
+
+  - it: sets ttlSecondsAfterFinished from values
+    set:
+      ttlSecondsAfterFinished: 300
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.ttlSecondsAfterFinished
+          value: 300
+
+  - it: uses default ttlSecondsAfterFinished
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.ttlSecondsAfterFinished
+          value: 600
