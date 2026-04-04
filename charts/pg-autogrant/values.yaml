@@ -13,7 +13,7 @@ backoffLimit: 3
 
 image:
   repository: postgres
-  tag: "17-alpine"
+  tag: "18-alpine"
 
 # Kubernetes service account used by the Job pod.
 # Must have Cloud SQL Client IAM binding for the proxy sidecar.
