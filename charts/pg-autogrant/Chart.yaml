@@ -1,0 +1,14 @@
+apiVersion: v2
+name: pg-autogrant
+description: Scheduled PostgreSQL grant reconciliation via CronJob
+type: application
+version: 0.2.1
+appVersion: "v0.1.0"
+
+dependencies:
+  - name: common
+    version: 0.9.0
+    repository: https://interledger.github.io/charts/interledger
+
+maintainers:
+  - name: Stephan

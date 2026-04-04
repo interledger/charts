@@ -1,0 +1,96 @@
+suite: ConfigMap — entrypoint script
+templates:
+  - configmap.yaml
+release:
+  name: pg-autogrant
+set:
+  credentialsSecret: pg-credentials
+tests:
+  - it: runs psql for each database
+    set:
+      roles: []
+      databases:
+        - name: db_alpha
+          owner: db_alpha
+        - name: db_beta
+          owner: db_beta
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'psql -d "db_alpha" -f /config/grants-db_alpha.sql'
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'psql -d "db_beta" -f /config/grants-db_beta.sql'
+
+  - it: runs cluster-level grants against postgres database
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'psql -d postgres .* -f /config/grants.sql'
+
+  - it: includes proxy shutdown when cloudSqlProxy is enabled
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+      cloudSqlProxy:
+        enabled: true
+        image:
+          repository: gcr.io/cloud-sql-connectors/cloud-sql-proxy
+          tag: "2.17.1"
+        instanceConnectionName: "p:r:i"
+        privateIp: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: "quitquitquit"
+
+  - it: excludes proxy shutdown when cloudSqlProxy is disabled
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+      cloudSqlProxy:
+        enabled: false
+    asserts:
+      - notMatchRegex:
+          path: data["entrypoint.sh"]
+          pattern: "quitquitquit"
+
+  - it: starts with set -e for fail-fast
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: "set -e"
+
+  - it: waits for database readiness
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: "pg_isready"

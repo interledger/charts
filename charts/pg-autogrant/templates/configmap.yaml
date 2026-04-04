@@ -1,0 +1,131 @@
+{{/*
+ConfigMap containing the rendered SQL grant scripts.
+Helm does the heavy lifting at template time so the Job
+just runs the entrypoint which calls psql with pre-rendered SQL.
+*/}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pg-autogrant.fullname" . }}
+  {{- include "common.metadata" (list .) | nindent 2 }}
+data:
+  grants.sql: |
+    -- pg-autogrant: auto-generated grant script (cluster-level)
+    -- Do not edit — managed by Helm values.
+
+    \set ON_ERROR_STOP on
+
+    -----------------------------------------------------------
+    -- 1. Ensure roles exist
+    -----------------------------------------------------------
+    {{- range .Values.roles }}
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '{{ .name }}') THEN
+        CREATE ROLE {{ .name }} {{ if .login }}LOGIN{{ else }}NOLOGIN{{ end }};
+        RAISE NOTICE 'Created role {{ .name }}';
+      END IF;
+    END
+    $$;
+    {{- end }}
+
+    -----------------------------------------------------------
+    -- 2. Database owner grants
+    -----------------------------------------------------------
+    {{- range .Values.databases }}
+
+    -- === {{ .name }} (owner: {{ .owner }}) ===
+    GRANT CONNECT, CREATE, TEMPORARY ON DATABASE "{{ .name }}" TO "{{ .owner }}";
+    GRANT "{{ .owner }}" TO :"admin_user";
+    {{- end }}
+
+    -----------------------------------------------------------
+    -- 3. Cross-database role memberships
+    -----------------------------------------------------------
+    {{- range .Values.crossGrants }}
+    {{- $role := .role }}
+    {{- range .memberOf }}
+    GRANT {{ . }} TO {{ $role }};
+    {{- end }}
+    {{- end }}
+
+    -----------------------------------------------------------
+    -- 4. Specific grants — database level
+    -----------------------------------------------------------
+    {{- range .Values.specificGrants }}
+    {{- if eq .level "database" }}
+    GRANT {{ join ", " .privileges }} ON DATABASE "{{ .database }}" TO {{ .role }};
+    {{- end }}
+    {{- end }}
+
+  {{- $databases := .Values.databases }}
+  {{- $specificGrants := .Values.specificGrants }}
+  {{- range $databases }}
+  {{- $dbName := .name }}
+  {{- $dbOwner := .owner }}
+  grants-{{ $dbName }}.sql: |
+    -- pg-autogrant: grants for database {{ $dbName }}
+    -- Executed while connected to {{ $dbName }}.
+
+    \set ON_ERROR_STOP on
+
+    -- Owner schema grants
+    GRANT USAGE, CREATE ON SCHEMA public TO "{{ $dbOwner }}";
+    GRANT ALL ON ALL TABLES IN SCHEMA public TO "{{ $dbOwner }}";
+    GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO "{{ $dbOwner }}";
+    GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO "{{ $dbOwner }}";
+
+    -- Default privileges for owner on future objects
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "{{ $dbOwner }}";
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "{{ $dbOwner }}";
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO "{{ $dbOwner }}";
+    {{- range $specificGrants }}
+    {{- if and (eq .level "schema") (eq .database $dbName) }}
+
+    -- Schema grant: {{ .role }}
+    GRANT {{ join ", " .privileges }} ON SCHEMA {{ .schema }} TO {{ .role }};
+    {{- end }}
+    {{- if and (eq .level "object") (eq .database $dbName) }}
+    {{- $grantRole := .role }}
+    {{- $grantSchema := .schema }}
+    {{- $grantPrivileges := .privileges }}
+    {{- range .objectType }}
+
+    -- Object grant: {{ $grantRole }} on {{ . }}S
+    GRANT {{ join ", " $grantPrivileges }} ON ALL {{ . }}S IN SCHEMA {{ $grantSchema }} TO {{ $grantRole }};
+    ALTER DEFAULT PRIVILEGES IN SCHEMA {{ $grantSchema }} GRANT {{ join ", " $grantPrivileges }} ON {{ . }}S TO {{ $grantRole }};
+    {{- end }}
+    {{- end }}
+    {{- end }}
+  {{- end }}
+
+  entrypoint.sh: |
+    #!/bin/sh
+    set -e
+
+    echo "pg-autogrant: starting grant reconciliation..."
+
+    until pg_isready -h "$PGHOST" -p "$PGPORT" >/dev/null 2>&1; do
+      echo "Waiting for database at $PGHOST:$PGPORT..."
+      sleep 5
+    done
+    echo "Database is available."
+
+    # Run cluster-level grants (roles, database grants, memberships)
+    echo "Applying cluster-level grants..."
+    psql -d postgres -v admin_user="$PGUSER" -f /config/grants.sql
+    {{- range .Values.databases }}
+
+    # Per-database grants: {{ .name }}
+    echo "Applying grants for {{ .name }}..."
+    psql -d "{{ .name }}" -f /config/grants-{{ .name }}.sql
+    {{- end }}
+
+    echo "All grants applied successfully."
+
+    {{- if .Values.cloudSqlProxy.enabled }}
+    # Shut down cloud-sql-proxy sidecar
+    echo "Shutting down cloud-sql-proxy..."
+    wget -qO- http://127.0.0.1:9091/quitquitquit || \
+      curl -fsS http://127.0.0.1:9091/quitquitquit || true
+    {{- end }}
