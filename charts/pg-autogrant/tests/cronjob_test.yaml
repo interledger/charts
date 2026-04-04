@@ -85,6 +85,18 @@ tests:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].valueFrom.secretKeyRef.key
           value: pass
 
+  - it: wires verbose SQL logging flag to container env
+    set:
+      logging:
+        verboseSql: true
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[5].name
+          value: PG_AUTOGRANT_VERBOSE_SQL
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[5].value
+          value: "true"
+
   - it: mounts configmap as volume
     asserts:
       - equal:

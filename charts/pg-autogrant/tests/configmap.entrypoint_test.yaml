@@ -22,10 +22,10 @@ tests:
     asserts:
       - matchRegex:
           path: data["entrypoint.sh"]
-          pattern: 'psql -d "db_alpha" -f /config/grants-db_alpha.sql'
+          pattern: 'run_psql "db_alpha" /config/grants-db_alpha.sql ""'
       - matchRegex:
           path: data["entrypoint.sh"]
-          pattern: 'psql -d "db_beta" -f /config/grants-db_beta.sql'
+          pattern: 'run_psql "db_beta" /config/grants-db_beta.sql ""'
 
   - it: runs cluster-level grants against postgres database
     set:
@@ -36,7 +36,34 @@ tests:
     asserts:
       - matchRegex:
           path: data["entrypoint.sh"]
-          pattern: 'psql -d postgres .* -f /config/grants.sql'
+          pattern: 'run_psql postgres /config/grants.sql "\$PGUSER"'
+
+  - it: enables SQL echoing when verboseSql is true
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+      logging:
+        verboseSql: true
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'psql -d "\$db_name".*-v ECHO=queries'
+
+  - it: does not include SQL echoing in the non-verbose branch
+    set:
+      roles: []
+      databases: []
+      crossGrants: []
+      specificGrants: []
+    asserts:
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'if \[ "\$PG_AUTOGRANT_VERBOSE_SQL" = "true" \]'
+      - matchRegex:
+          path: data["entrypoint.sh"]
+          pattern: 'psql -d "\$db_name" -f "\$sql_file"'
 
   - it: includes proxy shutdown when cloudSqlProxy is enabled
     set:

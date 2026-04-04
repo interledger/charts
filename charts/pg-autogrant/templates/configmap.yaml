@@ -103,29 +103,58 @@ data:
     #!/bin/sh
     set -e
 
-    echo "pg-autogrant: starting grant reconciliation..."
+    log() {
+      printf '%s [pg-autogrant] %s\n' "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$1"
+    }
+
+    run_psql() {
+      db_name="$1"
+      sql_file="$2"
+      admin_user="$3"
+
+      log "Running ${sql_file} against database '${db_name}'"
+
+      if [ "$PG_AUTOGRANT_VERBOSE_SQL" = "true" ]; then
+        # Echo SQL statements as they execute for easier debugging.
+        if [ -n "$admin_user" ]; then
+          psql -d "$db_name" -v admin_user="$admin_user" -f "$sql_file" -v ECHO=queries
+        else
+          psql -d "$db_name" -f "$sql_file" -v ECHO=queries
+        fi
+      else
+        if [ -n "$admin_user" ]; then
+          psql -d "$db_name" -v admin_user="$admin_user" -f "$sql_file"
+        else
+          psql -d "$db_name" -f "$sql_file"
+        fi
+      fi
+    }
+
+    log "Starting grant reconciliation"
+    log "Configuration: host=${PGHOST} port=${PGPORT} sslmode=${PGSSLMODE} verboseSql=${PG_AUTOGRANT_VERBOSE_SQL}"
+    log "Planned actions: roles={{ len .Values.roles }}, databases={{ len .Values.databases }}, crossGrants={{ len .Values.crossGrants }}, specificGrants={{ len .Values.specificGrants }}"
 
     until pg_isready -h "$PGHOST" -p "$PGPORT" >/dev/null 2>&1; do
-      echo "Waiting for database at $PGHOST:$PGPORT..."
+      log "Waiting for database at $PGHOST:$PGPORT"
       sleep 5
     done
-    echo "Database is available."
+    log "Database is available"
 
     # Run cluster-level grants (roles, database grants, memberships)
-    echo "Applying cluster-level grants..."
-    psql -d postgres -v admin_user="$PGUSER" -f /config/grants.sql
+    log "Applying cluster-level grants"
+    run_psql postgres /config/grants.sql "$PGUSER"
     {{- range .Values.databases }}
 
     # Per-database grants: {{ .name }}
-    echo "Applying grants for {{ .name }}..."
-    psql -d "{{ .name }}" -f /config/grants-{{ .name }}.sql
+    log "Applying grants for {{ .name }}"
+    run_psql "{{ .name }}" /config/grants-{{ .name }}.sql ""
     {{- end }}
 
-    echo "All grants applied successfully."
+    log "All grants applied successfully"
 
     {{- if .Values.cloudSqlProxy.enabled }}
     # Shut down cloud-sql-proxy sidecar
-    echo "Shutting down cloud-sql-proxy..."
+    log "Shutting down cloud-sql-proxy"
     wget -qO- http://127.0.0.1:9091/quitquitquit || \
       curl -fsS http://127.0.0.1:9091/quitquitquit || true
     {{- end }}

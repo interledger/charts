@@ -50,6 +50,8 @@ spec:
                       key: {{ .Values.credentialsSecret.passwordKey }}
                 - name: PGSSLMODE
                   value: {{ .Values.connection.sslmode | quote }}
+                - name: PG_AUTOGRANT_VERBOSE_SQL
+                  value: {{ .Values.logging.verboseSql | quote }}
               command: ["/config/entrypoint.sh"]
               volumeMounts:
                 - name: config
