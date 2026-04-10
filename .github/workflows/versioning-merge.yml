@@ -48,7 +48,7 @@ jobs:
       run: sudo chmod +x /usr/local/bin/helm
 
     - name: Calculate and stage chart version bumps on main
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         script: |
           // Skip if PR has manual-versioning label
