@@ -170,8 +170,19 @@ config:
     webhook_secret_ref: "chimoneyWebhookSecret"
     token_ref: "chimoneyToken"
 
+  email:
+    # Set to "false" to disable all outgoing emails. Defaults to enabled.
+    # When disabled, SendGrid env vars are not required.
+    enabled: "true"
+
   sendgrid:
     api_key_ref: "sendgridApiKey"
+    # Display name for outgoing emails (e.g. "Interledger Wallet").
+    from_name: ""
+    # Sender email address for outgoing emails.
+    from_email: ""
+    # SendGrid Dynamic Template ID used by backend transactional emails.
+    one_template_id: ""
 
 
   pusher:
@@ -191,6 +202,8 @@ config:
     token_ref: "basisTheoryToken"
 
   persona:
+    # Persona API base URL override. Default when unset: https://api.withpersona.com/api/v1/
+    base_url: "https://api.withpersona.com/api/v1/"
     token_ref: "personaToken"
     webhook_token_ref: "personaWebhookToken"
 
@@ -227,6 +240,10 @@ config:
     public_key_jwk_ref: "ptiPublicKeyJwk"
     # Secret key containing PTI client UUID for API/webhook validation.
     client_id_ref: "ptiClientID"
+
+  # Comma-separated list of agreement IDs that must be signed during signup
+  # (e.g. "privacy_policy-0.0.0,terms_of_service-0.0.0"). Leave empty to skip.
+  signup_agreement_ids: ""
 
   redis_url_ref: "redisURL"
 
@@ -895,3 +912,15 @@ configMaps:
         valueRef: config.pti.forms_url
       - key: PORT
         valueRef: config.port
+      - key: EMAIL_ENABLED
+        valueRef: config.email.enabled
+      - key: SENDGRID_FROM_NAME
+        valueRef: config.sendgrid.from_name
+      - key: SENDGRID_FROM_EMAIL
+        valueRef: config.sendgrid.from_email
+      - key: SENDGRID_ONE_TEMPLATE_ID
+        valueRef: config.sendgrid.one_template_id
+      - key: PERSONA_BASE_URL
+        valueRef: config.persona.base_url
+      - key: SIGNUP_AGREEMENT_IDS
+        valueRef: config.signup_agreement_ids
