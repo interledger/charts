@@ -45,3 +45,92 @@ tests:
           path: data.WALLET_ADDRESS_URL
           value: 'https://ilp.example.com/.well-known/pay'
 
+  - it: WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED should be "false" by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED
+          value: "false"
+
+  - it: WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED can be enabled
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          walletAddressNotFoundPollingEnabled: "true"
+    asserts:
+      - equal:
+          path: data.WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED
+          value: "true"
+
+  - it: ENABLE_ILP_TIMING_TELEMETRY should be "true" by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.ENABLE_ILP_TIMING_TELEMETRY
+          value: "true"
+
+  - it: ENABLE_ILP_TIMING_TELEMETRY can be disabled
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          telemetry:
+            enableIlpTimingTelemetry: "false"
+    asserts:
+      - equal:
+          path: data.ENABLE_ILP_TIMING_TELEMETRY
+          value: "false"
+
+  - it: CARD_SERVICE_URL and CARD_WEBHOOK_SERVICE_URL should be empty by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.CARD_SERVICE_URL
+          value: ''
+      - equal:
+          path: data.CARD_WEBHOOK_SERVICE_URL
+          value: ''
+
+  - it: CARD_SERVICE_URL and CARD_WEBHOOK_SERVICE_URL can be configured for an external card service
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          cards:
+            service: 'http://card-service.example.com:3007'
+            webhookService: 'http://card-service.example.com:3007/webhook'
+    asserts:
+      - equal:
+          path: data.CARD_SERVICE_URL
+          value: 'http://card-service.example.com:3007'
+      - equal:
+          path: data.CARD_WEBHOOK_SERVICE_URL
+          value: 'http://card-service.example.com:3007/webhook'
+
+  - it: POS_SERVICE_URL and POS_WEBHOOK_SERVICE_URL should be empty by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.POS_SERVICE_URL
+          value: ''
+      - equal:
+          path: data.POS_WEBHOOK_SERVICE_URL
+          value: ''
+
+  - it: POS_SERVICE_URL and POS_WEBHOOK_SERVICE_URL can be configured for an external POS service
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          pos:
+            service: 'http://pos-service.example.com:4008'
+            webhookService: 'http://pos-service.example.com:4008/webhook'
+    asserts:
+      - equal:
+          path: data.POS_SERVICE_URL
+          value: 'http://pos-service.example.com:4008'
+      - equal:
+          path: data.POS_WEBHOOK_SERVICE_URL
+          value: 'http://pos-service.example.com:4008/webhook'
+

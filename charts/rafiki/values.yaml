@@ -274,6 +274,14 @@ config:
       # Enables the telemetry service on Rafiki.
       enabled: "false"
       livenet: "false"
+      # Enables ILP timing telemetry, which adds timing metrics to ILP packet processing.
+      # Introduced in Rafiki v2.3.0-beta. Maps to ENABLE_ILP_TIMING_TELEMETRY.
+      enableIlpTimingTelemetry: "true"
+
+    # When true, Rafiki will poll for a wallet address that was not found in the database
+    # instead of returning a 404 immediately. Useful when wallet addresses are provisioned
+    # asynchronously. Introduced in Rafiki v2.3.0-beta. Maps to WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED.
+    walletAddressNotFoundPollingEnabled: "false"
 
     autoPeering:
       # Enables the auto-peering service on Rafiki.
@@ -296,17 +304,22 @@ config:
       # The time in seconds that an incoming HTTP signature is valid.
       signatureTtlSeconds: 30
 
+    # Cards and POS service integration (introduced in Rafiki v2.3.0-beta).
+    # NOTE: This chart does not deploy the card-service or pos (point-of-sale) service.
+    # If you are running those services externally, set the URLs below so the Rafiki
+    # backend can communicate with them. Leave as empty strings to disable integration.
+    # You will need to deploy and configure the card-service and pos service manually.
     cards:
-      # The service URL of the Card Service.
-      service: 'http://rafiki-card-service:3007'
-      # The card service url to send relevant webhooks to.
-      webhookService: 'http://rafiki-card-service:3007/webhook'
+      # The service URL of the Card Service. Maps to CARD_SERVICE_URL.
+      service: ''
+      # The Card Service URL to send relevant webhooks to. Maps to CARD_WEBHOOK_SERVICE_URL.
+      webhookService: ''
 
     pos:
-      # The service URL of the Point of Sale Service.
-      service: 'http://rafiki-pos-service:4008'
-      # The point of sale service url to send relevant webhooks to.
-      webhookService: 'http://rafiki-pos-service:4008/webhook'
+      # The service URL of the Point of Sale Service. Maps to POS_SERVICE_URL.
+      service: ''
+      # The Point of Sale Service URL to send relevant webhooks to. Maps to POS_WEBHOOK_SERVICE_URL.
+      webhookService: ''
 
 
     # meta config
@@ -620,6 +633,10 @@ configMaps:
         valueRef: config.backend.pos.service
       - key: POS_WEBHOOK_SERVICE_URL
         valueRef: config.backend.pos.webhookService
+      - key: WALLET_ADDRESS_NOT_FOUND_POLLING_ENABLED
+        valueRef: config.backend.walletAddressNotFoundPollingEnabled
+      - key: ENABLE_ILP_TIMING_TELEMETRY
+        valueRef: config.backend.telemetry.enableIlpTimingTelemetry
     
       # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
       # to automatically have the /.well-known/pay suffix
