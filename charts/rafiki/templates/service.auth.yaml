@@ -1,5 +1,5 @@
 {{- define "rafiki.auth.service" -}}
 {{- end }}
-{{- if .Values.deployments.auth.enabled }}
+{{- if .Values.config.auth.enabled }}
 {{- include "common.svc" (list . .Values.services.auth .Values.deployments.auth "rafiki.auth.service") }}
 {{- end }}

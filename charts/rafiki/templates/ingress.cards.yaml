@@ -1,0 +1,12 @@
+{{- define "rafiki-cards.ingress" -}}
+{{- $top := first . -}}
+metadata:
+    annotations:
+       {{- if eq $top.Values.ingress.cards.className "nginx" }}
+        nginx.ingress.kubernetes.io/rewrite-target: /
+       {{- end }}
+{{- end }}
+
+{{- if .Values.ingress.cards.enabled }}
+{{- include "common.ingress" (list . .Values.ingress.cards "rafiki-cards.ingress") }}
+{{- end }}

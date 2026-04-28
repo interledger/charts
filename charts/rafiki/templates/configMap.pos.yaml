@@ -1,0 +1,5 @@
+{{- define "rafiki.pos.ConfigMap" -}}
+{{- end }}
+{{- if .Values.config.pos.enabled }}
+{{- include "common.configMapper" (list . .Values.configMaps.pos "rafiki.pos.ConfigMap") }}
+{{- end }}
