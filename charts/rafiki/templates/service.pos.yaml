@@ -1,0 +1,5 @@
+{{- define "rafiki.pos.service" -}}
+{{- end }}
+{{- if .Values.config.pos.enabled }}
+{{- include "common.svc" (list . .Values.services.pos .Values.deployments.pos "rafiki.pos.service") }}
+{{- end }}

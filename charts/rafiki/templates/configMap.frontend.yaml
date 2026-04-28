@@ -1,5 +1,5 @@
 {{- define "rafiki.frontend.ConfigMap" -}}
 {{- end }}
-{{- if .Values.deployments.frontend.enabled }}
+{{- if .Values.config.frontend.enabled }}
 {{- include "common.configMapper" (list . .Values.configMaps.frontend "rafiki.frontend.ConfigMap") }}
 {{- end }}

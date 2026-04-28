@@ -1,0 +1,45 @@
+suite: rafiki cards - Card Service Deployment
+templates:
+  - configMap.cards.yaml
+  - deployment.cards.yaml
+set:
+  fullnameOverride: rafiki
+  config:
+    cards:
+      enabled: true
+release:
+  name: rafiki
+tests:
+  - it: no deployment should be generated when cards is disabled
+    template: deployment.cards.yaml
+    set:
+      config:
+        cards:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: deployment name should be rafiki-cards
+    template: deployment.cards.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: rafiki-cards
+
+  - it: container image should use rafiki-card-service
+    template: deployment.cards.yaml
+    set:
+      imageOverride:
+        tag: v2.3.0-beta
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/rafiki-card-service:v2.3.0-beta
+
+  - it: container port should be 13007
+    template: deployment.cards.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 13007

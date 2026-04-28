@@ -6,6 +6,8 @@ imageOverride:
 
 config:
   frontend:
+    # Set to false to disable the frontend deployment, service, and configmap.
+    enabled: true
     # See Log levels defined at https://getpino.io/#/docs/api?id=levels
     logLevel: info
     # The type of node environment: development, test, or production.
@@ -24,6 +26,9 @@ config:
     port: 3010
 
   auth:
+    # Set to false to disable the auth deployment, service, and configmap.
+    enabled: true
+
     # If true, the chart will create the secrets defined in the secretsMaps section.
     # If false, the chart will not create the secrets and it is assumed that they
     # already exist.
@@ -129,7 +134,10 @@ config:
   backend:
     # ==========================================================
     # Rafiki Backend configuration
-    # ==========================================================  
+    # ==========================================================
+
+    # Set to false to disable the backend deployment, service, and configmap.
+    enabled: true
 
     # If true, the chart will create the secrets defined in the secretsMaps section.
     # If false, the chart will not create the secrets and it is assumed that they
@@ -330,10 +338,117 @@ config:
       openPayments: 3000
       autoPeering: 3005
 
+  # ==========================================================
+  # Rafiki Card Service configuration (Rafiki v2.3.0-beta+)
+  # ==========================================================
+  cards:
+    # Set to true to deploy the card service alongside Rafiki.
+    # The card service image is rafiki-card-service. You must also configure the
+    # backend's config.backend.cards.service and config.backend.cards.webhookService
+    # so the Rafiki backend can communicate with this service.
+    enabled: false
+
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
+    # The type of node environment: development, test, or production.
+    nodeEnv: production
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
+    logLevel: info
+    # Must be set to true when running behind a proxy.
+    trustProxy: "false"
+
+    # The port the card service will run on. Maps to CARD_SERVICE_PORT.
+    # Using 13007 to avoid collision with the auth introspection port (3007).
+    port: 13007
+
+    # The time, in milliseconds, the card service will wait for a payment to complete.
+    # Maps to CARD_PAYMENT_TIMEOUT_MS.
+    paymentTimeoutMs: 30000
+
+    # The Rafiki Backend Admin GraphQL API URL used by the card service.
+    # Maps to GRAPHQL_URL.
+    graphqlUrl: 'http://rafiki-backend-service.rafiki:3001/graphql'
+
+    tenant:
+      # The uuid of the tenant this card service acts on behalf of. Maps to TENANT_ID.
+      id: ''
+      # The signature version used when signing requests to the backend. Maps to TENANT_SIGNATURE_VERSION.
+      signatureVersion: "1"
+      # The shared secret between the card service and the Rafiki backend. Maps to TENANT_SECRET.
+      secret:
+        value: ""
+        secretKeyRef:
+          key: TENANT_SECRET
+
+  # ==========================================================
+  # Rafiki Point-of-Sale Service configuration (Rafiki v2.3.0-beta+)
+  # ==========================================================
+  pos:
+    # Set to true to deploy the point-of-sale service alongside Rafiki.
+    # The pos service image is rafiki-point-of-sale. You must also configure the
+    # backend's config.backend.pos.service and config.backend.pos.webhookService
+    # so the Rafiki backend can communicate with this service.
+    enabled: false
+
+    # If true, the chart will create the secrets defined in the secretsMaps section.
+    # If false, the chart will not create the secrets and it is assumed that they
+    # already exist.
+    shouldCreateSecrets: false
+
+    # The type of node environment: development, test, or production.
+    nodeEnv: production
+    # See Log levels defined at https://getpino.io/#/docs/api?id=levels
+    logLevel: info
+    # Must be set to true when running behind a proxy.
+    trustProxy: "false"
+
+    # The port the POS service will run on. Maps to PORT.
+    port: 3008
+
+    # The time, in milliseconds, before an incoming payment created by the POS service expires.
+    # Maps to INCOMING_PAYMENT_EXPIRY_MS.
+    incomingPaymentExpiryMs: 10000
+
+    # The time, in milliseconds, the POS service will wait for a webhook response.
+    # Maps to WEBHOOK_TIMEOUT_MS.
+    webhookTimeoutMs: 30000
+
+    # When true, the POS service will use plain HTTP instead of HTTPS for outgoing requests.
+    # Maps to USE_HTTP.
+    useHttp: "false"
+
+    # The Rafiki Backend Admin GraphQL API URL used by the POS service.
+    # Maps to GRAPHQL_URL.
+    graphqlUrl: 'http://rafiki-backend-service.rafiki:3001/graphql'
+
+    tenant:
+      # The uuid of the tenant this POS service acts on behalf of. Maps to TENANT_ID.
+      id: ''
+      # The signature version used when signing requests to the backend. Maps to TENANT_SIGNATURE_VERSION.
+      signatureVersion: "1"
+      # The shared secret between the POS service and the Rafiki backend. Maps to TENANT_SECRET.
+      secret:
+        value: ""
+        secretKeyRef:
+          key: TENANT_SECRET
+
+    webhook:
+      # The version of the webhook signature. Maps to WEBHOOK_SIGNATURE_VERSION.
+      signatureVersion: "1"
+      # The secret used to sign webhook events received from the Rafiki backend. Maps to WEBHOOK_SIGNATURE_SECRET.
+      signatureSecret:
+        value: ""
+        secretKeyRef:
+          key: WEBHOOK_SIGNATURE_SECRET
+
 
 deployments:
   auth:
     name: auth
+    # Deprecated: use config.auth.enabled instead. This field is no longer used as the gate.
     enabled: true
     replicaCount: 1
     image:
@@ -381,6 +496,7 @@ deployments:
 
   frontend:
     name: frontend
+    # Deprecated: use config.frontend.enabled instead. This field is no longer used as the gate.
     enabled: true
     replicaCount: 1
     nodeSelector: {}
@@ -404,6 +520,7 @@ deployments:
 
   backend:
     name: backend
+    # Deprecated: use config.backend.enabled instead. This field is no longer used as the gate.
     enabled: true
     replicaCount: 1
     image:
@@ -497,6 +614,78 @@ deployments:
     #       - sleep
     #       - "3600"
 
+  cards:
+    name: cards
+    replicaCount: 1
+    image:
+      name: rafiki-card-service
+    imagePullPolicy: IfNotPresent
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-cards'
+      - secretRef:
+          name: '{{ include "common.fullname" . }}-cards'
+    autoscaling:
+      enabled: false
+    serviceAccount: {}
+    ports:
+      - name: cardsapi
+        containerPort: 13007
+        protocol: TCP
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 500m
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 13007
+    securityContext: {}
+
+  pos:
+    name: pos
+    replicaCount: 1
+    image:
+      name: rafiki-point-of-sale
+    imagePullPolicy: IfNotPresent
+    envFrom:
+      - configMapRef:
+          name: '{{ include "common.fullname" . }}-pos'
+      - secretRef:
+          name: '{{ include "common.fullname" . }}-pos'
+    autoscaling:
+      enabled: false
+    serviceAccount: {}
+    ports:
+      - name: posapi
+        containerPort: 3008
+        protocol: TCP
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 500m
+    livenessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 3008
+    securityContext: {}
+
 services:
   auth:
     name: auth-service
@@ -556,6 +745,26 @@ services:
         targetPort: 3005
         protocol: TCP
         name: auto-peering
+
+  cards:
+    name: cards-service
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 13007
+        targetPort: 13007
+        protocol: TCP
+        name: cardsapi
+
+  pos:
+    name: pos-service
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - port: 3008
+        targetPort: 3008
+        protocol: TCP
+        name: posapi
 
 # This section of the values file defines Kubernetes config maps that will be created
 # for each service (auth, backend, and frontend).
@@ -705,8 +914,54 @@ configMaps:
       - key: INTERACTION_EXPIRY_SECONDS
         valueRef: config.auth.interaction.expirySeconds
 
+  cards:
+    name: "cards"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.cards.logLevel
+      - key: NODE_ENV
+        valueRef: config.cards.nodeEnv
+      - key: CARD_SERVICE_PORT
+        valueRef: config.cards.port
+      - key: TRUST_PROXY
+        valueRef: config.cards.trustProxy
+      - key: GRAPHQL_URL
+        valueRef: config.cards.graphqlUrl
+      - key: TENANT_ID
+        valueRef: config.cards.tenant.id
+      - key: TENANT_SIGNATURE_VERSION
+        valueRef: config.cards.tenant.signatureVersion
+      - key: CARD_PAYMENT_TIMEOUT_MS
+        valueRef: config.cards.paymentTimeoutMs
+
+  pos:
+    name: "pos"
+    contentMap:
+      - key: LOG_LEVEL
+        valueRef: config.pos.logLevel
+      - key: NODE_ENV
+        valueRef: config.pos.nodeEnv
+      - key: PORT
+        valueRef: config.pos.port
+      - key: TRUST_PROXY
+        valueRef: config.pos.trustProxy
+      - key: GRAPHQL_URL
+        valueRef: config.pos.graphqlUrl
+      - key: TENANT_ID
+        valueRef: config.pos.tenant.id
+      - key: TENANT_SIGNATURE_VERSION
+        valueRef: config.pos.tenant.signatureVersion
+      - key: WEBHOOK_SIGNATURE_VERSION
+        valueRef: config.pos.webhook.signatureVersion
+      - key: WEBHOOK_TIMEOUT_MS
+        valueRef: config.pos.webhookTimeoutMs
+      - key: INCOMING_PAYMENT_EXPIRY_MS
+        valueRef: config.pos.incomingPaymentExpiryMs
+      - key: USE_HTTP
+        valueRef: config.pos.useHttp
+
 # This section of the values file defines Kubernetes secrets that will be created
-# when the shouldCreateSecrets value is true for the relevant service (auth or backend).
+# when the shouldCreateSecrets value is true for the relevant service.
 secretsMaps:
   auth:
     name: auth
@@ -735,6 +990,20 @@ secretsMaps:
         valueRef: config.backend.ilp.streamSecret.value
       - key: ADMIN_API_SECRET
         valueRef: config.backend.admin.apiSecret.value
+
+  cards:
+    name: cards
+    contentMap:
+      - key: TENANT_SECRET
+        valueRef: config.cards.tenant.secret.value
+
+  pos:
+    name: pos
+    contentMap:
+      - key: TENANT_SECRET
+        valueRef: config.pos.tenant.secret.value
+      - key: WEBHOOK_SIGNATURE_SECRET
+        valueRef: config.pos.webhook.signatureSecret.value
 
 # This chart supports the creation of an Ingress resource using the common ingress
 # chart from the common chart. The examples below should be modified to suit your
@@ -781,3 +1050,25 @@ ingress:
             service:
               name: rafiki-frontend-service
               port: 3010
+  cards:
+    enabled: false
+    className: nginx
+    hosts:
+      - host: cards.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-cards-service
+              port: 13007
+  pos:
+    enabled: false
+    className: nginx
+    hosts:
+      - host: pos.interledger-test.dev
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name: rafiki-pos-service
+              port: 3008

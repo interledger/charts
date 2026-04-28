@@ -1,0 +1,73 @@
+suite: rafiki cards - Card Service configmap checks
+templates:
+  - configMap.cards.yaml
+set:
+  fullnameOverride: rafiki
+  config:
+    cards:
+      enabled: true
+release:
+  name: rafiki
+tests:
+  - it: no configmap should be generated when cards is disabled
+    template: configMap.cards.yaml
+    set:
+      config:
+        cards:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: LOG_LEVEL should be "info" by default
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.LOG_LEVEL
+          value: "info"
+
+  - it: NODE_ENV should be "production" by default
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.NODE_ENV
+          value: "production"
+
+  - it: CARD_SERVICE_PORT should be 13007 by default
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.CARD_SERVICE_PORT
+          value: "13007"
+
+  - it: GRAPHQL_URL should default to the backend admin endpoint
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.GRAPHQL_URL
+          value: 'http://rafiki-backend-service.rafiki:3001/graphql'
+
+  - it: GRAPHQL_URL can be overridden
+    template: configMap.cards.yaml
+    set:
+      config:
+        cards:
+          graphqlUrl: 'http://my-backend:3001/graphql'
+    asserts:
+      - equal:
+          path: data.GRAPHQL_URL
+          value: 'http://my-backend:3001/graphql'
+
+  - it: CARD_PAYMENT_TIMEOUT_MS should be 30000 by default
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.CARD_PAYMENT_TIMEOUT_MS
+          value: "30000"
+
+  - it: TENANT_SIGNATURE_VERSION should be "1" by default
+    template: configMap.cards.yaml
+    asserts:
+      - equal:
+          path: data.TENANT_SIGNATURE_VERSION
+          value: "1"
