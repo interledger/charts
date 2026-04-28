@@ -98,6 +98,20 @@ config:
       auth_url: "http://rafiki-auth:3003/graphql"
       backend_url: "http://rafiki-backend:3001/graphql"
 
+    # Rafiki multi-tenancy configuration (required as of Rafiki v2.3.0-beta).
+    # These values are used by the adminSigningRoundTripper to authenticate
+    # and sign outbound requests to the Rafiki admin API.
+
+    # Secret key containing the Rafiki operator tenant UUID.
+    # Sent as the "tenant-id" header on every Rafiki admin API request.
+    operator_tenant_id_ref: "rafikiOperatorTenantID"
+    # Secret key containing the shared secret used to sign Rafiki admin API requests.
+    # Signatures use HMAC-SHA256 over the timestamp and canonical JSON request body.
+    admin_api_secret_ref: "rafikiAdminAPISecret"
+    # Secret key containing the signature scheme version (e.g. "1").
+    # Included in the "signature" header as the version component.
+    signature_version_ref: "rafikiSignatureVersion"
+
   temporal:
     url: "temporal:7233"
 
@@ -495,6 +509,22 @@ server:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.redis_url_ref }}"
+    # Rafiki multi-tenancy secrets — required as of Rafiki v2.3.0-beta.
+    -  name: OPERATOR_TENANT_ID
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.operator_tenant_id_ref }}"
+    -  name: ADMIN_API_SECRET
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.admin_api_secret_ref }}"
+    -  name: SIGNATURE_VERSION
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.signature_version_ref }}"
   resources:
     requests:
       memory: 128Mi
@@ -792,6 +822,22 @@ worker:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}'
             key: "{{ .Values.config.redis_url_ref }}"
+    # Rafiki multi-tenancy secrets — required as of Rafiki v2.3.0-beta.
+    -  name: OPERATOR_TENANT_ID
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.operator_tenant_id_ref }}"
+    -  name: ADMIN_API_SECRET
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.admin_api_secret_ref }}"
+    -  name: SIGNATURE_VERSION
+       valueFrom:
+          secretKeyRef:
+            name: '{{ include "common.fullname" . }}'
+            key: "{{ .Values.config.rafiki.signature_version_ref }}"
   resources:
     requests:
       memory: 128Mi
