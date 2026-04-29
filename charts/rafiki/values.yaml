@@ -169,7 +169,7 @@ config:
     # TODO: Consider not specifying the rates url if it is not needed
     rates:
       # The endpoint your Rafiki instance uses to request exchange rates.
-      url: ""
+      url: "http://your-ase.com/rates"
 
     webhook:
       # Where Rafiki is going to send webhooks
