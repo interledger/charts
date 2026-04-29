@@ -47,7 +47,7 @@ jobs:
             fi
 
         - name: Bump chart versions (no-commit preview on PRs)
-          uses: actions/github-script@v8
+          uses: actions/github-script@v9
           with:
             script: |
                 const { default: runPRVersioning } = await import('${{ github.workspace }}/tooling/runner.js')
