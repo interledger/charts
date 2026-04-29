@@ -1,0 +1,13 @@
+{{- define "cards.deployment" -}}
+{{- $top := first . }}
+{{- $cfgObj := include "common.configMapper" (list $top $top.Values.configMaps.cards "rafiki.cards.ConfigMap") | fromYaml -}}
+{{- $dataHash := $cfgObj.data | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        ilf-configmap-cards-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- if .Values.config.cards.enabled }}
+{{- include "common.deployment" (list . .Values.deployments.cards .Values.deployments.cards.autoscaling .Values.deployments.cards.serviceAccount "cards.deployment") }}
+{{- end }}
