@@ -1,0 +1,45 @@
+suite: rafiki pos - Point-of-Sale Service Deployment
+templates:
+  - configMap.pos.yaml
+  - deployment.pos.yaml
+set:
+  fullnameOverride: rafiki
+  config:
+    pos:
+      enabled: true
+release:
+  name: rafiki
+tests:
+  - it: no deployment should be generated when pos is disabled
+    template: deployment.pos.yaml
+    set:
+      config:
+        pos:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: deployment name should be rafiki-pos
+    template: deployment.pos.yaml
+    asserts:
+      - equal:
+          path: metadata.name
+          value: rafiki-pos
+
+  - it: container image should use rafiki-point-of-sale
+    template: deployment.pos.yaml
+    set:
+      imageOverride:
+        tag: v2.3.0-beta
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/interledger/rafiki-point-of-sale:v2.3.0-beta
+
+  - it: container port should be 3008
+    template: deployment.pos.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 3008

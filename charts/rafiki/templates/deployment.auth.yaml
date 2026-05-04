@@ -8,6 +8,6 @@ spec:
       annotations:
         ilf-configmap-auth-sha256: {{ $dataHash | quote }}
 {{- end }}
-{{- if .Values.deployments.auth.enabled }}
+{{- if .Values.config.auth.enabled }}
 {{- include "common.deployment" (list . .Values.deployments.auth .Values.deployments.auth.autoscaling .Values.deployments.auth.serviceAccount "auth.deployment") }}
 {{- end }}

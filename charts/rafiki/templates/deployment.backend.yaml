@@ -13,6 +13,6 @@ spec:
           secret:
             secretName: {{ include "common.fullname" $top }}-backend-keys
 {{- end }}
-{{- if .Values.deployments.backend.enabled }}
+{{- if .Values.config.backend.enabled }}
 {{- include "common.deployment" (list . .Values.deployments.backend .Values.deployments.backend.autoscaling .Values.deployments.backend.serviceAccount "backend.deployment") }}
 {{- end }}

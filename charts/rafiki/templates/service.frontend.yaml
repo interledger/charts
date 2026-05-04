@@ -1,5 +1,5 @@
 {{- define "rafiki.frontend.service" -}}
 {{- end }}
-{{- if .Values.deployments.frontend.enabled }}
+{{- if .Values.config.frontend.enabled }}
 {{- include "common.svc" (list . .Values.services.frontend .Values.deployments.frontend "rafiki.frontend.service") }}
 {{- end }}

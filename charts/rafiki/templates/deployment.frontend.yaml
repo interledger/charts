@@ -8,6 +8,6 @@ spec:
       annotations:
         ilf-configmap-frontend-sha256: {{ $dataHash | quote }}
 {{- end }}
-{{- if .Values.deployments.frontend.enabled }}
+{{- if .Values.config.frontend.enabled }}
 {{- include "common.deployment" (list . .Values.deployments.frontend .Values.deployments.frontend.autoscaling .Values.deployments.frontend.serviceAccount "frontend.deployment") }}
 {{- end }}

@@ -3,6 +3,6 @@
 data:
     WALLET_ADDRESS_URL: "{{ $top.Values.config.backend.ilp.host }}/.well-known/pay"
 {{- end }}
-{{- if .Values.deployments.backend.enabled }}
+{{- if .Values.config.backend.enabled }}
 {{- include "common.configMapper" (list . .Values.configMaps.backend "rafiki.backend.ConfigMap") }}
 {{- end }}

@@ -136,3 +136,71 @@ tests:
       - equal:
           path: data.GATEHUB_ORGANIZATION_ID
           value: "SOME ORG ID"
+  - it: 'should contain EMAIL_ENABLED=true by default'
+    asserts:
+      - equal:
+          path: data.EMAIL_ENABLED
+          value: "true"
+  - it: 'should allow disabling email via EMAIL_ENABLED'
+    set:
+      config:
+        email:
+          enabled: "false"
+    asserts:
+      - equal:
+          path: data.EMAIL_ENABLED
+          value: "false"
+  - it: 'should contain SENDGRID_FROM_NAME in data'
+    set:
+      config:
+        sendgrid:
+          from_name: "Interledger Wallet"
+    asserts:
+      - equal:
+          path: data.SENDGRID_FROM_NAME
+          value: "Interledger Wallet"
+  - it: 'should contain SENDGRID_FROM_EMAIL in data'
+    set:
+      config:
+        sendgrid:
+          from_email: "support@interledger.app"
+    asserts:
+      - equal:
+          path: data.SENDGRID_FROM_EMAIL
+          value: "support@interledger.app"
+  - it: 'should contain SENDGRID_ONE_TEMPLATE_ID in data'
+    set:
+      config:
+        sendgrid:
+          one_template_id: "d-12030774d225454ea91720034b9adb97"
+    asserts:
+      - equal:
+          path: data.SENDGRID_ONE_TEMPLATE_ID
+          value: "d-12030774d225454ea91720034b9adb97"
+  - it: 'should contain PERSONA_BASE_URL with default value'
+    asserts:
+      - equal:
+          path: data.PERSONA_BASE_URL
+          value: "https://api.withpersona.com/api/v1/"
+  - it: 'should allow overriding PERSONA_BASE_URL'
+    set:
+      config:
+        persona:
+          base_url: "http://mockxago:8080/v1/"
+    asserts:
+      - equal:
+          path: data.PERSONA_BASE_URL
+          value: "http://mockxago:8080/v1/"
+  - it: 'should contain empty SIGNUP_AGREEMENT_IDS by default'
+    asserts:
+      - equal:
+          path: data.SIGNUP_AGREEMENT_IDS
+          value: ""
+  - it: 'should contain SIGNUP_AGREEMENT_IDS when set'
+    set:
+      config:
+        signup_agreement_ids: "privacy_policy-0.0.0,terms_of_service-0.0.0"
+    asserts:
+      - equal:
+          path: data.SIGNUP_AGREEMENT_IDS
+          value: "privacy_policy-0.0.0,terms_of_service-0.0.0"

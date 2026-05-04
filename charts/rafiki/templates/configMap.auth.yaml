@@ -1,5 +1,5 @@
 {{- define "rafiki.auth.ConfigMap" -}}
 {{- end }}
-{{- if .Values.deployments.auth.enabled }}
+{{- if .Values.config.auth.enabled }}
 {{- include "common.configMapper" (list . .Values.configMaps.auth "rafiki.auth.ConfigMap") }}
 {{- end }}

@@ -1,0 +1,87 @@
+suite: rafiki pos - Point-of-Sale Service configmap checks
+templates:
+  - configMap.pos.yaml
+set:
+  fullnameOverride: rafiki
+  config:
+    pos:
+      enabled: true
+release:
+  name: rafiki
+tests:
+  - it: no configmap should be generated when pos is disabled
+    template: configMap.pos.yaml
+    set:
+      config:
+        pos:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: LOG_LEVEL should be "info" by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.LOG_LEVEL
+          value: "info"
+
+  - it: NODE_ENV should be "production" by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.NODE_ENV
+          value: "production"
+
+  - it: PORT should be 3008 by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.PORT
+          value: "3008"
+
+  - it: GRAPHQL_URL should default to the backend admin endpoint
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.GRAPHQL_URL
+          value: 'http://rafiki-backend-service.rafiki:3001/graphql'
+
+  - it: GRAPHQL_URL can be overridden
+    template: configMap.pos.yaml
+    set:
+      config:
+        pos:
+          graphqlUrl: 'http://my-backend:3001/graphql'
+    asserts:
+      - equal:
+          path: data.GRAPHQL_URL
+          value: 'http://my-backend:3001/graphql'
+
+  - it: INCOMING_PAYMENT_EXPIRY_MS should be 10000 by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.INCOMING_PAYMENT_EXPIRY_MS
+          value: "10000"
+
+  - it: WEBHOOK_TIMEOUT_MS should be 30000 by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.WEBHOOK_TIMEOUT_MS
+          value: "30000"
+
+  - it: WEBHOOK_SIGNATURE_VERSION should be "1" by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.WEBHOOK_SIGNATURE_VERSION
+          value: "1"
+
+  - it: USE_HTTP should be "false" by default
+    template: configMap.pos.yaml
+    asserts:
+      - equal:
+          path: data.USE_HTTP
+          value: "false"

@@ -1,0 +1,5 @@
+{{- define "rafiki.cards.ConfigMap" -}}
+{{- end }}
+{{- if .Values.config.cards.enabled }}
+{{- include "common.configMapper" (list . .Values.configMaps.cards "rafiki.cards.ConfigMap") }}
+{{- end }}
