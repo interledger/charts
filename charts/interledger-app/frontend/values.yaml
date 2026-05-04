@@ -14,6 +14,8 @@ config:
   backend:
     grpc:
       url: "http://wallet-backend-service:8443"
+    http:
+      url: "http://wallet-backend-service:3000"
 
   redis:
     url_ref: redisURL
@@ -200,3 +202,5 @@ configMaps:
         valueRef: config.pti.sdk_url
       - key: PTI_FORMS_URL
         valueRef: config.pti.forms_url
+      - key: BACKEND_HTTP_URL
+        valueRef: config.backend.http.url
