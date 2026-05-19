@@ -8,6 +8,7 @@ config:
     logLevel: info
     nodeEnv: production
     port: 4003
+    theme: "dark"
 
     urls:
       backend: "https://api.interledger-test.dev"
@@ -19,6 +20,10 @@ config:
 
     features:
       useTestKycData: true
+      enabled: false
+
+    gatehub:
+      env: "sandbox"   
 
   backend:
     # If true, the chart will create the secrets defined in the secretsMaps section.
@@ -29,6 +34,7 @@ config:
     nodeEnv: production
     logLevel: info
     port: 4003
+    nodeTlsRejectUnauthorized: 0
 
     cookie:
       name: "testnet.cookie"
@@ -71,6 +77,7 @@ config:
       env: "sandbox"
       accessKey: ""
       secretKey: ""
+      apiBaseUrl: "https://api.sandbox.gatehub.net"
       accessSepaKey: ""
       secretSepaKey: ""
       gatewayUuid: "9358542e-9bd1-48bc-b869-8661f1a1827c"
@@ -87,9 +94,15 @@ config:
         productCode: "PMDSGWEEA"
         nameOnCard: "INTERLEDGER"
         paymentPointerPrefix: "ilp.dev"
+      iframe:
+        managedRampUrl: "https://managed-ramp.sandbox.gatehub.net"
+        exchangeUrl: "https://exchange.sandbox.gatehub.net"
+        onboardingUrl: "https://onboarding.sandbox.gatehub.net"
 
     rate:
       apiKey: ""
+      limit: false
+      limitLevel: "LAX"
 
     card:
       pinUrl: "https://lab.dinitcs.com/uat/Stargate.Paywiser.Server/api/v3/ClientDevice/pin"
@@ -277,11 +290,19 @@ configMaps:
         valueRef: config.frontend.urls.openPaymentsHost
       - key: NEXT_PUBLIC_AUTH_HOST
         valueRef: config.frontend.urls.authHost
+      - key: NEXT_PUBLIC_THEME
+        valueRef: config.frontend.theme
+      - key: NEXT_PUBLIC_GATEHUB_ENV
+        valueRef: config.frontend.gatehub.env
+      - key: NEXT_PUBLIC_FEATURES_ENABLED
+        valueRef: config.frontend.features.enabled
   backend:
     name: "backend"
     contentMap:
       - key: NODE_ENV
         valueRef: config.backend.nodeEnv
+      - key: NODE_TLS_REJECT_UNAUTHORIZED
+        valueRef: config.backend.nodeTlsRejectUnauthorized
       - key: PORT
         valueRef: config.backend.port
       - key: COOKIE_NAME
@@ -310,6 +331,14 @@ configMaps:
         valueRef: config.backend.gatehub.accessKey
       - key: GATEHUB_SEPA_ACCESS_KEY
         valueRef: config.backend.gatehub.accessSepaKey
+      - key: GATEHUB_API_BASE_URL
+        value: config.backend.gatehub.apiBaseUrl
+      - key: GATEHUB_IFRAME_MANAGED_RAMP_URL
+        value: config.backend.gatehub.iframe.managedRampUrl
+      - key: GATEHUB_IFRAME_EXCHANGE_URL
+        value: config.backend.gatehub.iframe.exchangeUrl
+      - key: GATEHUB_IFRAME_ONBOARDING_URL
+        value: config.backend.gatehub.iframe.onboardingUrl
       - key: GATEHUB_GATEWAY_UUID
         valueRef: config.backend.gatehub.gatewayUuid
       - key: GATEHUB_VAULT_UUID_EUR
@@ -344,6 +373,10 @@ configMaps:
         valueRef: config.backend.rafiki.operatorId
       - key: ADMIN_SIGNATURE_VERSION
         valueRef: config.backend.rafiki.apiSignatureVersion
+      - key: RATE_LIMIT
+        valueRef: config.backend.rate.limit
+      - key: RATE_LIMIT_LEVEL
+        valueRef: config.backend.rate.limitLevel
 
 
 # This section of the values file defines Kubernetes secrets that will be created
