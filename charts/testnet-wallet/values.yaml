@@ -332,13 +332,13 @@ configMaps:
       - key: GATEHUB_SEPA_ACCESS_KEY
         valueRef: config.backend.gatehub.accessSepaKey
       - key: GATEHUB_API_BASE_URL
-        value: config.backend.gatehub.apiBaseUrl
+        valueRef: config.backend.gatehub.apiBaseUrl
       - key: GATEHUB_IFRAME_MANAGED_RAMP_URL
-        value: config.backend.gatehub.iframe.managedRampUrl
+        valueRef: config.backend.gatehub.iframe.managedRampUrl
       - key: GATEHUB_IFRAME_EXCHANGE_URL
-        value: config.backend.gatehub.iframe.exchangeUrl
+        valueRef: config.backend.gatehub.iframe.exchangeUrl
       - key: GATEHUB_IFRAME_ONBOARDING_URL
-        value: config.backend.gatehub.iframe.onboardingUrl
+        valueRef: config.backend.gatehub.iframe.onboardingUrl
       - key: GATEHUB_GATEWAY_UUID
         valueRef: config.backend.gatehub.gatewayUuid
       - key: GATEHUB_VAULT_UUID_EUR
