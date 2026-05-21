@@ -34,7 +34,6 @@ config:
     nodeEnv: production
     logLevel: info
     port: 4003
-    nodeTlsRejectUnauthorized: 0
 
     cookie:
       name: "testnet.cookie"
@@ -301,8 +300,6 @@ configMaps:
     contentMap:
       - key: NODE_ENV
         valueRef: config.backend.nodeEnv
-      - key: NODE_TLS_REJECT_UNAUTHORIZED
-        valueRef: config.backend.nodeTlsRejectUnauthorized
       - key: PORT
         valueRef: config.backend.port
       - key: COOKIE_NAME
