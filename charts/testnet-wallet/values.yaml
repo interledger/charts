@@ -39,7 +39,6 @@ config:
 
     cookie:
       name: "testnet.cookie"
-      password: "REPLACE_WITH_SECURE_COOKIE_PASSWORD"
       ttl: 2630000
 
     hosts:
