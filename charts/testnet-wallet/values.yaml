@@ -23,7 +23,7 @@ config:
       enabled: false
 
     gatehub:
-      env: "sandbox"   
+      env: "sandbox"
 
   backend:
     # If true, the chart will create the secrets defined in the secretsMaps section.
