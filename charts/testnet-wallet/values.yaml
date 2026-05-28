@@ -20,6 +20,8 @@ config:
 
     features:
       useTestKycData: true
+      # Public features are intended for the production interledger.cards
+      # environment only
       enabled: false
 
     gatehub:
