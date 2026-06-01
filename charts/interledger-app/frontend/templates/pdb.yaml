@@ -1,3 +1,0 @@
-{{- define "server.pdb" -}}
-{{- end }}
-{{- include "common.pdb" (list . .Values.server "server.pdb") }}
