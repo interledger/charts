@@ -100,19 +100,13 @@ config:
 
     gatehub:
       env: "sandbox"
-      accessKey:
-        # value: ""
-          secretKeyRef:
-            key: "gatehub.accessKey"
+      accessKey: "00000000-0000-0000-0000-000000000000"
       secretKey:
         # value: ""
         secretKeyRef:
           key: "gatehub.secretKey"
       apiBaseUrl: "https://api.sandbox.gatehub.net"
-      accessSepaKey:
-        # value: ""
-        secretKeyRef:
-          key: "gatehub.accessSepaKey"
+      accessSepaKey: "00000000-0000-0000-0000-000000000000"
       secretSepaKey:
         # value: ""
         secretKeyRef:
