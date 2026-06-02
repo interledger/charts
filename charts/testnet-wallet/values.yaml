@@ -31,7 +31,7 @@ config:
     # If true, the chart will create the secrets defined in the secretsMaps section.
     # If false, the chart will not create the secrets and it is assumed that they
     # already exist.
-    shouldCreateSecrets: true
+    shouldCreateSecrets: false
 
     nodeEnv: production
     logLevel: info
@@ -40,6 +40,10 @@ config:
     cookie:
       name: "testnet.cookie"
       ttl: 2630000
+      password: # value: "a-very-secure-random-password"
+        secretKeyRef:
+          name: '{{ include "common.fullname" . }}-backend'
+          key: cookiePassword
 
     hosts:
       openPayments: "https://ilp.interledger-test.dev"
@@ -49,16 +53,28 @@ config:
       auth: "http://rafiki-auth-test-service.interledger-test:3009"
 
     database:
-      url: "postgres://username:password@postgres-host/database_name"
+      url:
+        # value: "postgres://username:password@postgres-host/database_name"
+        secretKeyRef:
+          key: "databaseUrl"
 
     redis:
-      url: "redis://redis-test.interledger-test:6379"
+      url: 
+        # value: "redis://redis-test.interledger-test:6379"
+        secretKeyRef:
+          key: "redis.url"
 
     identity:
-      serverSecret: "00000000-0000-0000-0000-000000000000"
+      serverSecret: 
+        # value: "00000000-0000-0000-0000-000000000000"
+        secretKeyRef:
+          key: "identity.serverSecret"
 
     webhook:
-      signatureSecret: "00000000-0000-0000-0000-000000000000"
+      signatureSecret: 
+        # value: "00000000-0000-0000-0000-000000000000"
+        secretKeyRef:
+          key: "webhook.signatureSecret"
 
     interaction:
       cookieSameSite: "lax"
@@ -66,24 +82,48 @@ config:
     email:
       send: true
       from: "tech@interledger.org"
-      sendgridKey: ""
+      sendgridKey:
+        # value: "SG.xxxxxxxx"
+        secretKeyRef:
+          key: "email.sendgridKey"
 
     stripe:
       enabled: false
-      webhookSecret: "replaceMe"
-      secretKey: "replaceMe"
+      webhookSecret:
+        # value: ""
+        secretKeyRef:
+          key: "stripe.webhookSecret"
+      secretKey:
+        # value: ""
+        secretKeyRef:
+          key: "stripe.secretKey"
 
     gatehub:
       env: "sandbox"
-      accessKey: ""
-      secretKey: ""
+      accessKey:
+        # value: ""
+          secretKeyRef:
+            key: "gatehub.accessKey"
+      secretKey:
+        # value: ""
+        secretKeyRef:
+          key: "gatehub.secretKey"
       apiBaseUrl: "https://api.sandbox.gatehub.net"
-      accessSepaKey: ""
-      secretSepaKey: ""
+      accessSepaKey:
+        # value: ""
+        secretKeyRef:
+          key: "gatehub.accessSepaKey"
+      secretSepaKey:
+        # value: ""
+        secretKeyRef:
+          key: "gatehub.webhookSecret"
       gatewayUuid: "9358542e-9bd1-48bc-b869-8661f1a1827c"
       organizationId: ""
       sepaOrganizationId: ""
-      webhookSecret: ""
+      webhookSecret:
+        # value: ""
+        secretKeyRef:
+          key: "gatehub.webhookSecret"
       settlementWalletAddress: ""
       vault:
         eur: "a09a0a2c-1a3a-44c5-a1b9-603a6eea9341"
@@ -100,7 +140,10 @@ config:
         onboardingUrl: "https://onboarding.sandbox.gatehub.net"
 
     rate:
-      apiKey: ""
+      apiKey:
+        # value: ""
+        secretKeyRef:
+          key: "rate.apiKey"
       limit: false
       limitLevel: "LAX"
 
@@ -113,6 +156,10 @@ config:
     rafiki: # variables for rafiki configurations
       operatorId: ""
       apiSignatureVersion: "1"
+      adminApiSecret:
+        # value: ""
+        secretKeyRef:
+          key: "rafiki.adminApiSecret"
 
 deployments:
   backend:
@@ -132,67 +179,67 @@ deployments:
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: databaseUrl
+            key: "{{ .Values.config.backend.database.url.secretKeyRef.key }}"
       - name: COOKIE_PASSWORD
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: cookiePassword
+            key: "{{ .Values.config.backend.cookie.password.secretKeyRef.key }}"
       - name: AUTH_IDENTITY_SERVER_SECRET
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: identity.serverSecret
+            key: "{{ .Values.config.backend.identity.serverSecret.secretKeyRef.key }}"
       - name: REDIS_URL
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: redis.url
+            key: "{{ .Values.config.backend.redis.url.secretKeyRef.key }}"
       - name: RAFIKI_WEBHOOK_SIGNATURE_SECRET
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: webhook.signatureSecret
+            key: "{{ .Values.config.backend.webhook.signatureSecret.secretKeyRef.key }}"
       - name: GATEHUB_SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: gatehub.secretKey
+            key: "{{ .Values.config.backend.gatehub.secretKey.secretKeyRef.key }}"
       - name: GATEHUB_SEPA_SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: gatehub.secretSepaKey
+            key: "{{ .Values.config.backend.gatehub.secretSepaKey.secretKeyRef.key }}"
       - name: GATEHUB_WEBHOOK_SECRET
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: gatehub.webhookSecret
+            key: "{{ .Values.config.backend.gatehub.webhookSecret.secretKeyRef.key }}"
       - name: SENDGRID_API_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: email.sendgridKey
+            key: "{{ .Values.config.backend.email.sendgridKey.secretKeyRef.key }}"
       - name: RATE_API_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: rate.apiKey
+            key: "{{ .Values.config.backend.rate.apiKey.secretKeyRef.key }}"
       - name: STRIPE_WEBHOOK_SECRET
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: stripe.webhookSecret
+            key: "{{ .Values.config.backend.stripe.webhookSecret.secretKeyRef.key }}"
       - name: STRIPE_SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: stripe.secretKey
+            key: "{{ .Values.config.backend.stripe.secretKey.secretKeyRef.key }}"
       - name: ADMIN_API_SECRET
         valueFrom:
           secretKeyRef:
             name: '{{ include "common.fullname" . }}-backend'
-            key: rafiki.adminApiSecret
+            key: "{{ .Values.config.backend.rafiki.adminApiSecret.secretKeyRef.key }}"
 
     ports:
       - name: http
@@ -385,26 +432,26 @@ secretsMaps:
     name: backend
     contentMap:
       - key: databaseUrl
-        valueRef: config.backend.database.url
+        valueRef: config.backend.database.url.value
       - key: cookiePassword
-        valueRef: config.backend.cookie.password
+        valueRef: config.backend.cookie.password.value
       - key: identity.serverSecret
-        valueRef: config.backend.identity.serverSecret
+        valueRef: config.backend.identity.serverSecret.value
       - key: redis.url
-        valueRef: config.backend.redis.url
+        valueRef: config.backend.redis.url.value
       - key: webhook.signatureSecret
-        valueRef: config.backend.webhook.signatureSecret
+        valueRef: config.backend.webhook.signatureSecret.value
       - key: gatehub.secretKey
-        valueRef: config.backend.gatehub.secretKey
+        valueRef: config.backend.gatehub.secretKey.value
       - key: gatehub.webhookSecret
-        valueRef: config.backend.gatehub.webhookSecret
+        valueRef: config.backend.gatehub.webhookSecret.value
       - key: email.sendgridKey
-        valueRef: config.backend.email.sendgridKey
+        valueRef: config.backend.email.sendgridKey.value
       - key: rate.apiKey
-        valueRef: config.backend.rate.apiKey
+        valueRef: config.backend.rate.apiKey.value
       - key: stripe.webhookSecret
-        valueRef: config.backend.stripe.webhookSecret
+        valueRef: config.backend.stripe.webhookSecret.value
       - key: stripe.secretKey
-        valueRef: config.backend.stripe.secretKey
+        valueRef: config.backend.stripe.secretKey.value
       - key: rafiki.adminApiSecret
-        valueRef: config.backend.rafiki.adminApiSecret
+        valueRef: config.backend.rafiki.adminApiSecret.value
