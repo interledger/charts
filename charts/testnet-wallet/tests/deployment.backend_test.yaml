@@ -47,7 +47,7 @@ tests:
       - equal:
           path: data.COOKIE_NAME
           value: testnet.cookie
-  - it: 'should handle sepaAccessKey as a config'
+  - it: 'should handle accessSepaKey as a config'
     template: configMap.backend.yaml
     set:
       config:
