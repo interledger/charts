@@ -47,3 +47,14 @@ tests:
       - equal:
           path: data.COOKIE_NAME
           value: testnet.cookie
+  - it: 'should handle sepaAccessKey as a config'
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          gatehub:
+            accessSepaKey: test-sepa-access-key
+    asserts:
+      - equal:
+          path: data.GATEHUB_SEPA_ACCESS_KEY
+          value: test-sepa-access-key
