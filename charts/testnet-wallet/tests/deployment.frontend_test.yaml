@@ -7,12 +7,12 @@ set:
 release:
   name: test-testnet-wallet
 tests:
-  - it: 'deployment name should be test-testnet-wallet-frontend'
+  - it: "deployment name should be test-testnet-wallet-frontend"
     asserts:
       - equal:
           path: metadata.name
           value: test-testnet-wallet-frontend
-  - it: 'when overriding tag on the deployment, the container should use that tag'
+  - it: "when overriding tag on the deployment, the container should use that tag"
     template: deployment.frontend.yaml
     set:
       deployments:
@@ -23,8 +23,8 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: ghcr.io/interledger/test-wallet-frontend:2.0.0
-  - it: 'given that no tag is on the deployment definition, when overriding the tag globally, the container should use that tag'
-    template: deployment.frontend.yaml  
+  - it: "given that no tag is on the deployment definition, when overriding the tag globally, the container should use that tag"
+    template: deployment.frontend.yaml
     set:
       imageOverride:
         tag: 2.0.0
@@ -32,9 +32,18 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: ghcr.io/interledger/test-wallet-frontend:2.0.0
-  - it: 'should correctly envFrom for configMap'
+  - it: "should correctly envFrom for configMap"
     template: deployment.frontend.yaml
     asserts:
       - equal:
           path: spec.template.spec.containers[0].envFrom[0].configMapRef.name
           value: test-testnet-wallet-frontend
+  - it: "should add BACKEND_INTERNAL_URL with correct service"
+    template: deployment.frontend.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: BACKEND_INTERNAL_URL
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: "http://test-testnet-wallet-backend-service:4003"
