@@ -59,19 +59,19 @@ config:
           key: "databaseUrl"
 
     redis:
-      url: 
+      url:
         # value: "redis://redis-test.interledger-test:6379"
         secretKeyRef:
           key: "redis.url"
 
     identity:
-      serverSecret: 
+      serverSecret:
         # value: "00000000-0000-0000-0000-000000000000"
         secretKeyRef:
           key: "identity.serverSecret"
 
     webhook:
-      signatureSecret: 
+      signatureSecret:
         # value: "00000000-0000-0000-0000-000000000000"
         secretKeyRef:
           key: "webhook.signatureSecret"
@@ -169,9 +169,6 @@ deployments:
           name: '{{ include "common.fullname" . }}-backend'
 
     env:
-      # Backend internal URL (in-cluster)
-      - name: BACKEND_INTERNAL_URL
-        value: 'http://{{ include "common.fullname" . }}-{{ .Values.services.backend.name }}:{{ (index .Values.services.backend.ports 0).port }}'
       - name: DATABASE_URL
         valueFrom:
           secretKeyRef:
@@ -267,6 +264,10 @@ deployments:
       name: test-wallet-frontend
       # tag: "v0.1.66"   # Use this to override the image tag for just this image
     imagePullPolicy: IfNotPresent
+    env:
+      # Backend internal URL (in-cluster)
+      - name: BACKEND_INTERNAL_URL
+        value: 'http://{{ include "common.fullname" . }}-{{ .Values.services.backend.name }}:{{ (index .Values.services.backend.ports 0).port }}'
     envFrom:
       - configMapRef:
           name: '{{ include "common.fullname" . }}-frontend'
@@ -419,7 +420,6 @@ configMaps:
         valueRef: config.backend.rate.limit
       - key: RATE_LIMIT_LEVEL
         valueRef: config.backend.rate.limitLevel
-
 
 # This section of the values file defines Kubernetes secrets that will be created
 # when the shouldCreateSecrets value is true for the backend service.
