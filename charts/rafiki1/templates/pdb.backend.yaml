@@ -1,5 +1,0 @@
-{{- define "backend.pdb" -}}
-{{- end }}
-{{- if .Values.deployments.backend.podDisruptionBudget.enabled }}
-{{- include "common.pdb" (list . .Values.deployments.backend "backend.pdb") }}
-{{- end }}

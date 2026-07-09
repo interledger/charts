@@ -1,3 +1,0 @@
-{{- define "testnet-wallet.frontend.ConfigMap" -}}
-{{- end }}
-{{- include "common.configMapper" (list . .Values.configMaps.frontend "testnet-wallet.frontend.ConfigMap") }}
