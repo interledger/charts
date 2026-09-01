@@ -1,6 +1,5 @@
 {{- define "api.deployment" -}}
 {{- $top := first . }}
-{{- if $top.Values.api.enabled }}
 {{- $dataHash := ($top.Values.api.config | default dict) | toJson | sha256sum -}}
 spec:
   template:
@@ -8,5 +7,6 @@ spec:
       annotations:
         bascinet-api-sha256: {{ $dataHash | quote }}
 {{- end }}
-{{- end }}
+{{- if .Values.api.enabled }}
 {{- include "common.deployment" (list . .Values.api .Values.api.autoscaling .Values.api.serviceAccount "api.deployment") }}
+{{- end }}
