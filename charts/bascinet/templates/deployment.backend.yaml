@@ -1,6 +1,5 @@
 {{- define "backend.deployment" -}}
 {{- $top := first . }}
-{{- if $top.Values.backend.enabled }}
 {{- $dataHash := ($top.Values.backend.config | default dict) | toJson | sha256sum -}}
 spec:
   template:
@@ -8,5 +7,6 @@ spec:
       annotations:
         bascinet-backend-sha256: {{ $dataHash | quote }}
 {{- end }}
-{{- end }}
+{{- if .Values.backend.enabled }}
 {{- include "common.deployment" (list . .Values.backend .Values.backend.autoscaling .Values.backend.serviceAccount "backend.deployment") }}
+{{- end }}
