@@ -23,6 +23,8 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /etc/secrets/my-secret
+      - notExists:
+          path: spec.template.volumes
   - it: 'secretProvider entries should generate a CSI volume nested under the pod spec'
     set:
       worker:
@@ -41,3 +43,5 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /mnt/secrets-store-my-secret-provider-class
+      - notExists:
+          path: spec.template.volumes
