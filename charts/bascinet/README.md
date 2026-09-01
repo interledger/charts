@@ -15,12 +15,12 @@ library provides the underlying templates.
 Bascinet can deploy up to four components. Each component is
 independent. Enable only the components your application needs.
 
-| Component  | Enabled by default | Creates a Service |
-|------------|---------------------|--------------------|
-| `backend`  | Yes                 | Yes                |
-| `frontend` | No                  | Yes                |
-| `api`      | No                  | Yes                |
-| `worker`   | No                  | No                 |
+| Component | Enabled by default | Creates a Service |
+| --------- | ------------------ | ---------------- |
+| `backend` | Yes                | Yes              |
+| `frontend` | No                | Yes              |
+| `api`     | No                 | Yes              |
+| `worker`  | No                 | No               |
 
 A `worker` component has no Service. A worker does not receive
 network traffic.
