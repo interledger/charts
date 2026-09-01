@@ -8,10 +8,5 @@
     "lint": "pnpm --package=typescript dlx tsc",
     "test": "node --test --test-reporter=spec tests/*.test.js"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "github-script"
-    ]
-  },
   "packageManager": "pnpm@10.33.2"
 }
