@@ -1,0 +1,43 @@
+suite: Common - Pod volumes and secretProvider mounts
+templates:
+  - deployment.worker.yaml
+tests:
+  - it: 'volumes provided should be nested under the pod spec, not as a sibling of it'
+    set:
+      worker:
+        volumes:
+          - name: my-secret
+            secret:
+              secretName: my-external-secret
+        volumeMounts:
+          - name: my-secret
+            mountPath: /etc/secrets/my-secret
+            readOnly: true
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: my-secret
+      - equal:
+          path: spec.template.spec.volumes[0].secret.secretName
+          value: my-external-secret
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /etc/secrets/my-secret
+  - it: 'secretProvider entries should generate a CSI volume nested under the pod spec'
+    set:
+      worker:
+        secretProvider:
+          - name: my-secret-provider-class
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: my-secret-provider-class
+      - equal:
+          path: spec.template.spec.volumes[0].csi.driver
+          value: secrets-store.csi.k8s.io
+      - equal:
+          path: spec.template.spec.volumes[0].csi.volumeAttributes.secretProviderClass
+          value: my-secret-provider-class
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /mnt/secrets-store-my-secret-provider-class

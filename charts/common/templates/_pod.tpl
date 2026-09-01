@@ -58,18 +58,18 @@ spec:
     {{- toYaml $pod.topologySpreadConstraints | nindent 4 }}
   {{- end }}
   {{- if or ($pod.secretProvider) ($pod.volumes) }}
-volumes:
-  {{- range $secretProvider := $pod.secretProvider }}
-  - name: {{ $secretProvider.name }}
-    csi:
-      driver: secrets-store.csi.k8s.io
-      readOnly: true
-      volumeAttributes:
-        secretProviderClass: {{ $secretProvider.name }}
-  {{- end }}
-  {{- with $pod.volumes }}
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+  volumes:
+    {{- range $secretProvider := $pod.secretProvider }}
+    - name: {{ $secretProvider.name }}
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: {{ $secretProvider.name }}
+    {{- end }}
+    {{- with $pod.volumes }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
   {{- end }}
 {{- end }}
 
