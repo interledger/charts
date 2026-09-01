@@ -1,0 +1,12 @@
+{{- define "frontend.deployment" -}}
+{{- $top := first . }}
+{{- $dataHash := ($top.Values.frontend.config | default dict) | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        bascinet-frontend-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- if .Values.frontend.enabled }}
+{{- include "common.deployment" (list . .Values.frontend .Values.frontend.autoscaling .Values.frontend.serviceAccount "frontend.deployment") }}
+{{- end }}

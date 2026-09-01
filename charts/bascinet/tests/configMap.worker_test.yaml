@@ -1,0 +1,20 @@
+suite: bascinet worker - configmap
+templates:
+  - configMap.worker.yaml
+tests:
+  - it: 'worker is disabled by default so no configmap should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'when worker is enabled the configmap should be created with the provided config data'
+    set:
+      worker:
+        enabled: true
+        config:
+          MY_KEY: my_value
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: data.MY_KEY
+          value: my_value

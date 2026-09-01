@@ -1,0 +1,5 @@
+{{- define "api.service" -}}
+{{- end }}
+{{- if .Values.api.enabled }}
+{{- include "common.svc" (list . .Values.api.service .Values.api "api.service") }}
+{{- end }}

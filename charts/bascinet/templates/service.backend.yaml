@@ -1,0 +1,5 @@
+{{- define "backend.http.service" -}}
+{{- end }}
+{{- if .Values.backend.enabled }}
+{{- include "common.svc" (list . .Values.backend.service.http .Values.backend "backend.http.service") }}
+{{- end }}

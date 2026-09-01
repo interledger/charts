@@ -1,0 +1,29 @@
+suite: bascinet worker - deployment
+templates:
+  - deployment.worker.yaml
+tests:
+  - it: 'worker is disabled by default so no deployment should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'worker image repository, name and tag should be overridable'
+    set:
+      worker:
+        enabled: true
+        image:
+          repository: ghcr.io/example/custom-repo
+          name: custom-name
+          tag: 9.9.9
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/example/custom-repo/custom-name:9.9.9
+  - it: 'when explicitly disabled no worker deployment should be created'
+    set:
+      worker:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

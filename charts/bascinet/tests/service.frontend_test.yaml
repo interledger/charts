@@ -1,0 +1,17 @@
+suite: bascinet frontend - service
+templates:
+  - service.frontend.yaml
+tests:
+  - it: 'frontend is disabled by default so no service should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'when frontend is enabled the service should be created'
+    set:
+      frontend:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service

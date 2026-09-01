@@ -1,0 +1,9 @@
+{{- if .Values.worker.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.fullname" . }}-{{ .Values.worker.name }}
+  {{- include "common.metadata" (list . .Values.worker) | nindent 2 }}
+data:
+  {{- toYaml (.Values.worker.config | default dict) | nindent 2 }}
+{{- end }}

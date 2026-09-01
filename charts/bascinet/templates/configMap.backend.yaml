@@ -1,0 +1,9 @@
+{{- if .Values.backend.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.fullname" . }}-{{ .Values.backend.name }}
+  {{- include "common.metadata" (list . .Values.backend) | nindent 2 }}
+data:
+  {{- toYaml (.Values.backend.config | default dict) | nindent 2 }}
+{{- end }}

@@ -1,0 +1,9 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.fullname" . }}-{{ .Values.frontend.name }}
+  {{- include "common.metadata" (list . .Values.frontend) | nindent 2 }}
+data:
+  {{- toYaml (.Values.frontend.config | default dict) | nindent 2 }}
+{{- end }}
