@@ -134,3 +134,35 @@ tests:
           path: data.POS_WEBHOOK_SERVICE_URL
           value: 'http://pos-service.example.com:4008/webhook'
 
+  - it: ENABLE_PARTIAL_PAYMENT_DECISION should be "false" by default
+    template: configMap.backend.yaml
+    asserts:
+      - equal:
+          path: data.ENABLE_PARTIAL_PAYMENT_DECISION
+          value: "false"
+
+  - it: ENABLE_PARTIAL_PAYMENT_DECISION can be enabled
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          ilpDataExchange:
+            partialPaymentDecision:
+              enabled: "true"
+    asserts:
+      - equal:
+          path: data.ENABLE_PARTIAL_PAYMENT_DECISION
+          value: "true"
+
+  - it: PARTIAL_PAYMENT_DECISION_MAX_WAIT_MS can be set
+    template: configMap.backend.yaml
+    set:
+      config:
+        backend:
+          ilpDataExchange:
+            partialPaymentDecision:
+              maxWaitMs: 3000
+    asserts:
+      - equal:
+          path: data.PARTIAL_PAYMENT_DECISION_MAX_WAIT_MS
+          value: "3000"

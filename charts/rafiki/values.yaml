@@ -215,6 +215,20 @@ config:
       # The accepted ILP rate fluctuation.
       slippage: 0.01
 
+    ilpDataExchange:
+      # Base64 secret for storing data payloads exchanged between ASEs during ILP payments with additional data.
+      dbEncryptionSecret:
+        value: ""
+        secretKeyRef:
+          key: DB_ENCRYPTION_SECRET
+      partialPaymentDecision:
+        # Enables partial payment decisions (webhooks) when receiving additional data during ILP payments.
+        # Maps to ENABLE_PARTIAL_PAYMENT_DECISION.
+        enabled: "false"
+        # The maximum time in milliseconds that the ILP connector will wait for the receiver to action the partial payment.
+        # Maps to PARTIAL_PAYMENT_DECISION_MAX_WAIT_MS.
+        maxWaitMs: 5000
+
     key:
       # Your Rafiki instance’s client key ID. Make this a unique identifier for your
       # Rafiki instance.
@@ -846,7 +860,11 @@ configMaps:
         valueRef: config.backend.walletAddressNotFoundPollingEnabled
       - key: ENABLE_ILP_TIMING_TELEMETRY
         valueRef: config.backend.telemetry.enableIlpTimingTelemetry
-    
+      - key: ENABLE_PARTIAL_PAYMENT_DECISION
+        valueRef: config.backend.ilpDataExchange.partialPaymentDecision.enabled
+      - key: PARTIAL_PAYMENT_DECISION_MAX_WAIT_MS
+        valueRef: config.backend.ilpDataExchange.partialPaymentDecision.maxWaitMs
+
       # See templates/configMap.backend.yaml on how we patch WALLET_ADDRESS_URL
       # to automatically have the /.well-known/pay suffix
 
@@ -990,6 +1008,8 @@ secretsMaps:
         valueRef: config.backend.ilp.streamSecret.value
       - key: ADMIN_API_SECRET
         valueRef: config.backend.admin.apiSecret.value
+      - key: DB_ENCRYPTION_SECRET
+        valueRef: config.backend.ilpDataExchange.dbEncryptionSecret.value
 
   cards:
     name: cards

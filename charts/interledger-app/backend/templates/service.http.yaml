@@ -1,4 +1,0 @@
-{{- define "server.http.service" -}}
-{{- $top := first . -}}
-{{- end }}
-{{- include "common.svc" (list . .Values.server.service.http .Values.server "server.http.service") }}
