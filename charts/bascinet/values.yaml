@@ -18,18 +18,7 @@ backend:
           targetPort: http
           protocol: TCP
           name: http
-      annotations:
-        "some.annotation/key": "somevalue"
-    grpc:
-      name: backend-grpc
-      type: ClusterIP
-      ports:
-        - port: 8888
-          targetPort: grpc
-          protocol: TCP
-          name: grpc
-      annotations:
-        "some.annotation/key": "somevalue"
+      annotations: {}
   image:
     repository: ghcr.io/interledger/somerepo
     name: web
@@ -50,7 +39,7 @@ backend:
   env: []
   envFrom:
     - configMapRef:
-        name: "{{ include \"common.fullname\" . }}-backend"
+        name: "{{ include \"common.fullname\" . }}-{{ .Values.backend.name }}"
   # command: []
   # args: []
   # livenessProbe: {}
@@ -98,7 +87,7 @@ frontend:
   env: []
   envFrom:
     - configMapRef:
-        name: "{{ include \"common.fullname\" . }}-frontend"
+        name: "{{ include \"common.fullname\" . }}-{{ .Values.frontend.name }}"
   # command: []
   # args: []
   # livenessProbe: {}
@@ -146,7 +135,7 @@ api:
   env: []
   envFrom:
     - configMapRef:
-        name: "{{ include \"common.fullname\" . }}-api"
+        name: "{{ include \"common.fullname\" . }}-{{ .Values.api.name }}"
   # command: []
   # args: []
   # livenessProbe: {}
@@ -185,7 +174,7 @@ worker:
   env: []
   envFrom:
     - configMapRef:
-        name: "{{ include \"common.fullname\" . }}-worker"
+        name: "{{ include \"common.fullname\" . }}-{{ .Values.worker.name }}"
   # command: []
   # args: []
   # livenessProbe: {}
