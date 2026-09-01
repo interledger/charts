@@ -1,0 +1,28 @@
+suite: bascinet backend - deployment
+templates:
+  - deployment.backend.yaml
+tests:
+  - it: 'backend deployment should be created by default'
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+  - it: 'backend image repository, name and tag should be overridable'
+    set:
+      backend:
+        image:
+          repository: ghcr.io/example/custom-repo
+          name: custom-name
+          tag: 9.9.9
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/example/custom-repo/custom-name:9.9.9
+  - it: 'when backend is disabled no deployment should be created'
+    set:
+      backend:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

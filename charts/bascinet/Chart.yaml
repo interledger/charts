@@ -1,0 +1,17 @@
+apiVersion: v2
+name: bascinet
+description: A general-purpose Interledger shaped chart for easy generic deployments.
+home: https://github.com/interledger/charts
+
+type: application
+version: 0.1.0
+appVersion: "v0.0.0"
+
+dependencies:
+  - name: common
+    version: 0.9.0
+    repository: file://../common
+
+maintainers:
+  - name: Stephan Butler
+    email: stephan@interledger.foundation

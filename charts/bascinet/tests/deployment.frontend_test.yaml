@@ -1,0 +1,29 @@
+suite: bascinet frontend - deployment
+templates:
+  - deployment.frontend.yaml
+tests:
+  - it: 'frontend is disabled by default so no deployment should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'frontend image repository, name and tag should be overridable'
+    set:
+      frontend:
+        enabled: true
+        image:
+          repository: ghcr.io/example/custom-repo
+          name: custom-name
+          tag: 9.9.9
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/example/custom-repo/custom-name:9.9.9
+  - it: 'when explicitly disabled no frontend deployment should be created'
+    set:
+      frontend:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

@@ -1,0 +1,12 @@
+{{- define "worker.deployment" -}}
+{{- $top := first . }}
+{{- if $top.Values.worker.enabled }}
+{{- $dataHash := ($top.Values.worker.config | default dict) | toJson | sha256sum -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        bascinet-worker-sha256: {{ $dataHash | quote }}
+{{- end }}
+{{- end }}
+{{- include "common.deployment" (list . .Values.worker .Values.worker.autoscaling .Values.worker.serviceAccount "worker.deployment") }}

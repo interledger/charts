@@ -1,0 +1,29 @@
+suite: bascinet api - deployment
+templates:
+  - deployment.api.yaml
+tests:
+  - it: 'api is disabled by default so no deployment should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'api image repository, name and tag should be overridable'
+    set:
+      api:
+        enabled: true
+        image:
+          repository: ghcr.io/example/custom-repo
+          name: custom-name
+          tag: 9.9.9
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/example/custom-repo/custom-name:9.9.9
+  - it: 'when explicitly disabled no api deployment should be created'
+    set:
+      api:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

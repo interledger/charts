@@ -1,0 +1,20 @@
+suite: bascinet frontend - configmap
+templates:
+  - configMap.frontend.yaml
+tests:
+  - it: 'frontend is disabled by default so no configmap should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'when frontend is enabled the configmap should be created with the provided config data'
+    set:
+      frontend:
+        enabled: true
+        config:
+          MY_KEY: my_value
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: data.MY_KEY
+          value: my_value

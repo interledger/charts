@@ -1,0 +1,18 @@
+suite: bascinet backend - configmap
+templates:
+  - configMap.backend.yaml
+tests:
+  - it: 'backend configmap should be created by default with the provided config data'
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: data.SOME_ENV
+          value: somevalue
+  - it: 'when backend is disabled no configmap should be created'
+    set:
+      backend:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

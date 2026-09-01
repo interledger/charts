@@ -1,0 +1,17 @@
+suite: bascinet backend - service
+templates:
+  - service.backend.yaml
+tests:
+  - it: 'backend service should be created by default'
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+  - it: 'when backend is disabled no service should be created'
+    set:
+      backend:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

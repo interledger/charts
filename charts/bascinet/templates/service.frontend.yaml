@@ -1,0 +1,5 @@
+{{- define "frontend.service" -}}
+{{- end }}
+{{- if .Values.frontend.enabled }}
+{{- include "common.svc" (list . .Values.frontend.service .Values.frontend "frontend.service") }}
+{{- end }}

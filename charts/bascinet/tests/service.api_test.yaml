@@ -1,0 +1,17 @@
+suite: bascinet api - service
+templates:
+  - service.api.yaml
+tests:
+  - it: 'api is disabled by default so no service should be created'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: 'when api is enabled the service should be created'
+    set:
+      api:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
