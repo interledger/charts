@@ -1,0 +1,96 @@
+suite: multideployment backend - native sidecars
+templates:
+  - deployment.backend.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'a plain sidecar joins containers and gates nothing'
+    set:
+      backend:
+        sidecars:
+          - name: cloud-sql-proxy
+            image: {repository: gcr.io, name: cloud-sql-connectors/cloud-sql-proxy, tag: 2.17.1}
+    asserts:
+      # Everything in `containers` starts in parallel, so the app can dial a
+      # proxy that has not bound its port yet.
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: cloud-sql-proxy
+      - notExists:
+          path: spec.template.spec.initContainers
+
+  - it: 'a nativeSidecar becomes an init container that stays running, and the app waits for it'
+    set:
+      backend:
+        nativeSidecars:
+          - name: cloud-sql-proxy
+            image: {repository: gcr.io, name: cloud-sql-connectors/cloud-sql-proxy, tag: 2.17.1}
+            startupProbe:
+              httpGet:
+                path: /startup
+                port: 9090
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.initContainers[0].restartPolicy
+          value: Always
+      - equal:
+          path: spec.template.spec.initContainers[0].startupProbe.httpGet.port
+          value: 9090
+      # The app is the only ordinary container, and it starts after the probe
+      # above passes.
+      - lengthEqual:
+          path: spec.template.spec.containers
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: backend
+
+  - it: 'native sidecars run before init containers'
+    set:
+      backend:
+        nativeSidecars:
+          - name: cloud-sql-proxy
+            image: {repository: gcr.io, name: cloud-sql-connectors/cloud-sql-proxy, tag: 2.17.1}
+        initContainers:
+          - name: wait-for-schema
+            image: {repository: ghcr.io/interledger, name: busybox, tag: 1.0.0}
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.initContainers[0].restartPolicy
+          value: Always
+      - equal:
+          path: spec.template.spec.initContainers[1].name
+          value: wait-for-schema
+      - notExists:
+          path: spec.template.spec.initContainers[1].restartPolicy
+
+  - it: 'both kinds of sidecar can coexist'
+    set:
+      backend:
+        nativeSidecars:
+          - name: cloud-sql-proxy
+            image: {repository: gcr.io, name: cloud-sql-connectors/cloud-sql-proxy, tag: 2.17.1}
+        sidecars:
+          - name: log-shipper
+            image: {repository: ghcr.io/interledger, name: shipper, tag: 1.0.0}
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: backend
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: log-shipper
+
+  - it: 'a deployment pod still has no restartPolicy'
+    asserts:
+      - notExists:
+          path: spec.template.spec.restartPolicy

@@ -1,0 +1,148 @@
+suite: multideployment migrate - common.job
+templates:
+  - job.migrate.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'renders a Job whose pod never restarts'
+    asserts:
+      - containsDocument:
+          kind: Job
+          apiVersion: batch/v1
+      - equal:
+          path: metadata.name
+          value: black-migrate
+      - equal:
+          path: spec.template.spec.restartPolicy
+          value: Never
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: migrate
+
+  - it: 'given restartPolicy OnFailure it should use it'
+    set:
+      migrate:
+        restartPolicy: OnFailure
+    asserts:
+      - equal:
+          path: spec.template.spec.restartPolicy
+          value: OnFailure
+
+  - it: 'given disabled no Job should be created'
+    set:
+      migrate:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: 'passes the job-shaped fields through'
+    set:
+      migrate:
+        backoffLimit: 5
+        activeDeadlineSeconds: 120
+        ttlSecondsAfterFinished: 3600
+        completions: 3
+        parallelism: 2
+    asserts:
+      - equal:
+          path: spec.backoffLimit
+          value: 5
+      - equal:
+          path: spec.activeDeadlineSeconds
+          value: 120
+      - equal:
+          path: spec.ttlSecondsAfterFinished
+          value: 3600
+      - equal:
+          path: spec.completions
+          value: 3
+      - equal:
+          path: spec.parallelism
+          value: 2
+
+  - it: 'omits the optional job fields when they are unset'
+    set:
+      migrate:
+        backoffLimit: null
+        activeDeadlineSeconds: null
+    asserts:
+      - notExists:
+          path: spec.backoffLimit
+      - notExists:
+          path: spec.activeDeadlineSeconds
+      - notExists:
+          path: spec.ttlSecondsAfterFinished
+      - notExists:
+          path: spec.completions
+
+  - it: 'carries annotations, so a caller can add Helm hooks'
+    set:
+      migrate:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-weight: "0"
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-install,pre-upgrade
+
+  - it: 'refuses a plain sidecar, which would stop the Job ever completing'
+    set:
+      migrate:
+        sidecars:
+          - name: cloud-sql-proxy
+            image:
+              repository: gcr.io
+              name: cloud-sql-connectors/cloud-sql-proxy
+              tag: 2.17.1
+    asserts:
+      - failedTemplate:
+          errorMessage: "black-migrate: a Job cannot use `sidecars`. A plain sidecar never exits, so the Job never completes. Move them to `nativeSidecars`."
+
+  - it: 'renders a nativeSidecar as an init container that stays running'
+    set:
+      migrate:
+        nativeSidecars:
+          - name: cloud-sql-proxy
+            image:
+              repository: gcr.io
+              name: cloud-sql-connectors/cloud-sql-proxy
+              tag: 2.17.1
+            startupProbe:
+              httpGet:
+                path: /startup
+                port: 9090
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.initContainers[0].restartPolicy
+          value: Always
+      # This is what holds the migration back until the proxy answers.
+      - equal:
+          path: spec.template.spec.initContainers[0].startupProbe.httpGet.path
+          value: /startup
+      - lengthEqual:
+          path: spec.template.spec.containers
+          count: 1
+
+  - it: 'orders native sidecars before init containers, so an init container can use them'
+    set:
+      migrate:
+        nativeSidecars:
+          - name: cloud-sql-proxy
+            image: {repository: gcr.io, name: cloud-sql-connectors/cloud-sql-proxy, tag: 2.17.1}
+        initContainers:
+          - name: seed
+            image: {repository: ghcr.io/interledger, name: seed, tag: 1.0.0}
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.initContainers[1].name
+          value: seed
+      - notExists:
+          path: spec.template.spec.initContainers[1].restartPolicy

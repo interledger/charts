@@ -265,3 +265,25 @@ secretsMaps:
     contentMap:
       - key: MY_SECRET
         valueRef: config.someSecret
+# A batch Job, rendered by common.job. It shares the pod template with every
+# deployment above, so nativeSidecars, initContainers and volumes behave the
+# same way here.
+migrate:
+  name: migrate
+  enabled: true
+  image:
+    repository: ghcr.io/interledger/somerepo
+    name: migrate
+    tag: 2.0.0
+  command:
+    - /app/migrate
+  args:
+    - up
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+  serviceAccount: {}
+  # A Job may not use `sidecars`: a plain sidecar never exits, so the Job never
+  # completes. A database proxy the migration talks to goes here instead, and
+  # its startupProbe is what holds the migration back until the port answers.
+  nativeSidecars: []
+  initContainers: []
