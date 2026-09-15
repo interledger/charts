@@ -1,3 +1,21 @@
+{{/*
+The action half of a probe: exactly one of httpGet, tcpSocket, grpc or exec.
+
+httpGet stays first and exec stays the fallback, so a probe written against an
+earlier version of this library renders exactly as it did before.
+*/}}
+{{- define "common.probe.action" -}}
+{{- if .httpGet }}
+httpGet: {{- toYaml .httpGet | nindent 2 }}
+{{- else if .tcpSocket }}
+tcpSocket: {{- toYaml .tcpSocket | nindent 2 }}
+{{- else if .grpc }}
+grpc: {{- toYaml .grpc | nindent 2 }}
+{{- else }}
+exec: {{- toYaml .exec | nindent 2 }}
+{{- end }}
+{{- end }}
+
 {{- define "common.probe.tpl" -}}
 {{- $top := first . }}
 {{- $probe := index . 1 }}
@@ -6,13 +24,39 @@ periodSeconds: {{ default 5 $probe.periodSeconds }}
 timeoutSeconds: {{ default 1 $probe.timeoutSeconds }}
 successThreshold: {{ default 1 $probe.successThreshold }}
 failureThreshold: {{ default 3 $probe.failureThreshold }}
-{{- if $probe.httpGet }}
-httpGet: {{- toYaml $probe.httpGet | nindent 2 }}
-{{ else }}
-exec: {{- toYaml $probe.exec | nindent 2 }}
-{{- end }}
+{{- include "common.probe.action" $probe }}
 {{- end }}
 
 {{- define "common.probe" }}
 {{- include "common.utils.merge" (append . "common.probe.tpl") }}
+{{- end }}
+
+{{/*
+A startup probe answers one question -- has this container finished starting?
+-- so its defaults differ from a liveness or readiness probe:
+
+  initialDelaySeconds  0   waiting before the first check only adds dead time
+  periodSeconds        2   poll hard; the probe stops as soon as it passes
+  failureThreshold     30  2s x 30 gives a 60s budget to start
+
+successThreshold is fixed at 1. Kubernetes rejects any other value here.
+
+On an init container with restartPolicy Always -- a native sidecar -- this is
+also what makes the containers after it wait. Without a startup probe the
+kubelet treats such a sidecar as started the moment it is running, rather than
+when it is ready to serve, and the main container races it.
+*/}}
+{{- define "common.startupProbe.tpl" -}}
+{{- $top := first . }}
+{{- $probe := index . 1 }}
+initialDelaySeconds: {{ default 0 $probe.initialDelaySeconds }}
+periodSeconds: {{ default 2 $probe.periodSeconds }}
+timeoutSeconds: {{ default 1 $probe.timeoutSeconds }}
+successThreshold: 1
+failureThreshold: {{ default 30 $probe.failureThreshold }}
+{{- include "common.probe.action" $probe }}
+{{- end }}
+
+{{- define "common.startupProbe" }}
+{{- include "common.utils.merge" (append . "common.startupProbe.tpl") }}
 {{- end }}

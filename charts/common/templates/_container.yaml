@@ -70,6 +70,10 @@
   command: {{- toYaml . | nindent 4 }}
   {{- end }}
 
+  {{- with $container.startupProbe }}
+  startupProbe: {{ include "common.startupProbe" (list $top .) | nindent 4 }}
+  {{- end }}
+
   {{- with $container.livenessProbe }}
   livenessProbe: {{ include "common.probe" (list $top .) | nindent 4 }}
   {{- end }}
