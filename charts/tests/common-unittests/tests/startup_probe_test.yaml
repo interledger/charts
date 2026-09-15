@@ -1,0 +1,132 @@
+suite: Common - startupProbe
+templates:
+  - deployment.worker.yaml
+release:
+  name: hello
+tests:
+  - it: 'renders no startupProbe when the container declares none'
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: 'applies startup-shaped defaults, not liveness ones'
+    set:
+      worker:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+    asserts:
+      # Waiting before the first check only adds dead time to a startup probe.
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.initialDelaySeconds
+          value: 0
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.periodSeconds
+          value: 2
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.timeoutSeconds
+          value: 1
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.path
+          value: /startup
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.port
+          value: 9090
+
+  - it: 'honours explicit timings'
+    set:
+      worker:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+          timeoutSeconds: 3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.initialDelaySeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.periodSeconds
+          value: 10
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 6
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.timeoutSeconds
+          value: 3
+
+  - it: 'pins successThreshold to 1, which is the only value Kubernetes accepts'
+    set:
+      worker:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+          successThreshold: 3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.successThreshold
+          value: 1
+
+  - it: 'supports a tcpSocket action, so a port check needs no HTTP endpoint'
+    set:
+      worker:
+        startupProbe:
+          tcpSocket:
+            port: 5432
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.tcpSocket.port
+          value: 5432
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe.exec
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe.httpGet
+
+  - it: 'supports an exec action'
+    set:
+      worker:
+        startupProbe:
+          exec:
+            command: ["sh", "-c", "test -S /tmp/ready"]
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.exec.command[0]
+          value: sh
+
+  - it: 'leaves liveness and readiness defaults alone'
+    set:
+      worker:
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+    asserts:
+      # These are the pre-existing common.probe defaults. A startup probe must
+      # not have changed them.
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
+          value: 30
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.periodSeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.failureThreshold
+          value: 3
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /health
+      # tcpSocket is new on common.probe too; it used to fall through to exec.
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.tcpSocket.port
+          value: 8080
