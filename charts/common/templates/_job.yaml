@@ -1,0 +1,81 @@
+{{/*
+A batch Job, built on the same pod template as common.deployment.
+
+Signature, matching common.deployment's shape:
+
+  {{- include "common.job" (list . .Values.migrate .Values.migrate.serviceAccount "myChart.job") }}
+
+The pod spec comes from the job object itself, exactly as a deployment's does:
+the main container is read from that object unless it carries a `containers`
+list. `nativeSidecars`, `initContainers`, `volumes`, `nodeSelector`,
+`tolerations` and the rest are the pod template's, and behave identically here.
+
+Job-shaped fields this reads from the job object:
+
+  enabled                  omit the Job entirely when false
+  name                     suffix for the Job's name, as on a deployment
+  restartPolicy            Never by default; OnFailure is the other legal value
+  backoffLimit             retries before the Job is failed
+  activeDeadlineSeconds    wall-clock cap on the whole Job
+  ttlSecondsAfterFinished  delete the finished Job after this long
+  completions, parallelism for a Job that runs more than one pod
+  annotations              Job metadata annotations, such as Helm hooks
+
+Everything else, including hook annotations, belongs in the override template
+the caller names, and merges over what this renders.
+
+A sidecar in a Job must be a native sidecar. A plain `sidecars` entry never
+exits, so the Job never completes and waits out activeDeadlineSeconds. This
+template fails the render rather than let that ship.
+*/}}
+{{- define "common.job.tpl" -}}
+{{- $top := first . }}
+{{- $job := index . 1 }}
+{{- $serviceAccount := dict }}
+{{- if ge (len .) 3 }}
+{{- $serviceAccount = index . 2 }}
+{{- end }}
+{{- $name := include "common.fullname" $top }}
+{{- if $job.name }}
+{{- $name = printf "%s-%s" $name $job.name }}
+{{- end }}
+{{- if or (not (hasKey $job "enabled")) $job.enabled }}
+{{- if $job.sidecars }}
+{{- fail (printf "%s: a Job cannot use `sidecars`. A plain sidecar never exits, so the Job never completes. Move them to `nativeSidecars`." $name) }}
+{{- end }}
+{{- $pod := deepCopy $job }}
+{{- $_ := set $pod "restartPolicy" ($job.restartPolicy | default "Never") }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}
+  {{- include "common.metadata" (list $top $job) | nindent 2 }}
+  {{- with $job.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $job.backoffLimit }}
+  backoffLimit: {{ . }}
+  {{- end }}
+  {{- with $job.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ . }}
+  {{- end }}
+  {{- with $job.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ . }}
+  {{- end }}
+  {{- with $job.completions }}
+  completions: {{ . }}
+  {{- end }}
+  {{- with $job.parallelism }}
+  parallelism: {{ . }}
+  {{- end }}
+  template: {{- include "common.pod.template" (list $top $pod $serviceAccount nil) | nindent 4 }}
+{{- else }}
+# Job {{ $name }} is disabled
+{{- end }}
+{{- end }}
+
+{{- define "common.job" -}}
+{{- include "common.utils.merge" (append . "common.job.tpl") }}
+{{- end }}
