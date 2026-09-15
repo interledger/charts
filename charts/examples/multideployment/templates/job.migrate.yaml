@@ -1,0 +1,3 @@
+{{- define "migrate.job" -}}
+{{- end }}
+{{- include "common.job" (list . .Values.migrate .Values.migrate.serviceAccount "migrate.job") }}
