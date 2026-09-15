@@ -1,0 +1,185 @@
+suite: multideployment backend - startupProbe
+templates:
+  - deployment.backend.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'given no startupProbe the container should have none'
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: 'given a startupProbe with no timings it should use startup defaults, not liveness ones'
+    set:
+      backend:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+    asserts:
+      # A startup probe asks only "has this finished starting?", so it polls
+      # from the first second and is given a long budget to succeed.
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.initialDelaySeconds
+          value: 0
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.periodSeconds
+          value: 2
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.timeoutSeconds
+          value: 1
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.successThreshold
+          value: 1
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.path
+          value: /startup
+
+  - it: 'given explicit timings the startupProbe should use them'
+    set:
+      backend:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+          timeoutSeconds: 3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.initialDelaySeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.periodSeconds
+          value: 10
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 6
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.timeoutSeconds
+          value: 3
+
+  - it: 'given a successThreshold other than 1 the startupProbe should ignore it'
+    set:
+      backend:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+          successThreshold: 3
+    asserts:
+      # Kubernetes rejects any other value on a startup probe.
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.successThreshold
+          value: 1
+
+  - it: 'given a tcpSocket action the startupProbe should check the port directly'
+    set:
+      backend:
+        startupProbe:
+          tcpSocket:
+            port: 5432
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.tcpSocket.port
+          value: 5432
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe.httpGet
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe.exec
+
+  - it: 'given an exec action the startupProbe should run the command'
+    set:
+      backend:
+        startupProbe:
+          exec:
+            command: ["sh", "-c", "test -S /var/run/proxy.sock"]
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.exec.command[0]
+          value: sh
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe.httpGet
+
+  - it: 'given a sidecar with a startupProbe the sidecar should carry it'
+    set:
+      backend:
+        sidecars:
+          - name: cloud-sql-proxy
+            image:
+              repository: gcr.io
+              name: cloud-sql-connectors/cloud-sql-proxy
+              tag: 2.17.1
+            args:
+              - "--health-check"
+              - "--http-address=0.0.0.0"
+              - "--http-port=9090"
+            startupProbe:
+              httpGet:
+                path: /startup
+                port: 9090
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: cloud-sql-proxy
+      - equal:
+          path: spec.template.spec.containers[1].startupProbe.httpGet.path
+          value: /startup
+      - equal:
+          path: spec.template.spec.containers[1].startupProbe.periodSeconds
+          value: 2
+      # The main container declares none, and a sidecar's probe is its own.
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: 'given an initContainer with a startupProbe it should carry it'
+    set:
+      backend:
+        initContainers:
+          - name: wait-for-db
+            image:
+              repository: ghcr.io/interledger
+              name: busybox
+              tag: 1.0.0
+            startupProbe:
+              tcpSocket:
+                port: 5432
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].startupProbe.tcpSocket.port
+          value: 5432
+
+  - it: 'adding a startupProbe should not disturb liveness or readiness defaults'
+    set:
+      backend:
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9090
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
+          value: 30
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.periodSeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.failureThreshold
+          value: 3
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.initialDelaySeconds
+          value: 30
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.tcpSocket.port
+          value: 8080
