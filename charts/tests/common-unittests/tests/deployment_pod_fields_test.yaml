@@ -1,0 +1,100 @@
+suite: Common - deployment and pod fields
+templates:
+  - deployment.worker.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'renders one replica when replicaCount is absent'
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  - it: 'keeps an explicit replicaCount of 0, so a stopped deployment stays stopped'
+    set:
+      worker:
+        replicaCount: 0
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 0
+
+  - it: 'passes any other replicaCount through'
+    set:
+      worker:
+        replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  - it: 'renders no replicas when autoscaling owns them'
+    set:
+      worker:
+        replicaCount: 0
+        autoscaling:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.replicas
+
+  - it: 'leaves revisionHistoryLimit and terminationGracePeriodSeconds to Kubernetes by default'
+    asserts:
+      - notExists:
+          path: spec.revisionHistoryLimit
+      - notExists:
+          path: spec.template.spec.terminationGracePeriodSeconds
+
+  - it: 'passes revisionHistoryLimit and terminationGracePeriodSeconds through'
+    set:
+      worker:
+        revisionHistoryLimit: 3
+        terminationGracePeriodSeconds: 60
+    asserts:
+      - equal:
+          path: spec.revisionHistoryLimit
+          value: 3
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 60
+
+  - it: 'renders no automountServiceAccountToken for a named service account by default'
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: superman
+      - notExists:
+          path: spec.template.spec.automountServiceAccountToken
+
+  - it: 'mounts the token when there is no service account, as before'
+    set:
+      worker:
+        serviceAccount: null
+    asserts:
+      - notExists:
+          path: spec.template.spec.serviceAccountName
+      - equal:
+          path: spec.template.spec.automountServiceAccountToken
+          value: true
+
+  - it: 'honours automountServiceAccountToken false with a named service account'
+    set:
+      worker:
+        automountServiceAccountToken: false
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: superman
+      - equal:
+          path: spec.template.spec.automountServiceAccountToken
+          value: false
+
+  - it: 'honours automountServiceAccountToken false without a service account'
+    set:
+      worker:
+        serviceAccount: null
+        automountServiceAccountToken: false
+    asserts:
+      - equal:
+          path: spec.template.spec.automountServiceAccountToken
+          value: false

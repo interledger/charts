@@ -1,0 +1,3 @@
+{{- define "some-app.pvc" -}}
+{{- end }}
+{{- include "common.pvc" (list . .Values.persistence "some-app.pvc") }}
