@@ -1,0 +1,87 @@
+suite: Common - PersistentVolumeClaim
+templates:
+  - pvc.yaml
+set:
+  fullnameOverride: black
+tests:
+  - it: 'renders a ReadWriteOnce claim named after the release, with no storage class'
+    asserts:
+      - containsDocument:
+          kind: PersistentVolumeClaim
+          apiVersion: v1
+      - equal:
+          path: metadata.name
+          value: black-data
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: black-data
+      - equal:
+          path: spec.accessModes
+          value: [ReadWriteOnce]
+      - equal:
+          path: spec.resources.requests.storage
+          value: 10Gi
+      # An absent key leaves the choice to the cluster default class.
+      - notExists:
+          path: spec.storageClassName
+      - notExists:
+          path: spec.volumeMode
+      - notExists:
+          path: metadata.annotations
+
+  - it: 'passes a storage class, access modes, volume mode and annotations through'
+    set:
+      persistence:
+        storageClassName: premium-rwo
+        accessModes: [ReadWriteOncePod]
+        volumeMode: Block
+        annotations:
+          helm.sh/resource-policy: keep
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: premium-rwo
+      - equal:
+          path: spec.accessModes
+          value: [ReadWriteOncePod]
+      - equal:
+          path: spec.volumeMode
+          value: Block
+      - equal:
+          path: metadata.annotations["helm.sh/resource-policy"]
+          value: keep
+
+  - it: 'keeps an empty storage class, which asks for a claim with no class'
+    set:
+      persistence:
+        storageClassName: ""
+    asserts:
+      - exists:
+          path: spec.storageClassName
+      - equal:
+          path: spec.storageClassName
+          value: ""
+
+  - it: 'given disabled no claim should be created'
+    set:
+      persistence:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: 'fails without a name'
+    set:
+      persistence:
+        name: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: PersistentVolumeClaim name missing
+
+  - it: 'fails without a size'
+    set:
+      persistence:
+        size: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: PersistentVolumeClaim size missing for black-data
