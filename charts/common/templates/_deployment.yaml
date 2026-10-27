@@ -25,8 +25,20 @@ spec:
   minReadySeconds: 3
   {{- end }}
 
+  {{- with $deployment.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ . }}
+  {{- end }}
+
+  {{- /*
+  hasKey, not `default 1`. `default` treats an explicit 0 as unset, and would scale
+  a deployment that is meant to be stopped back up to one replica.
+  */}}
   {{- if not $autoscaling.enabled }}
-  replicas: {{ $deployment.replicaCount | default 1 }}
+  {{- if hasKey $deployment "replicaCount" }}
+  replicas: {{ $deployment.replicaCount }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
   {{- end }}
   selector:
     matchLabels:
