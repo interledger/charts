@@ -15,9 +15,9 @@ Job-shaped fields this reads from the job object:
   enabled                  omit the Job entirely when false
   name                     suffix for the Job's name, as on a deployment
   restartPolicy            Never by default; OnFailure is the other legal value
-  backoffLimit             retries before the Job is failed
+  backoffLimit             retries before the Job is failed. 0 is kept: no retry.
   activeDeadlineSeconds    wall-clock cap on the whole Job
-  ttlSecondsAfterFinished  delete the finished Job after this long
+  ttlSecondsAfterFinished  delete the finished Job after this long. 0 is kept.
   completions, parallelism for a Job that runs more than one pod
   annotations              Job metadata annotations, such as Helm hooks
 
@@ -55,14 +55,19 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with $job.backoffLimit }}
-  backoffLimit: {{ . }}
+  {{- /*
+  hasKey, not `with`, for the two fields where 0 has a meaning. `with` drops a 0:
+  backoffLimit 0 (no retry) would become the Kubernetes default of 6 retries, and
+  ttlSecondsAfterFinished 0 (delete at once) would keep the finished Job forever.
+  */}}
+  {{- if hasKey $job "backoffLimit" }}
+  backoffLimit: {{ $job.backoffLimit }}
   {{- end }}
   {{- with $job.activeDeadlineSeconds }}
   activeDeadlineSeconds: {{ . }}
   {{- end }}
-  {{- with $job.ttlSecondsAfterFinished }}
-  ttlSecondsAfterFinished: {{ . }}
+  {{- if hasKey $job "ttlSecondsAfterFinished" }}
+  ttlSecondsAfterFinished: {{ $job.ttlSecondsAfterFinished }}
   {{- end }}
   {{- with $job.completions }}
   completions: {{ . }}

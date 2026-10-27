@@ -1,0 +1,68 @@
+{{/*
+A PersistentVolumeClaim.
+
+  {{- include "common.pvc" (list . .Values.persistence "myChart.pvc") }}
+
+Fields on the pvc object:
+
+  enabled           omit the claim when false
+  name              suffix for the claim's name. Required.
+  size              the requested storage, such as 20Gi. Required.
+  accessModes       [ReadWriteOnce] by default
+  storageClassName  omitted when the key is absent, so the cluster default class
+                    applies. An empty string is passed through: it asks for a
+                    claim with no class, which disables dynamic provisioning.
+  volumeMode        omitted by default, so Kubernetes uses Filesystem
+  annotations       claim metadata annotations
+
+The claim is named <common.fullname>-<name>, like a service. A pod mounts it with
+a volume whose claimName is that same name.
+
+Note: a claim holds data that a chart cannot recreate. Add the annotation
+`helm.sh/resource-policy: keep` for any claim that must survive `helm uninstall`.
+A GitOps controller needs its own equivalent, such as Argo CD's
+`argocd.argoproj.io/sync-options: Prune=false,Delete=false`.
+*/}}
+{{- define "common.pvc.tpl" -}}
+{{- $top := first . }}
+{{- $pvc := index . 1 }}
+{{- if not $pvc }}
+{{- fail "No pvc object provided" -}}
+{{- end }}
+{{- if not $pvc.name }}
+{{- fail "PersistentVolumeClaim name missing" -}}
+{{- end }}
+{{- $name := printf "%s-%s" (include "common.fullname" $top) $pvc.name }}
+{{- if or (not (hasKey $pvc "enabled")) $pvc.enabled }}
+{{- if not $pvc.size }}
+{{- fail (printf "PersistentVolumeClaim size missing for %s" $name) -}}
+{{- end }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $name }}
+  {{- include "common.metadata" (list $top $pvc) | nindent 2 }}
+  {{- with $pvc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml ($pvc.accessModes | default (list "ReadWriteOnce")) | nindent 4 }}
+  {{- if hasKey $pvc "storageClassName" }}
+  storageClassName: {{ $pvc.storageClassName | quote }}
+  {{- end }}
+  {{- with $pvc.volumeMode }}
+  volumeMode: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $pvc.size }}
+{{- else }}
+# PersistentVolumeClaim {{ $name }} is disabled
+{{- end }}
+{{- end }}
+
+{{- define "common.pvc" -}}
+{{- include "common.utils.merge" (append . "common.pvc.tpl") }}
+{{- end }}

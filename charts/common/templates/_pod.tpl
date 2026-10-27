@@ -15,8 +15,22 @@ metadata:
 spec:
   {{- if $serviceAccount.name }}
   serviceAccountName: {{ include "common.serviceAccountName" (list $top $serviceAccount) }}
-  {{- else }}
+  {{- end }}
+  {{- /*
+  An explicit automountServiceAccountToken wins, so a pod that never calls the
+  Kubernetes API can refuse the token. hasKey, because false is the useful value.
+  */}}
+  {{- if hasKey $pod "automountServiceAccountToken" }}
+  automountServiceAccountToken: {{ $pod.automountServiceAccountToken }}
+  {{- else if not $serviceAccount.name }}
   automountServiceAccountToken: true
+  {{- end }}
+  {{- /*
+  The time between SIGTERM and SIGKILL. Kubernetes defaults to 30 seconds. Raise
+  it for a process that must finish a write before it exits.
+  */}}
+  {{- with $pod.terminationGracePeriodSeconds }}
+  terminationGracePeriodSeconds: {{ . }}
   {{- end }}
   securityContext:
     {{- toYaml $top.Values.podSecurityContext | nindent 4 }}

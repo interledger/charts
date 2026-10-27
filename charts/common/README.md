@@ -113,7 +113,8 @@ Job-shaped fields on the job object: `enabled`, `name`, `restartPolicy`
 (`Never` by default), `backoffLimit`, `activeDeadlineSeconds`,
 `ttlSecondsAfterFinished`, `completions`, `parallelism` and `annotations`.
 Each optional one is emitted only when set, so Kubernetes' own defaults apply
-otherwise. Put Helm hook annotations in `annotations`, or in the override
+otherwise. A `backoffLimit` or `ttlSecondsAfterFinished` of `0` is set, and is
+emitted: `backoffLimit: 0` means no retry, not the default of six. Put Helm hook annotations in `annotations`, or in the override
 template named in the last argument.
 
 **A Job may not use `sidecars`.** A plain sidecar never exits, so the Job never
@@ -121,3 +122,61 @@ completes and waits out `activeDeadlineSeconds`. The template fails the render
 and points at `nativeSidecars` instead.
 
 See `charts/examples/multideployment` for a worked example and its tests.
+
+## Deployment and pod fields
+
+These fields are optional. Each one is emitted only when it is set.
+
+| Field | On | Effect |
+|---|---|---|
+| `replicaCount` | deployment | The replica count. `1` when absent. An explicit `0` stays `0`. Ignored when `autoscaling.enabled`. |
+| `revisionHistoryLimit` | deployment | How many old ReplicaSets Kubernetes keeps. |
+| `terminationGracePeriodSeconds` | deployment, job | Time between SIGTERM and SIGKILL. Kubernetes defaults to 30. |
+| `automountServiceAccountToken` | deployment, job | `false` keeps the API token out of a pod that never calls the Kubernetes API. |
+
+Without `automountServiceAccountToken`, the pod template behaves as follows. A
+pod with a named service account gets no explicit value. A pod without one gets
+`automountServiceAccountToken: true`.
+
+```yaml
+worker:
+  replicaCount: 0                      # stopped, and stays stopped
+  revisionHistoryLimit: 3
+  terminationGracePeriodSeconds: 60    # time to finish a write before SIGKILL
+  automountServiceAccountToken: false
+```
+
+## Persistent volume claims
+
+`common.pvc` renders one `PersistentVolumeClaim`.
+
+```yaml
+{{- include "common.pvc" (list . .Values.persistence "myChart.pvc") }}
+```
+
+```yaml
+persistence:
+  name: data            # required. The claim is named <fullname>-data.
+  size: 20Gi            # required
+  accessModes: [ReadWriteOnce]   # the default
+  # storageClassName: premium-rwo
+  annotations:
+    helm.sh/resource-policy: keep
+```
+
+| Field | Effect |
+|---|---|
+| `enabled` | `false` omits the claim. |
+| `name` | Suffix of the claim name, as on a service. Required. |
+| `size` | The requested storage. Required. |
+| `accessModes` | `[ReadWriteOnce]` when absent. |
+| `storageClassName` | Absent: the cluster default class applies. `""`: a claim with no class, which disables dynamic provisioning. |
+| `volumeMode` | Absent: Kubernetes uses `Filesystem`. |
+| `annotations` | Claim metadata annotations. |
+
+Mount the claim with a pod volume whose `claimName` is `<fullname>-<name>`.
+
+A claim holds data that the chart cannot recreate. Helm deletes the claim on
+`helm uninstall` unless it has `helm.sh/resource-policy: keep`. Argo CD deletes
+it on prune unless it has `argocd.argoproj.io/sync-options: Prune=false,Delete=false`.
+Set both on a claim that must survive.
