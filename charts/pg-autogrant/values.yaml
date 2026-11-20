@@ -21,7 +21,7 @@ ttlSecondsAfterFinished: 600
 
 image:
   repository: postgres
-  tag: "18-alpine"
+  tag: "19-alpine"
 
 # Optional Kubernetes service account for the Job pod.
 # Example: "db-admin"
